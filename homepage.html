@@ -7,6 +7,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Arima+Madurai|Bangers|Gruppo|Nixie+One|Noto+Serif|Nova+Flat|Poiret+One|Shrikhand" rel="stylesheet">
+
+    <!--Clock Imports-->
+    <!-- Import time lib-moment.js and Vue.js-->
+    <script src="moment.js" charset="utf-8"></script>
+    <script src="https://unpkg.com/vue"></script>
+
     <style media="screen">
       body {
         background: url("earthPorn.jpg") no-repeat fixed center;
@@ -20,7 +26,7 @@
       }
 
       .clockSize {
-        font-size: 800%;
+        font-size: 700%;
         color: rgba(0,0,0,0.7);
       }
 
@@ -88,8 +94,17 @@
               <div class="row">
                 <div class="col s12">
                   <br>
-                  <em class="clockSize">10<blink>:</blink>20pm</em>
-                  <p class="dateSize">Thursday October 5th 2017</p>
+                  <!-- The Vue instance is attached to this div -->
+                  <div id='app'>
+                      <div>
+                          <!-- Reference the variable currtime in Vue Instance -->
+                          <em class="clockSize">{{currtime}}</em>
+                      </div>
+                      <div>
+                          <!-- Reference the variable currdate in Vue Instance -->
+                          <p class="dateSize">{{currdate}}</p>
+                      </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -179,7 +194,7 @@
                 <div class="box">
                   Weather
                 </div>
- 
+
                 <!--Bus Schedule box-->
                 <div class="box">
                   Bus Schedule
@@ -197,4 +212,41 @@
     document.getElementById('icon_prefix').focus();
   });
   favouritesIcons/
+</script>
+
+<!--Clock Script-->
+<script type="text/javascript">
+
+    new Vue({
+        /* Vue will be attached to this ID */
+        el: '#app',
+        /* variables are stored in data */
+        data: {
+            currtime: '',
+            currdate: ''
+        },
+        /* Methods are defined in here */
+        methods: {
+            get_time() {
+                /* Get the current date from moment.js
+                    learn more about formatting at: https://momentjs.com/docs/#/displaying/format/ */
+                var split = moment().format("dddd, MMMM Do YYYY_h:mm a").split('_')
+
+                /* Set instance variables */
+                this.currdate = split[0]
+                this.currtime = split[1]
+            },
+        },
+
+        /* This is called when the Vue instance is mounted to #app
+            similar to a constructor method */
+        mounted() {
+            /* Call get_time on via timer, every second */
+            this.interval = setInterval(this.get_time, 1000)
+        },
+        beforeDestroy() {
+            clearInterval(this.interval)
+        }
+
+    });
 </script>
