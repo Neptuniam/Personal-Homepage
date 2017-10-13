@@ -4,17 +4,14 @@
     <meta charset="utf-8">
     <title>the 134 Homepage</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+    
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Arima+Madurai|Bangers|Gruppo|Nixie+One|Noto+Serif|Nova+Flat|Poiret+One|Shrikhand" rel="stylesheet">
-
-    <!--Clock Imports-->
-    <!-- Import time lib-moment.js and Vue.js-->
-    <script src="moment.js" charset="utf-8"></script>
-    <script src="https://unpkg.com/vue"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+    
     <style media="screen">
-      body {
+[v-cloak] { display:none; }      
+body {
         background: url("earthPorn.jpg") no-repeat fixed center;
         background-size: cover;
       }
@@ -84,7 +81,7 @@
     </style>
   </head>
   <body>
-    <div class="container">
+    <div id="app" class="container">
       <div class="row">
         <div class="col s6">
           <!--Time Div-->
@@ -95,14 +92,14 @@
                 <div class="col s12">
                   <br>
                   <!-- The Vue instance is attached to this div -->
-                  <div id='app'>
+                  <div >
                       <div>
                           <!-- Reference the variable currtime in Vue Instance -->
-                          <em class="clockSize">{{currtime}}</em>
+                          <em class="clockSize" v-cloak>{{currhour}}<blink>:</blink>{{currmin}}&nbsp;</em>
                       </div>
                       <div>
                           <!-- Reference the variable currdate in Vue Instance -->
-                          <p class="dateSize">{{currdate}}</p>
+                          <p class="dateSize" v-cloak v-text="currdate">&nbsp;</p>
                       </div>
                   </div>
                 </div>
@@ -207,14 +204,10 @@
     </div>
   </body>
 </html>
-<script>
-  document.addEventListener("DOMContentLoaded", function(event) {
-    document.getElementById('icon_prefix').focus();
-  });
-  favouritesIcons/
-</script>
-
+<script>//document.getElementById('better').innerHTML=moment().format("h:mm a");</script>
 <!--Clock Script-->
+<script src="vue.min.js"></script>
+<script src="moment.js" charset="utf-8"></script>
 <script type="text/javascript">
 
     new Vue({
@@ -222,7 +215,8 @@
         el: '#app',
         /* variables are stored in data */
         data: {
-            currtime: '',
+            currhour: '',
+	    currmin: '',
             currdate: ''
         },
         /* Methods are defined in here */
@@ -230,11 +224,12 @@
             get_time() {
                 /* Get the current date from moment.js
                     learn more about formatting at: https://momentjs.com/docs/#/displaying/format/ */
-                var split = moment().format("dddd, MMMM Do YYYY_h:mm a").split('_')
-
+                var split = moment().format("dddd, MMMM Do YYYY_h_mm a").split('_')
+		
                 /* Set instance variables */
-                this.currdate = split[0]
-                this.currtime = split[1]
+		this.currdate = split[0]
+		this.currhour = split[1]
+		this.currmin  = split[2]
             },
         },
 
@@ -242,6 +237,7 @@
             similar to a constructor method */
         mounted() {
             /* Call get_time on via timer, every second */
+            this.get_time()
             this.interval = setInterval(this.get_time, 1000)
         },
         beforeDestroy() {
