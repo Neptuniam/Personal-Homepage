@@ -244,8 +244,7 @@
 <script type="text/javascript">
   Math.floor((Math.random() * 10) + 1);
 
-  // axios.get('http://localhost:8000/clientSide.php')
-  axios.get('clientSide.php')
+  axios.get('http://localhost:8000/clientSide.php')
   .then(function (response) {
     document.body.style.background = "url(" + response.data + ")  no-repeat fixed center";
     console.log(response);
