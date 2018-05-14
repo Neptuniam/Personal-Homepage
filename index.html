@@ -4,7 +4,7 @@
     <title>the 134 Homepage</title>
     <meta charset="utf-8">
 
-    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="shortcut icon" href="otherImages//favicon.ico">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -244,7 +244,8 @@
 <script type="text/javascript">
   Math.floor((Math.random() * 10) + 1);
 
-  axios.get('http://localhost:8000/clientSide.php')
+  // axios.get('http://localhost:8000/clientSide.php')
+  axios.get('clientSide.php')
   .then(function (response) {
     document.body.style.background = "url(" + response.data + ")  no-repeat fixed center";
     console.log(response);
