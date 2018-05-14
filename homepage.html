@@ -1,41 +1,53 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
     <title>the 134 Homepage</title>
+    <meta charset="utf-8">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
-    
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Arima+Madurai|Bangers|Gruppo|Nixie+One|Noto+Serif|Nova+Flat|Poiret+One|Shrikhand" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
-    
+
     <style media="screen">
-[v-cloak] { display:none; }      
-body {
-        background: url("earthPorn.jpg") no-repeat fixed center;
+      [v-cloak] { display:none; }
+      body {
+        /*(background: url("backgrounds/earthPorn24.jpg") no-repeat fixed center;*/
         background-size: cover;
       }
 
       .box {
+        position:relative;
         border: 1px solid;
         padding: 1.5em;
-        margin-top: 1em;
+        margin: 1em;
       }
 
       .clockSize {
-        font-size: 700%;
-        color: rgba(0,0,0,0.7);
+        font-size: 800%;
+        color: rgba(0,0,0,0.9);
       }
 
       .dateSize {
-        font-size: 150%;
-        color: rgba(0,0,0,1);
+        font-size: 175%;
+        color: rgba(0,0,0,8);
         margin-top: -1em;
       }
 
       .clock {
         text-align: center;
         font-family: 'Gruppo', cursive;
+
+        /*color: black;
+       -webkit-text-fill-color: black; /* Will override color (regardless of order) /
+       -webkit-text-stroke-width: 1px;
+       -webkit-text-stroke-color: gray;*/
+      	/*color: rgba(0,0,0,0.7);
+      	text-shadow:
+        -1px -1px 0 #000,
+         1px -1px 0 #000,
+        -1px  1px 0 #000,
+         1px  1px 0 #000;*/
       }
 
       .favButtons {
@@ -50,6 +62,18 @@ body {
              -moz-user-select: none; /* Firefox */
               -ms-user-select: none; /* Internet Explorer/Edge */
                   user-select: none;
+      }
+
+      .top-right{
+        position:absolute;
+        top: 0;
+        right: -0.5;
+      }
+
+      .bottom-right {
+        position:absoulte;
+        bottom: 1;
+        right: -0.5;
       }
 
       blink {
@@ -81,9 +105,9 @@ body {
     </style>
   </head>
   <body>
-    <div id="app" class="container">
+    <div id="app">
       <div class="row">
-        <div class="col s6">
+        <div class="col s10 l6">
           <!--Time Div-->
           <div class="date-time">
             <!--Time Row-->
@@ -93,14 +117,14 @@ body {
                   <br>
                   <!-- The Vue instance is attached to this div -->
                   <div >
-                      <div>
-                          <!-- Reference the variable currtime in Vue Instance -->
-                          <em class="clockSize" v-cloak>{{currhour}}<blink>:</blink>{{currmin}}&nbsp;</em>
-                      </div>
-                      <div>
-                          <!-- Reference the variable currdate in Vue Instance -->
-                          <p class="dateSize" v-cloak v-text="currdate">&nbsp;</p>
-                      </div>
+                    <div>
+                      <!-- Reference the variable currtime in Vue Instance -->
+                      <em class="clockSize" v-cloak>{{currhour}}<blink>:</blink>{{currmin}}&nbsp;</em>
+                    </div>
+                    <div>
+                      <!-- Reference the variable currdate in Vue Instance -->
+                      <p class="dateSize" v-cloak v-text="currdate">&nbsp;</p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -108,7 +132,7 @@ body {
           </div><br><br>
 
           <!--Browser Card-->
-          <div class="" style="margin:0 auto; min-width:325px; width: 80%;">
+          <div class="" style="margin:0 auto; width:420px;">
             <div class="card" style="background: rgba(240,240,240,0.5);">
               <div class="card-content">
                 <!--Google basic search bar-->
@@ -140,8 +164,8 @@ body {
                 </div>
                 <!--Favourite tabs Row2-->
                 <div class="row">
-                  <div class="col s2 offset-s1 center-align">
-                    <a href="https://outlook.office.com/owa/?realm=uoguelph.ca">  <img src="favouritesIcons//gmail.png" class="favButtons"></a>
+                  <div class="col s2 center-align offset-s1">
+                    <a href="https://github.com/"><img src="favouritesIcons//git.png" class="favButtons"></a>
                   </div>
                   <div class="col s2 center-align">
                     <a href="https://drive.google.com/drive/my-drive"><img src="favouritesIcons//googleDrive.png" class="favButtons"></a>
@@ -150,7 +174,7 @@ body {
                     <a href="https://www.google.ca/maps?hl=en&tab=wl"><img src="favouritesIcons//maps.png" class="favButtons"></a>
                   </div>
                   <div class="col s2 center-align">
-                    <a href="https://github.com/"><img src="favouritesIcons//git.jpg" class="favButtons"></a>
+                    <a href="https://outlook.office.com/owa/?realm=uoguelph.ca">  <img src="favouritesIcons//gmail.png" class="favButtons"></a>
                   </div>
                   <div class="col s2 center-align">
                     <a href="https://courselink.uoguelph.ca/d2l/home"><img src="favouritesIcons//guelph.jpeg" class="favButtons"></a>
@@ -159,12 +183,11 @@ body {
               </div>
             </div>
           </div>
-
         </div>
         <div class="col s4 offset-s2">
           <!--Dashboard Card-->
           <br><br><br><br><br><br>
-          <div class="card clock" style="display: none; background: rgba(220,220,220,0.50);">
+          <div class="card clock" style="display:none; background: rgba(220,220,220,0.75);">
             <div class="card-content">
               <!--Current Weather Row-->
               <div class="row">
@@ -189,7 +212,14 @@ body {
 
                 <!--Weekly Weather Forecast box-->
                 <div class="box">
-                  Weather
+                  <div class="row">
+                    <div class="col s1 offset-s1">
+                      <div class="box">
+                        <span class="top-right">35</span>
+                        <span class="bottom-right">28</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
                 <!--Bus Schedule box-->
@@ -204,32 +234,39 @@ body {
     </div>
   </body>
 </html>
-<script>//document.getElementById('better').innerHTML=moment().format("h:mm a");</script>
 <!--Clock Script-->
 <script src="vue.min.js"></script>
 <script src="moment.js" charset="utf-8"></script>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
 <script type="text/javascript">
+  Math.floor((Math.random() * 10) + 1);
 
+  axios.get('http://localhost:8000/clientSide.php')
+  .then(function (response) {
+    document.body.style.background = "url(" + response.data + ")  no-repeat fixed center";
+    console.log(response);
+  })
+  .catch(function (error) {
+    console.log(error);
+      document.body.style.background = "#f3f3f3 url('backgrounds/earthPorn24.jpg') no-repeat fixed center";
+  });
     new Vue({
         /* Vue will be attached to this ID */
         el: '#app',
         /* variables are stored in data */
         data: {
-            currhour: '',
-	    currmin: '',
-            currdate: ''
+            currhour: '', currmin: '', currdate: ''
         },
         /* Methods are defined in here */
         methods: {
             get_time() {
-                /* Get the current date from moment.js
-                    learn more about formatting at: https://momentjs.com/docs/#/displaying/format/ */
+                /* Get the current date from moment.js.  learn more about formatting at: https://momentjs.com/docs/#/displaying/format/ */
                 var split = moment().format("dddd, MMMM Do YYYY_h_mm a").split('_')
-		
+
                 /* Set instance variables */
-		this.currdate = split[0]
-		this.currhour = split[1]
-		this.currmin  = split[2]
+            		this.currdate = split[0]
+            		this.currhour = split[1]
+            		this.currmin  = split[2]
             },
         },
 
@@ -243,6 +280,5 @@ body {
         beforeDestroy() {
             clearInterval(this.interval)
         }
-
     });
 </script>
