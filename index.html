@@ -10,12 +10,12 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Arima+Madurai|Bangers|Gruppo|Nixie+One|Noto+Serif|Nova+Flat|Poiret+One|Shrikhand" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script> -->
 
     <style media="screen">
       [v-cloak] { display:none; }
       body {
-        /*(background: url("backgrounds/earthPorn24.jpg") no-repeat fixed center;*/
+        /* background: url("backgrounds/earthPorn24.jpg") no-repeat fixed center;*/ */
         background-size: cover;
       }
 
@@ -106,6 +106,20 @@
           }
       }
     </style>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
+    <script>
+      $(document).ready(function() {
+            $.ajax({
+                    url:'clientSide.php',
+                    method:'POST',
+                   success:function(data){
+                       document.body.style.background = "#f3f3f3 url(\'" + data + "\') no-repeat fixed center";
+                   }
+                });
+      });
+    </script>
   </head>
   <body>
     <div id="app">
@@ -235,6 +249,7 @@
         </div>
       </div>
     </div>
+  </div>
   </body>
 </html>
 <!--Clock Script-->
@@ -242,17 +257,6 @@
 <script src="moment.js" charset="utf-8"></script>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script type="text/javascript">
-  Math.floor((Math.random() * 10) + 1);
-
-  axios.get('http://localhost:8000/clientSide.php')
-  .then(function (response) {
-    document.body.style.background = "url(" + response.data + ")  no-repeat fixed center";
-    console.log(response);
-  })
-  .catch(function (error) {
-    console.log(error);
-      document.body.style.background = "#f3f3f3 url('backgrounds/earthPorn24.jpg') no-repeat fixed center";
-  });
     new Vue({
         /* Vue will be attached to this ID */
         el: '#app',
