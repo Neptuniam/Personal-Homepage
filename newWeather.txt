@@ -1,0 +1,149 @@
+{
+   "query":{
+      "count":1,
+      "created":"2018-05-16T01:29:32Z",
+      "lang":"en-US",
+      "results":{
+         "channel":{  
+            "units":{
+               "distance":"km",
+               "pressure":"mb",
+               "speed":"km/h",
+               "temperature":"C"
+            },
+            "title":"Yahoo! Weather - Saskatoon, SK, CA",
+            "link":"http://us.rd.yahoo.com/dailynews/rss/weather/Country__Country/*https://weather.yahoo.com/country/state/city-2180/",
+            "description":"Yahoo! Weather for Saskatoon, SK, CA",
+            "language":"en-us",
+            "lastBuildDate":"Tue, 15 May 2018 07:29 PM CST",
+            "ttl":"60",
+            "location":{
+               "city":"Saskatoon",
+               "country":"Canada",
+               "region":" SK"
+            },
+            "wind":{
+               "chill":"81",
+               "direction":"315",
+               "speed":"35.40"
+            },
+            "atmosphere":{
+               "humidity":"20",
+               "pressure":"32102.98",
+               "rising":"0",
+               "visibility":"25.91"
+            },
+            "astronomy":{
+               "sunrise":"5:12 am",
+               "sunset":"8:54 pm"
+            },
+            "image":{
+               "title":"Yahoo! Weather",
+               "width":"142",
+               "height":"18",
+               "link":"http://weather.yahoo.com",
+               "url":"http://l.yimg.com/a/i/brand/purplelogo//uh/us/news-wea.gif"
+            },
+            "item":{
+               "title":"Conditions for Saskatoon, SK, CA at 06:00 PM CST",
+               "lat":"52.132889",
+               "long":"-106.646347",
+               "link":"http://us.rd.yahoo.com/dailynews/rss/weather/Country__Country/*https://weather.yahoo.com/country/state/city-2180/",
+               "pubDate":"Tue, 15 May 2018 06:00 PM CST",
+               "condition":{
+                  "code":"32",
+                  "date":"Tue, 15 May 2018 06:00 PM CST",
+                  "temp":"27",
+                  "text":"Sunny"
+               },
+               "forecast":[
+                  {
+                     "code":"30",
+                     "date":"15 May 2018",
+                     "day":"Tue",
+                     "high":"29",
+                     "low":"13",
+                     "text":"Partly Cloudy"
+                  },
+                  {
+                     "code":"28",
+                     "date":"16 May 2018",
+                     "day":"Wed",
+                     "high":"21",
+                     "low":"11",
+                     "text":"Mostly Cloudy"
+                  },
+                  {
+                     "code":"12",
+                     "date":"17 May 2018",
+                     "day":"Thu",
+                     "high":"10",
+                     "low":"7",
+                     "text":"Rain"
+                  },
+                  {
+                     "code":"30",
+                     "date":"18 May 2018",
+                     "day":"Fri",
+                     "high":"17",
+                     "low":"2",
+                     "text":"Partly Cloudy"
+                  },
+                  {
+                     "code":"32",
+                     "date":"19 May 2018",
+                     "day":"Sat",
+                     "high":"20",
+                     "low":"2",
+                     "text":"Sunny"
+                  },
+                  {
+                     "code":"32",
+                     "date":"20 May 2018",
+                     "day":"Sun",
+                     "high":"22",
+                     "low":"6",
+                     "text":"Sunny"
+                  },
+                  {
+                     "code":"30",
+                     "date":"21 May 2018",
+                     "day":"Mon",
+                     "high":"25",
+                     "low":"12",
+                     "text":"Partly Cloudy"
+                  },
+                  {
+                     "code":"34",
+                     "date":"22 May 2018",
+                     "day":"Tue",
+                     "high":"25",
+                     "low":"12",
+                     "text":"Mostly Sunny"
+                  },
+                  {
+                     "code":"32",
+                     "date":"23 May 2018",
+                     "day":"Wed",
+                     "high":"27",
+                     "low":"10",
+                     "text":"Sunny"
+                  },
+                  {
+                     "code":"34",
+                     "date":"24 May 2018",
+                     "day":"Thu",
+                     "high":"29",
+                     "low":"13",
+                     "text":"Mostly Sunny"
+                  }
+               ],
+               "description":"<![CDATA[<img src=\"http://l.yimg.com/a/i/us/we/52/32.gif\"/>\n<BR />\n<b>Current Conditions:</b>\n<BR />Sunny\n<BR />\n<BR />\n<b>Forecast:</b>\n<BR /> Tue - Partly Cloudy. High: 29Low: 13\n<BR /> Wed - Mostly Cloudy. High: 21Low: 11\n<BR /> Thu - Rain. High: 10Low: 7\n<BR /> Fri - Partly Cloudy. High: 17Low: 2\n<BR /> Sat - Sunny. High: 20Low: 2\n<BR />\n<BR />\n<a href=\"http://us.rd.yahoo.com/dailynews/rss/weather/Country__Country/*https://weather.yahoo.com/country/state/city-2180/\">Full Forecast at Yahoo! Weather</a>\n<BR />\n<BR />\n<BR />\n]]>",
+               "guid":{
+                  "isPermaLink":"false"
+               }
+            }
+         }
+      }
+   }
+}

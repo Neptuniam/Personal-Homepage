@@ -1,10 +1,10 @@
 <?php
   function getBackground() {
     header("Access-Control-Allow-Origin: *");
-    $dir = 'C:\xampp\htdocs\homepage\backgrounds';
+    $dir = 'backgrounds';
     $files = scandir($dir);
 
-    $index = mt_rand(2, sizeof($files));
+    $index = mt_rand(2, sizeof($files)-1);
 
     echo('backgrounds/' . $files[$index]);
   }

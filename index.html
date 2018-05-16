@@ -10,52 +10,20 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Arima+Madurai|Bangers|Gruppo|Nixie+One|Noto+Serif|Nova+Flat|Poiret+One|Shrikhand" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Playball" rel="stylesheet">
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script> -->
 
     <style media="screen">
       [v-cloak] { display:none; }
       body {
-        /* background: url("backgrounds/earthPorn24.jpg") no-repeat fixed center;*/ */
-        background-size: cover;
+        background-size: fill;
       }
 
       .box {
         position:relative;
         border: 1px solid;
-        padding: 1.5em;
+        padding: 1.3em;
         margin: 1em;
-      }
-
-      .clockSize {
-        font-size: 800%;
-        color: rgba(0,0,0,0.9);
-      }
-
-      .dateSize {
-        font-size: 175%;
-        color: rgba(0,0,0,8);
-        margin-top: -1em;
-      }
-
-      .clock {
-        text-align: center;
-        font-family: 'Gruppo', cursive;
-
-        /*color: black;
-       -webkit-text-fill-color: black; /* Will override color (regardless of order) /
-       -webkit-text-stroke-width: 1px;
-       -webkit-text-stroke-color: gray;*/
-      	/*color: rgba(0,0,0,0.7);
-      	text-shadow:
-        -1px -1px 0 #000,
-         1px -1px 0 #000,
-        -1px  1px 0 #000,
-         1px  1px 0 #000;*/
-      }
-
-      .favButtons {
-        width: 40px;
-        height:40px;
       }
 
       .date-time{
@@ -67,14 +35,65 @@
                   user-select: none;
       }
 
-      .top-right{
+      .clockSize {
+        font-size: 800%;
+        color: rgba(0,0,0,8);
+
+        text-shadow: 0 0 0.5px #fff, 0 0 0.5px #fff, 0 0 0.5px #fff
+      }
+
+      .dateSize {
+        /* font-size: 175%; */
+        font-size: 200%;
+        color: rgba(0,0,0,8);
+        margin-top: -1em;
+
+        /* text-shadow: 0 0 .001px #fff, 0 0 .001px #fff, 0 0 .001px #fff */
+      }
+
+      .clock {
+        text-align: center;
+        font-family: 'Playball', cursive;
+      }
+
+      .favButtons {
+        width: 40px;
+        height:40px;
+      }
+
+      .dashboard {
+        text-align: center;
+        font-family: 'Gruppo', cursive;
+      }
+
+      .bottom-left {
         position:absolute;
-        top: 0;
+        bottom: 1;
         right: -0.5;
       }
 
+      .bottom-center {
+        position:absolute;
+        bottom: 0px;
+        left: 30%;
+        /* top: 30px; */
+        /* text-align: center; */
+      }
+
+      .top-right {
+        position:absolute;
+        top: -1px;
+        right: 5px;
+      }
+
+      .mid-right {
+        position: absolute;
+        top: 15px;
+        right: 5px;
+      }
+
       .bottom-right {
-        position:absoulte;
+        position:absolute;
         bottom: 1;
         right: -0.5;
       }
@@ -107,19 +126,58 @@
       }
     </style>
 
+    <!-- JQuery download link (Need to use for following script) -->
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 
+    <!-- Ajax script to run 'clientSide.php' and retrieve a random background -->
     <script>
       $(document).ready(function() {
             $.ajax({
                     url:'clientSide.php',
                     method:'POST',
                    success:function(data){
+                     try {
+                       console.log(data);
+                       if (String(data) == "backgrounds/" || String(data) == "backgrounds/" || data == "")
+                          throw "backgrounds/earthporn24.png";
+
                        document.body.style.background = "#f3f3f3 url(\'" + data + "\') no-repeat fixed center";
+                     }
+                     catch(err) {
+                       document.body.style.background = "#f3f3f3 url(\'" + err + "\') no-repeat fixed center";
+                     }
                    }
                 });
       });
     </script>
+
+    <!-- Get weekly weather info -->
+    <script>
+      function getWeather(myWeather) {
+        var location = "saskatoon, sk";
+
+        $.get("https://query.yahooapis.com/v1/public/yql?q=select * from weather.forecast where woeid in (select woeid from geo.places(1) where text=\"" + location + "\") and u='c'&format=json", function (data) {        })
+        .done(function(data) {
+          /* Check that a place was found (we'll just grab the first) */
+          if (data.query.results === null) {
+              bootbox.alert("Location not found: " + location + "!");
+          } else {
+            document.getElementById('currentTemp').innerHTML = data.query.results.channel.item.condition.temp + "&deg;C";
+            document.getElementById('currentTempText').innerHTML = data.query.results.channel.item.condition.text;
+            document.getElementById('currentTempRange'). innerHTML = data.query.results.channel.item.forecast[0].low + "&deg;C - " + data.query.results.channel.item.forecast[0].high + "&deg;C : 60%";
+
+            for (var i = 0; i < 6; i++) {
+              document.getElementById('day' + i + 'High').innerHTML = data.query.results.channel.item.forecast[i+1].high + "&deg;C";
+              document.getElementById('day' + i +'Low').innerHTML = data.query.results.channel.item.forecast[i+1].low + "&deg;C";
+              document.getElementById('day' + i +'Date').innerHTML = data.query.results.channel.item.forecast[i+1].day;
+            }
+          }
+        });
+      }
+
+      getWeather();
+    </script>
+
   </head>
   <body>
     <div id="app">
@@ -133,7 +191,7 @@
                 <div class="col s12">
                   <br>
                   <!-- The Vue instance is attached to this div -->
-                  <div >
+                  <div>
                     <div>
                       <!-- Reference the variable currtime in Vue Instance -->
                       <em class="clockSize" v-cloak>{{currhour}}<blink>:</blink>{{currmin}}&nbsp;</em>
@@ -146,7 +204,8 @@
                 </div>
               </div>
             </div>
-          </div><br><br>
+          </div>
+          <br><br>
 
           <!--Browser Card-->
           <div class="" style="margin:0 auto; width:420px;">
@@ -201,16 +260,17 @@
             </div>
           </div>
         </div>
-        <div class="col s4 offset-s2">
+
+        <div class="col s4 offset-s1">
           <!--Dashboard Card-->
-          <br><br><br><br><br><br>
-          <div class="card clock" style="display:none; background: rgba(220,220,220,0.75);">
+          <br><br><br><br><br>
+          <!-- display:none; -->
+          <div class="card dashboard" style="margin:0 auto; height: 430px; width:420px; background: rgba(240,240,240,0.8);">
             <div class="card-content">
               <!--Current Weather Row-->
               <div class="row">
                 <!--Current tempature-->
-                <div class="col s6" style="font-size:65px;">
-                  -18&deg;C
+                <div class="col s6" id="currentTemp" style="font-size:65px;">
                 </div>
                 <!--Weather Icon-->
                 <div class="col s6 center-align">
@@ -219,23 +279,64 @@
 
                 <!--Forecast Description row-->
                 <div class="row">
-                  <div class="col s12" style="font-family: 'Arima Madurai', cursive;">
-                    Partly Cloudy with a chance of rain
+                  <div class="col s12" id="currentTempText" style="font-family: 'Arima Madurai', cursive;">
                   </div>
-                  <div class="col s12">
-                    16&deg;C - 25&deg;C : 60%
+                  <div class="col s12" id="currentTempRange">
                   </div>
                 </div>
 
                 <!--Weekly Weather Forecast box-->
-                <div class="box">
+                <div class="box" style="height:130px; background: rgba(240,240,240,0.5);">
                   <div class="row">
-                    <div class="col s1 offset-s1">
+
+                    <div class="col s1 pull-s1">
                       <div class="box">
-                        <span class="top-right">35</span>
-                        <span class="bottom-right">28</span>
+                        <span class="top-right" id="day0High"></span>
+                        <span class="mid-right" id="day0Low"></span><br>
+                        <span class="bottom-center" id="day0Date" style = "font-size: 80%;"></span>
                       </div>
                     </div>
+
+                    <div class="col s1 pull-s1 offset-s1">
+                      <div class="box">
+                        <span class="top-right" id="day1High"></span>
+                        <span class="mid-right" id="day1Low"></span><br>
+                        <span class="bottom-center" id="day1Date" style = "font-size: 80%;"></span>
+                      </div>
+                    </div>
+
+                    <div class="col s1 pull-s1 offset-s1">
+                      <div class="box">
+                        <span class="top-right" id="day2High"></span>
+                        <span class="mid-right" id="day2Low"></span><br>
+                        <span class="bottom-center" id="day2Date" style = "font-size: 80%;"></span>
+                      </div>
+                    </div>
+
+                    <div class="col s1 pull-s1 offset-s1">
+                      <div class="box">
+                        <span class="top-right" id="day3High"></span>
+                        <span class="mid-right" id="day3Low"></span><br>
+                        <span class="bottom-center" id="day3Date" style = "font-size: 80%;"></span>
+                      </div>
+                    </div>
+
+                    <div class="col s1 pull-s1 offset-s1">
+                      <div class="box">
+                        <span class="top-right" id="day4High"></span>
+                        <span class="mid-right" id="day4Low"></span><br>
+                        <span class="bottom-center" id="day4Date" style = "font-size: 80%;"></span>
+                      </div>
+                    </div>
+
+                    <div class="col s1 pull-s1 offset-s1">
+                      <div class="box">
+                        <span class="top-right" id="day5High"></span>
+                        <span class="mid-right" id="day5Low"></span><br>
+                        <span class="bottom-center" id="day5Date" style = "font-size: 80%;"></span>
+                      </div>
+                    </div>
+
                   </div>
                 </div>
 
@@ -243,13 +344,14 @@
                 <div class="box">
                   Bus Schedule
                 </div>
+
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  <!-- </div> -->
   </body>
 </html>
 <!--Clock Script-->
