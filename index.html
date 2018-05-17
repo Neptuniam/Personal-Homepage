@@ -26,6 +26,14 @@
         margin: 1em;
       }
 
+      .circle {
+        /* position: relative; */
+        border-radius: 50%;
+        /* display: inline-block; */
+        /* padding: 1.3em;*/
+        /* margin: 1em; */
+      }
+
       .date-time{
         -webkit-touch-callout: none; /* iOS Safari */
           -webkit-user-select: none; /* Safari */
@@ -64,6 +72,18 @@
       .dashboard {
         text-align: center;
         font-family: 'Gruppo', cursive;
+      }
+
+      .BusNumIconStyle {
+        height: 35px;
+        width: 35px;
+        background-color:rgba(255, 0, 0, 0.75);
+      }
+
+      .top-left {
+        position:absolute;
+        top: 31%;
+        left: 2%;
       }
 
       .bottom-left {
@@ -126,6 +146,8 @@
       }
     </style>
 
+    <!-- Google maps API KEy: AIzaSyAuZODWQu06M9hC-sGrhazBKCrLIIj9fzI -->
+
     <!-- JQuery download link (Need to use for following script) -->
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 
@@ -153,7 +175,7 @@
 
     <!-- Get weekly weather info -->
     <script>
-      function getWeather(myWeather) {
+      function getWeather() {
         var location = "saskatoon, sk";
 
         $.get("https://query.yahooapis.com/v1/public/yql?q=select * from weather.forecast where woeid in (select woeid from geo.places(1) where text=\"" + location + "\") and u='c'&format=json", function (data) {        })
@@ -162,6 +184,7 @@
           if (data.query.results === null) {
               bootbox.alert("Location not found: " + location + "!");
           } else {
+            // console.log(data);
             document.getElementById('currentTemp').innerHTML = data.query.results.channel.item.condition.temp + "&deg;C";
             document.getElementById('currentTempText').innerHTML = data.query.results.channel.item.condition.text;
             document.getElementById('currentTempRange'). innerHTML = data.query.results.channel.item.forecast[0].low + "&deg;C - " + data.query.results.channel.item.forecast[0].high + "&deg;C : 60%";
@@ -176,6 +199,26 @@
       }
 
       getWeather();
+    </script>
+
+    <script>
+      $(document).ready(function() {
+            $.ajax({
+                    url:'mapsData.php',
+                    method:'GET',
+                   success:function(data) {
+                     try {
+                       console.log("Hit");
+                       console.log(data);
+
+                       console.log(data['geocoded_waypoints'][0].geocoder_status);
+                     }
+                     catch(err) {
+                       console.log("maps error: " + err);
+                     }
+                   }
+                });
+      });
     </script>
 
   </head>
@@ -265,7 +308,7 @@
           <!--Dashboard Card-->
           <br><br><br><br><br>
           <!-- display:none; -->
-          <div class="card dashboard" style="margin:0 auto; height: 430px; width:420px; background: rgba(240,240,240,0.8);">
+          <div class="card dashboard" style="margin:0 auto; height: 470px; width:400px; background: rgba(240,240,240,0.8);">
             <div class="card-content">
               <!--Current Weather Row-->
               <div class="row">
@@ -341,8 +384,15 @@
                 </div>
 
                 <!--Bus Schedule box-->
-                <div class="box">
-                  Bus Schedule
+                <!-- <div class="box" style="height: 90px; background: url('backgrounds//earthporn24.jpg')"> -->
+                  <div class="box" style="height: 90px;">
+                  <div class="row">
+                    <!-- <div class="col s1"> -->
+                      <a href="maps.html" target="_blank" class="circle BusNumIconStyle top-left" id="busNumIcon">6</a>
+                    <!-- </div> -->
+                    <p class="col s7" style="font-size:110%" id="busTimes">Leave: 10:28am<br>Arrive: 10:56am</p>
+                    <p class="col s3" style="font-size:110%" id="busDestination">Destination: School<p>
+                  </div>
                 </div>
 
               </div>

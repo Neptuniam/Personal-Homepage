@@ -1,0 +1,310 @@
+{
+   "geocoded_waypoints" : [
+      {
+         "geocoder_status" : "OK",
+         "partial_match" : true,
+         "place_id" : "ChIJd5apjNaEK4gRMHFNofi_MCM",
+         "types" : [ "street_address" ]
+      },
+      {
+         "geocoder_status" : "OK",
+         "place_id" : "ChIJHyFlsi6bK4gR8c9HXSKsd4Y",
+         "types" : [ "establishment", "point_of_interest", "university" ]
+      }
+   ],
+   "routes" : [
+      {
+         "bounds" : {
+            "northeast" : {
+               "lat" : 43.5303958,
+               "lng" : -80.22042499999999
+            },
+            "southwest" : {
+               "lat" : 43.5195922,
+               "lng" : -80.2293303
+            }
+         },
+         "copyrights" : "Map data ©2018 Google",
+         "legs" : [
+            {
+               "arrival_time" : {
+                  "text" : "1:00pm",
+                  "time_zone" : "America/Toronto",
+                  "value" : 1526576400
+               },
+               "departure_time" : {
+                  "text" : "12:50pm",
+                  "time_zone" : "America/Toronto",
+                  "value" : 1526575807
+               },
+               "distance" : {
+                  "text" : "2.0 km",
+                  "value" : 2044
+               },
+               "duration" : {
+                  "text" : "10 mins",
+                  "value" : 593
+               },
+               "end_address" : "Guelph, ON N1G 1Y4, Canada",
+               "end_location" : {
+                  "lat" : 43.5301401,
+                  "lng" : -80.22631060000001
+               },
+               "start_address" : "134 Harvard Rd, Guelph, ON N1G 3R1, Canada",
+               "start_location" : {
+                  "lat" : 43.5195922,
+                  "lng" : -80.2293303
+               },
+               "steps" : [
+                  {
+                     "distance" : {
+                        "text" : "0.2 km",
+                        "value" : 165
+                     },
+                     "duration" : {
+                        "text" : "2 mins",
+                        "value" : 116
+                     },
+                     "end_location" : {
+                        "lat" : 43.520724,
+                        "lng" : -80.228066
+                     },
+                     "html_instructions" : "Walk to Harvard at Princeton eastbound",
+                     "polyline" : {
+                        "points" : "m|rhGhxthNQCq@]m@m@wBaDFI"
+                     },
+                     "start_location" : {
+                        "lat" : 43.5195922,
+                        "lng" : -80.2293303
+                     },
+                     "steps" : [
+                        {
+                           "distance" : {
+                              "text" : "0.2 km",
+                              "value" : 165
+                           },
+                           "duration" : {
+                              "text" : "2 mins",
+                              "value" : 116
+                           },
+                           "end_location" : {
+                              "lat" : 43.520724,
+                              "lng" : -80.228066
+                           },
+                           "html_instructions" : "Head \u003cb\u003enorth\u003c/b\u003e on \u003cb\u003eHarvard Rd\u003c/b\u003e toward \u003cb\u003ePrinceton Pl\u003c/b\u003e",
+                           "polyline" : {
+                              "points" : "m|rhGhxthNQCq@]m@m@wBaDFI"
+                           },
+                           "start_location" : {
+                              "lat" : 43.5195922,
+                              "lng" : -80.2293303
+                           },
+                           "travel_mode" : "WALKING"
+                        }
+                     ],
+                     "travel_mode" : "WALKING"
+                  },
+                  {
+                     "distance" : {
+                        "text" : "1.5 km",
+                        "value" : 1505
+                     },
+                     "duration" : {
+                        "text" : "4 mins",
+                        "value" : 243
+                     },
+                     "end_location" : {
+                        "lat" : 43.52871,
+                        "lng" : -80.22345399999999
+                     },
+                     "html_instructions" : "Bus towards 6 Harvard Ironwood",
+                     "polyline" : {
+                        "points" : "ocshGlpthNGBQW_ByBgF_ISYgEkG@?m@sAQw@Iu@Cw@?_AEk@Mi@ScAQc@K[s@cAe@}@w@cAYY]Qg@lCIf@Y|AAB}AhIw@fDg@vA{FyISXILGHGFGFEBA@GBWB]FKBSE"
+                     },
+                     "start_location" : {
+                        "lat" : 43.520724,
+                        "lng" : -80.228066
+                     },
+                     "transit_details" : {
+                        "arrival_stop" : {
+                           "location" : {
+                              "lat" : 43.52871,
+                              "lng" : -80.22345399999999
+                           },
+                           "name" : "University Centre Platform 1"
+                        },
+                        "arrival_time" : {
+                           "text" : "12:56pm",
+                           "time_zone" : "America/Toronto",
+                           "value" : 1526576160
+                        },
+                        "departure_stop" : {
+                           "location" : {
+                              "lat" : 43.520724,
+                              "lng" : -80.228066
+                           },
+                           "name" : "Harvard at Princeton eastbound"
+                        },
+                        "departure_time" : {
+                           "text" : "12:51pm",
+                           "time_zone" : "America/Toronto",
+                           "value" : 1526575917
+                        },
+                        "headsign" : "6 Harvard Ironwood",
+                        "line" : {
+                           "agencies" : [
+                              {
+                                 "name" : "Guelph Transit",
+                                 "url" : "http://www.guelphtransit.ca/"
+                              }
+                           ],
+                           "color" : "#ed1c24",
+                           "name" : "Harvard Ironwood",
+                           "short_name" : "6",
+                           "text_color" : "#000000",
+                           "vehicle" : {
+                              "icon" : "//maps.gstatic.com/mapfiles/transit/iw2/6/bus2.png",
+                              "name" : "Bus",
+                              "type" : "BUS"
+                           }
+                        },
+                        "num_stops" : 4
+                     },
+                     "travel_mode" : "TRANSIT"
+                  },
+                  {
+                     "distance" : {
+                        "text" : "0.4 km",
+                        "value" : 374
+                     },
+                     "duration" : {
+                        "text" : "4 mins",
+                        "value" : 266
+                     },
+                     "end_location" : {
+                        "lat" : 43.5301401,
+                        "lng" : -80.22631060000001
+                     },
+                     "html_instructions" : "Walk to Guelph, ON N1G 1Y4, Canada",
+                     "polyline" : {
+                        "points" : "muthGpsshN`@]_@F]JUL_@^QZq@fAIL]f@e@r@mBrClAfBBJ@L?F?FAFEFMPI@"
+                     },
+                     "start_location" : {
+                        "lat" : 43.52871,
+                        "lng" : -80.22345399999999
+                     },
+                     "steps" : [
+                        {
+                           "distance" : {
+                              "text" : "0.1 km",
+                              "value" : 125
+                           },
+                           "duration" : {
+                              "text" : "1 min",
+                              "value" : 87
+                           },
+                           "end_location" : {
+                              "lat" : 43.5294556,
+                              "lng" : -80.224126
+                           },
+                           "html_instructions" : "Head \u003cb\u003enorth\u003c/b\u003e toward \u003cb\u003eSouth Ring Rd E\u003c/b\u003e",
+                           "polyline" : {
+                              "points" : "muthGpsshN`@]_@F]JUL_@^QZq@fA"
+                           },
+                           "start_location" : {
+                              "lat" : 43.52871,
+                              "lng" : -80.22345399999999
+                           },
+                           "travel_mode" : "WALKING"
+                        },
+                        {
+                           "distance" : {
+                              "text" : "0.1 km",
+                              "value" : 147
+                           },
+                           "duration" : {
+                              "text" : "2 mins",
+                              "value" : 105
+                           },
+                           "end_location" : {
+                              "lat" : 43.5303958,
+                              "lng" : -80.2254014
+                           },
+                           "html_instructions" : "Continue onto \u003cb\u003eWinegard Walk\u003c/b\u003e",
+                           "polyline" : {
+                              "points" : "czthGxwshNIL]f@e@r@mBrC"
+                           },
+                           "start_location" : {
+                              "lat" : 43.5294556,
+                              "lng" : -80.224126
+                           },
+                           "travel_mode" : "WALKING"
+                        },
+                        {
+                           "distance" : {
+                              "text" : "60 m",
+                              "value" : 60
+                           },
+                           "duration" : {
+                              "text" : "1 min",
+                              "value" : 43
+                           },
+                           "end_location" : {
+                              "lat" : 43.53000979999999,
+                              "lng" : -80.2259217
+                           },
+                           "html_instructions" : "Turn \u003cb\u003eleft\u003c/b\u003e",
+                           "maneuver" : "turn-left",
+                           "polyline" : {
+                              "points" : "_`uhGv_thNlAfB"
+                           },
+                           "start_location" : {
+                              "lat" : 43.5303958,
+                              "lng" : -80.2254014
+                           },
+                           "travel_mode" : "WALKING"
+                        },
+                        {
+                           "distance" : {
+                              "text" : "42 m",
+                              "value" : 42
+                           },
+                           "duration" : {
+                              "text" : "1 min",
+                              "value" : 31
+                           },
+                           "end_location" : {
+                              "lat" : 43.5301401,
+                              "lng" : -80.22631060000001
+                           },
+                           "html_instructions" : "Slight \u003cb\u003eright\u003c/b\u003e",
+                           "maneuver" : "turn-slight-right",
+                           "polyline" : {
+                              "points" : "q}thG~bthNBJ@L?F?FAFEFMPI@"
+                           },
+                           "start_location" : {
+                              "lat" : 43.53000979999999,
+                              "lng" : -80.2259217
+                           },
+                           "travel_mode" : "WALKING"
+                        }
+                     ],
+                     "travel_mode" : "WALKING"
+                  }
+               ],
+               "traffic_speed_entry" : [],
+               "via_waypoint" : []
+            }
+         ],
+         "overview_polyline" : {
+            "points" : "m|rhGhxthNQCq@]m@m@wBaDFIGBQW_ByB{FyIgEkGk@sAQw@Iu@Cw@?_ASuAScA]_As@cAe@}@w@cAYY]Qg@lCcCrMw@fDg@vA{FyISXILOPMJa@Hi@JSE`@]}@RUL_@^cAbBg@t@sCfEpArB@TANSXI@"
+         },
+         "summary" : "",
+         "warnings" : [
+            "Walking directions are in beta.    Use caution – This route may be missing sidewalks or pedestrian paths."
+         ],
+         "waypoint_order" : []
+      }
+   ],
+   "status" : "OK"
+}
