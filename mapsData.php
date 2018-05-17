@@ -31,10 +31,10 @@
   curl_close($ch);
 
   // get the result and parse to JSON
-  // $result_arr = json_decode($result, true);
-  // print_r($result_arr);
+  $result_arr = json_decode($result, true);
+  print_r($result_arr);
 
-  echo(json_encode($result, true));
+  // echo(json_encode($result, true));
   // echo($result);
 
   /*
