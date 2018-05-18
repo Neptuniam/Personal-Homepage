@@ -6,13 +6,16 @@
       'Content-Type: application/json',
   );
 
-  // query string
-  $fields = array(
-      'key' => 'AIzaSyAuZODWQu06M9hC-sGrhazBKCrLIIj9fzI',
-      'format' => 'json',
-      'ip' => $_SERVER['REMOTE_ADDR'],
-  );
-  $url = "https://maps.googleapis.com/maps/api/directions/json?origin=%27134%20harvard%2C%20guelph%2C%20on%27&destination=%27University%20Centre%2C%20Guelph%2C%20On%27&avoid=highways&mode=transit&key=AIzaSyAuZODWQu06M9hC-sGrhazBKCrLIIj9fzI";
+  // $origin = "\'134 Harvard Rd, Guelph, ON N1G 3R1, Canada\'";
+  // $destination = "\'Guelph, ON N1G 1Y4, Canada\'";
+
+  $origin = "43.519543,-80.228988";
+  $destination = "43.5301401,-80.22631060000001";
+
+  // echo(document.getElementById('userPosition').innerHTML);
+
+  // $url = "https://maps.googleapis.com/maps/api/directions/json?origin=%27134%20harvard%2C%20guelph%2C%20on%27&destination=%27University%20Centre%2C%20Guelph%2C%20On%27&avoid=highways&mode=transit&key=AIzaSyAuZODWQu06M9hC-sGrhazBKCrLIIj9fzI";
+  $url = "https://maps.googleapis.com/maps/api/directions/json?origin=" . $origin . "&destination=" . $destination . "&avoid=highways&mode=transit&key=AIzaSyAuZODWQu06M9hC-sGrhazBKCrLIIj9fzI";
 
   // Open connection
   $ch = curl_init();
@@ -31,21 +34,9 @@
   curl_close($ch);
 
   // get the result and parse to JSON
-  $result_arr = json_decode($result, true);
-  print_r($result_arr);
+  // $result_arr = json_decode($result, true);
+  // print_r($result_arr);
 
-  // echo(json_encode($result, true));
+  echo(json_encode(json_decode($result, true)));
   // echo($result);
-
-  /*
-   *  output:
-   *  Array
-   *  (
-   *      [statusCode] => "OK",
-   *      [statusMessage] => "",
-   *      [ipAddress] => "123.13.123.12",
-   *      [countryCode] => "MY",
-   *      [countryName] => "MALAYSIA",
-   *  )
-   */
 ?>

@@ -28,14 +28,14 @@
          "legs" : [
             {
                "arrival_time" : {
-                  "text" : "1:00pm",
+                  "text" : "7:00pm",
                   "time_zone" : "America/Toronto",
-                  "value" : 1526576400
+                  "value" : 1526598000
                },
                "departure_time" : {
-                  "text" : "12:50pm",
+                  "text" : "6:50pm",
                   "time_zone" : "America/Toronto",
-                  "value" : 1526575807
+                  "value" : 1526597407
                },
                "distance" : {
                   "text" : "2.0 km",
@@ -134,9 +134,9 @@
                            "name" : "University Centre Platform 1"
                         },
                         "arrival_time" : {
-                           "text" : "12:56pm",
+                           "text" : "6:56pm",
                            "time_zone" : "America/Toronto",
-                           "value" : 1526576160
+                           "value" : 1526597760
                         },
                         "departure_stop" : {
                            "location" : {
@@ -146,9 +146,9 @@
                            "name" : "Harvard at Princeton eastbound"
                         },
                         "departure_time" : {
-                           "text" : "12:51pm",
+                           "text" : "6:51pm",
                            "time_zone" : "America/Toronto",
-                           "value" : 1526575917
+                           "value" : 1526597517
                         },
                         "headsign" : "6 Harvard Ironwood",
                         "line" : {

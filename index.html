@@ -34,6 +34,20 @@
         /* margin: 1em; */
       }
 
+      .linkColourChange {
+        color: white;
+        text-decoration: none;
+       }
+
+       .transparentImage {
+         background: transparent url('otherImages//homeToSchool_410x120.jpg') no-repeat 0 0;
+          width: 540px;
+          height: 440px;
+          float: left;
+          filter: alpha(opacity=30);
+          opacity: 0.3;
+       }
+
       .date-time{
         -webkit-touch-callout: none; /* iOS Safari */
           -webkit-user-select: none; /* Safari */
@@ -77,7 +91,13 @@
       .BusNumIconStyle {
         height: 35px;
         width: 35px;
-        background-color:rgba(255, 0, 0, 0.75);
+        /* background-color:rgba(255, 0, 0, 0.75); */
+
+        font-size: 140%;
+
+        position:absolute;
+        top: 35%;
+        left: 2%;
       }
 
       .top-left {
@@ -159,7 +179,7 @@
                     method:'POST',
                    success:function(data){
                      try {
-                       console.log(data);
+                       console.log("Background: " + data);
                        if (String(data) == "backgrounds/" || String(data) == "backgrounds/" || data == "")
                           throw "backgrounds/earthporn24.png";
 
@@ -173,22 +193,44 @@
       });
     </script>
 
+    <p id="userPosition" style="visibility: hidden;"></p>
+
     <!-- Get weekly weather info -->
     <script>
-      function getWeather() {
-        var location = "saskatoon, sk";
+      var x = document.getElementById("userPosition");
 
-        $.get("https://query.yahooapis.com/v1/public/yql?q=select * from weather.forecast where woeid in (select woeid from geo.places(1) where text=\"" + location + "\") and u='c'&format=json", function (data) {        })
+      function getLocation() {
+        if (navigator.geolocation) {
+            return(navigator.geolocation.getCurrentPosition(showPosition));
+        } else {
+            x.innerHTML = "Geolocation is not supported by this browser.";
+        }
+      }
+
+      function showPosition(position) {
+        x.innerHTML = position.coords.latitude +  "," + position.coords.longitude;
+        console.log("Current Location: " + x.innerHTML);
+
+        getWeather();
+      }
+
+      function getWeather() {
+        var location = document.getElementById("userPosition").innerHTML;
+
+        $.get("https://query.yahooapis.com/v1/public/yql?q=select * from weather.forecast where woeid in (select woeid from geo.places where text=\"(" + location + ")\") and u='c'&format=json", function (data) {        })
         .done(function(data) {
           /* Check that a place was found (we'll just grab the first) */
           if (data.query.results === null) {
               bootbox.alert("Location not found: " + location + "!");
           } else {
-            // console.log(data);
+            //Set actual time weather
             document.getElementById('currentTemp').innerHTML = data.query.results.channel.item.condition.temp + "&deg;C";
             document.getElementById('currentTempText').innerHTML = data.query.results.channel.item.condition.text;
             document.getElementById('currentTempRange'). innerHTML = data.query.results.channel.item.forecast[0].low + "&deg;C - " + data.query.results.channel.item.forecast[0].high + "&deg;C : 60%";
 
+            document.getElementById('currentLocation').innerHTML = data.query.results.channel.location.city + ", " + data.query.results.channel.location.region;
+
+            //Loop through forecast and change weekly forecast highs, lows and days
             for (var i = 0; i < 6; i++) {
               document.getElementById('day' + i + 'High').innerHTML = data.query.results.channel.item.forecast[i+1].high + "&deg;C";
               document.getElementById('day' + i +'Low').innerHTML = data.query.results.channel.item.forecast[i+1].low + "&deg;C";
@@ -198,7 +240,8 @@
         });
       }
 
-      getWeather();
+      getLocation();
+      // getWeather();
     </script>
 
     <script>
@@ -208,10 +251,30 @@
                     method:'GET',
                    success:function(data) {
                      try {
-                       console.log("Hit");
-                       console.log(data);
+                       var pData = JSON.parse(data);
+                       console.log("pData: " + pData);
 
-                       console.log(data['geocoded_waypoints'][0].geocoder_status);
+                       if (pData.geocoded_waypoints[0].geocoder_status != "OK") throw "Waypoint Failed";
+
+                       //Set arrival/departure Times
+                       document.getElementById('busTimes').innerHTML = "Leave: " + pData.routes[0].legs[0].departure_time.text + "<br>Arrive: " + pData.routes[0].legs[0].arrival_time.text;
+
+                      // Determine first bus num_stop
+                      if ((pData.routes[0].legs[0].steps[0].html_instructions).includes("Princeton")) {
+                        document.getElementById('busNumIcon').innerHTML = "6";
+                        document.getElementById('busNumIcon').style.background = "rgba(255, 0, 0, 0.75)";
+                      }
+
+                       // Check end address for nicer printing
+                       //Home
+                       if (pData.routes[0].legs[0].end_address == "134 Harvard Rd, Guelph, ON N1G 3R1, Canada")
+                        document.getElementById('busDestination').innerHTML = "Destination: Home";
+                      //School
+                      else if (pData.routes[0].legs[0].end_address == "University Centre, Guelph, ON N1G 1Y4, Canada")
+                        document.getElementById('busDestination').innerHTML = "Destination: School";
+                      //Otherwise just use current address
+                      else
+                       document.getElementById('busDestination').innerHTML = "Destination: " + pData.routes[0].legs[0].end_address;
                      }
                      catch(err) {
                        console.log("maps error: " + err);
@@ -308,7 +371,7 @@
           <!--Dashboard Card-->
           <br><br><br><br><br>
           <!-- display:none; -->
-          <div class="card dashboard" style="margin:0 auto; height: 470px; width:400px; background: rgba(240,240,240,0.8);">
+          <div class="card dashboard" style="margin:0 auto; height: 480px; width:400px; background: rgba(240,240,240,0.8);">
             <div class="card-content">
               <!--Current Weather Row-->
               <div class="row">
@@ -322,18 +385,17 @@
 
                 <!--Forecast Description row-->
                 <div class="row">
-                  <div class="col s12" id="currentTempText" style="font-family: 'Arima Madurai', cursive;">
-                  </div>
-                  <div class="col s12" id="currentTempRange">
-                  </div>
+                  <div class="col s12" id="currentTempText" style="font-family: 'Arima Madurai', cursive;"></div>
+                  <div class="col s12" id="currentTempRange"></div>
+                  <div class="col s12" id="currentLocation"></div>
                 </div>
 
                 <!--Weekly Weather Forecast box-->
-                <div class="box" style="height:130px; background: rgba(240,240,240,0.5);">
+                <div class="box" style="height:130px; background: url('otherImages//weatherBackground.jpg');">
                   <div class="row">
 
                     <div class="col s1 pull-s1">
-                      <div class="box">
+                      <div class="box" style="background: rgba(200,200,200,.85);">
                         <span class="top-right" id="day0High"></span>
                         <span class="mid-right" id="day0Low"></span><br>
                         <span class="bottom-center" id="day0Date" style = "font-size: 80%;"></span>
@@ -341,7 +403,7 @@
                     </div>
 
                     <div class="col s1 pull-s1 offset-s1">
-                      <div class="box">
+                      <div class="box" style="background: rgba(200,200,200,.85);">
                         <span class="top-right" id="day1High"></span>
                         <span class="mid-right" id="day1Low"></span><br>
                         <span class="bottom-center" id="day1Date" style = "font-size: 80%;"></span>
@@ -349,7 +411,7 @@
                     </div>
 
                     <div class="col s1 pull-s1 offset-s1">
-                      <div class="box">
+                      <div class="box" style="background: rgba(200,200,200,.85);">
                         <span class="top-right" id="day2High"></span>
                         <span class="mid-right" id="day2Low"></span><br>
                         <span class="bottom-center" id="day2Date" style = "font-size: 80%;"></span>
@@ -357,7 +419,7 @@
                     </div>
 
                     <div class="col s1 pull-s1 offset-s1">
-                      <div class="box">
+                      <div class="box" style="background: rgba(200,200,200,.85);">
                         <span class="top-right" id="day3High"></span>
                         <span class="mid-right" id="day3Low"></span><br>
                         <span class="bottom-center" id="day3Date" style = "font-size: 80%;"></span>
@@ -365,7 +427,7 @@
                     </div>
 
                     <div class="col s1 pull-s1 offset-s1">
-                      <div class="box">
+                      <div class="box" style="background: rgba(200,200,200,.85);">
                         <span class="top-right" id="day4High"></span>
                         <span class="mid-right" id="day4Low"></span><br>
                         <span class="bottom-center" id="day4Date" style = "font-size: 80%;"></span>
@@ -373,7 +435,7 @@
                     </div>
 
                     <div class="col s1 pull-s1 offset-s1">
-                      <div class="box">
+                      <div class="box" style="background: rgba(200,200,200,.85);">
                         <span class="top-right" id="day5High"></span>
                         <span class="mid-right" id="day5Low"></span><br>
                         <span class="bottom-center" id="day5Date" style = "font-size: 80%;"></span>
@@ -385,13 +447,13 @@
 
                 <!--Bus Schedule box-->
                 <!-- <div class="box" style="height: 90px; background: url('backgrounds//earthporn24.jpg')"> -->
-                  <div class="box" style="height: 90px;">
+                  <div class="box" style="height: 95px; background: url('otherImages//homeToSchool_410x120.jpg');">
                   <div class="row">
                     <!-- <div class="col s1"> -->
-                      <a href="maps.html" target="_blank" class="circle BusNumIconStyle top-left" id="busNumIcon">6</a>
+                      <a href="maps.html" target="_blank" class="circle BusNumIconStyle linkColourChange" id="busNumIcon">6</a>
                     <!-- </div> -->
-                    <p class="col s7" style="font-size:110%" id="busTimes">Leave: 10:28am<br>Arrive: 10:56am</p>
-                    <p class="col s3" style="font-size:110%" id="busDestination">Destination: School<p>
+                    <b class="col s7" style="font-size:130%; padding-left:1em;" id="busTimes">Leave: 10:28am<br>Arrive: 10:56am</b>
+                    <b class="col s4" style="font-size:130%;" id="busDestination">Destination: School<b>
                   </div>
                 </div>
 
