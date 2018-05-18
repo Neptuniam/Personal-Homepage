@@ -4,7 +4,14 @@
     <title>the 134 Homepage</title>
     <meta charset="utf-8">
 
+    <!-- Tab icon -->
     <link rel="shortcut icon" href="otherImages//favicon.ico">
+
+    <!-- Weather icons -->
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"> -->
+    <!-- <link rel="stylesheet" href="css/styles.css"> -->
+    <link rel="stylesheet" href="weatherIcons/weather-icons.css">
+    <link rel="stylesheet" href="weatherIcons/weather-icons-wind.css">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -199,6 +206,70 @@
     <script>
       var x = document.getElementById("userPosition");
 
+      function getIcon(lastBuildTime, sunset, curWeather) {
+        console.log("Current text: " + curWeather);
+        var iconText = "wi wi-"
+
+        if (lastBuildTime.includes("AM"))
+          iconText += "day-";
+        else if (lastBuildTime.includes("PM")) {
+          // If it is in the PM, we need to check if it is after sunset
+          var i = 15;
+
+          // Loop till colon of buildTime in order to parse the build time (current Time)
+          while (lastBuildTime.charCodeAt(i) != 58) i++;
+
+          // Current build time hour is always double digit (i.e. 07:28 or 10:28). Get those digits
+          var curHour = lastBuildTime[i-2] + lastBuildTime[i-1];
+
+          // Set setHour to empty value and reset loop index
+          var setHour = "";
+          i = 0;
+
+          // Copy characters until we hit the colon
+          while (sunset.charCodeAt(i) != 58)
+            setHour += sunset[i++];
+
+          // Check if it is after sunset
+          if (parseInt(curHour) < parseInt(setHour))
+            iconText += "day-";
+          else
+            iconText += "night-alt-"
+
+        }
+
+        if (curWeather.includes("Sunny") || curWeather.includes("hot"))
+          iconText += "sunny";
+        else if (curWeather.includes("clear"))
+          iconText = "wi wi-night-clear";
+        else if (curWeather.includes("fair"))
+          iconText = "wi wi-day-sunny-overcast";
+        else if (curWeather.includes("cloud")) {
+          iconText += "cloudy";
+
+          if (curWeather.includes("wind"))
+            iconText += "-windy";
+        }
+        else if (curWeather.includes("mixed"))
+          iconText += "rain-mix";
+        else if (curWeather.includes("rain"))
+          iconText += "rain";
+        else if (curWeather.includes("showers"))
+          iconText += "showers";
+        else if (curWeather.includes("thunderstorms"))
+          iconText += "storm-showers";
+        else if (curWeather.includes("snow"))
+          iconText += "snow";
+        else if (curWeather.includes("foggy"))
+          iconText += "fog";
+        else if (curWeather.includes("wind"))
+          iconText += "windy";
+
+        console.log("Current iconText: " + iconText);
+
+        document.getElementById('weatherIcon').className = iconText;
+      }
+
       function getLocation() {
         if (navigator.geolocation) {
             return(navigator.geolocation.getCurrentPosition(showPosition));
@@ -223,14 +294,18 @@
           if (data.query.results === null) {
               bootbox.alert("Location not found: " + location + "!");
           } else {
-            //Set actual time weather
+            // get weather icon
+            getIcon(data.query.results.channel.lastBuildDate, data.query.results.channel.astronomy.sunset, data.query.results.channel.item.condition.text);
+            // getIcon("Tue, 15 May 2018 08:29 PM CST", "8:54", "hot");
+
+            // Set actual time weather
             document.getElementById('currentTemp').innerHTML = data.query.results.channel.item.condition.temp + "&deg;C";
             document.getElementById('currentTempText').innerHTML = data.query.results.channel.item.condition.text;
             document.getElementById('currentTempRange'). innerHTML = data.query.results.channel.item.forecast[0].low + "&deg;C - " + data.query.results.channel.item.forecast[0].high + "&deg;C : 60%";
 
-            document.getElementById('currentLocation').innerHTML = data.query.results.channel.location.city + ", " + data.query.results.channel.location.region;
+            document.getElementById('currentLocation').innerHTML = "<img src=\"otherImages/locationDrop.png\" style=\"width:10px;\"> " + data.query.results.channel.location.city + ", " + data.query.results.channel.location.region;
 
-            //Loop through forecast and change weekly forecast highs, lows and days
+            // Loop through forecast and change weekly forecast highs, lows and days
             for (var i = 0; i < 6; i++) {
               document.getElementById('day' + i + 'High').innerHTML = data.query.results.channel.item.forecast[i+1].high + "&deg;C";
               document.getElementById('day' + i +'Low').innerHTML = data.query.results.channel.item.forecast[i+1].low + "&deg;C";
@@ -263,6 +338,12 @@
                       if ((pData.routes[0].legs[0].steps[0].html_instructions).includes("Princeton")) {
                         document.getElementById('busNumIcon').innerHTML = "6";
                         document.getElementById('busNumIcon').style.background = "rgba(255, 0, 0, 0.75)";
+                      } else if ((pData.routes[0].legs[0].steps[0].html_instructions).includes("Monticello")) {
+                        document.getElementById('busNumIcon').innerHTML = "99";
+                        document.getElementById('busNumIcon').style.background = "rgba(0, 128, 0, 0.75)";
+                      } else {
+                        document.getElementById('busNumIcon').innerHTML = "-1";
+                        document.getElementById('busNumIcon').style.background = "rgba(0, 0, 0, 0.75)";
                       }
 
                        // Check end address for nicer printing
@@ -369,7 +450,7 @@
 
         <div class="col s4 offset-s1">
           <!--Dashboard Card-->
-          <br><br><br><br><br>
+          <br><br><br><br>
           <!-- display:none; -->
           <div class="card dashboard" style="margin:0 auto; height: 480px; width:400px; background: rgba(240,240,240,0.8);">
             <div class="card-content">
@@ -380,7 +461,9 @@
                 </div>
                 <!--Weather Icon-->
                 <div class="col s6 center-align">
-                  <i class="material-icons large">filter_drama</i>
+                  <!-- <i class="material-icons large">filter_drama</i> -->
+                  <br>
+                  <i id="weatherIcon" style="font-size: 60px;"></i>
                 </div>
 
                 <!--Forecast Description row-->
