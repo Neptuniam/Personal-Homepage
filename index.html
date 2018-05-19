@@ -95,22 +95,35 @@
         font-family: 'Gruppo', cursive;
       }
 
+      .forecastStyle {
+        background: rgba(200,200,200,.85);
+        width:60px;
+      }
+
+      .forecastIcons {
+        position: absolute;
+        top: 15%;
+        left: 3%;
+
+        font-size: 20px;
+        opacity: .90;
+      }
+
       .BusNumIconStyle {
         height: 35px;
         width: 35px;
-        /* background-color:rgba(255, 0, 0, 0.75); */
 
         font-size: 140%;
 
         position:absolute;
         top: 35%;
-        left: 2%;
+        left: 3%;
       }
 
       .top-left {
         position:absolute;
-        top: 31%;
-        left: 2%;
+        top: -1px;
+        left: 5px;
       }
 
       .bottom-left {
@@ -181,22 +194,21 @@
     <!-- Ajax script to run 'clientSide.php' and retrieve a random background -->
     <script>
       $(document).ready(function() {
-            $.ajax({
-                    url:'clientSide.php',
-                    method:'POST',
-                   success:function(data){
-                     try {
-                       console.log("Background: " + data);
-                       if (String(data) == "backgrounds/" || String(data) == "backgrounds/" || data == "")
-                          throw "backgrounds/earthporn24.png";
+        $.ajax({
+          url:'clientSide.php',
+          method:'POST',
+          success:function(data){
+            try {
+              console.log("Background: " + data);
+              if (String(data) == "backgrounds/" || String(data) == "backgrounds/" || data == "")
+                throw "backgrounds/earthporn24.png";
 
-                       document.body.style.background = "#f3f3f3 url(\'" + data + "\') no-repeat fixed center";
-                     }
-                     catch(err) {
-                       document.body.style.background = "#f3f3f3 url(\'" + err + "\') no-repeat fixed center";
-                     }
-                   }
-                });
+              document.body.style.background = "#f3f3f3 url(\'" + data + "\') no-repeat fixed center";
+            } catch(err) {
+              document.body.style.background = "#f3f3f3 url(\'" + err + "\') no-repeat fixed center";
+            }
+         }
+       });
       });
     </script>
 
@@ -207,41 +219,45 @@
       var x = document.getElementById("userPosition");
 
       function getIcon(lastBuildTime, sunset, curWeather) {
-        console.log("Current text: " + curWeather);
+        // console.log("Current text: " + curWeather);
         var iconText = "wi wi-"
 
-        if (lastBuildTime.includes("AM"))
-          iconText += "day-";
-        else if (lastBuildTime.includes("PM")) {
-          // If it is in the PM, we need to check if it is after sunset
-          var i = 15;
-
-          // Loop till colon of buildTime in order to parse the build time (current Time)
-          while (lastBuildTime.charCodeAt(i) != 58) i++;
-
-          // Current build time hour is always double digit (i.e. 07:28 or 10:28). Get those digits
-          var curHour = lastBuildTime[i-2] + lastBuildTime[i-1];
-
-          // Set setHour to empty value and reset loop index
-          var setHour = "";
-          i = 0;
-
-          // Copy characters until we hit the colon
-          while (sunset.charCodeAt(i) != 58)
-            setHour += sunset[i++];
-
-          // Check if it is after sunset
-          if (parseInt(curHour) < parseInt(setHour))
+        // IFf lastBuildTime == FORECAST, we are gettin icon for weekly forecast and therefor do not want time specific icons
+        if (lastBuildTime != "FORECAST") {
+          if (lastBuildTime.includes("AM"))
             iconText += "day-";
-          else
-            iconText += "night-alt-"
+          else if (lastBuildTime.includes("PM")) {
+            // If it is in the PM, we need to check if it is after sunset
+            var i = 15;
 
+            // Loop till colon of buildTime in order to parse the build time (current Time)
+            while (lastBuildTime.charCodeAt(i) != 58) i++;
+
+            // Current build time hour is always double digit (i.e. 07:28 or 10:28). Get those digits
+            var curHour = lastBuildTime[i-2] + lastBuildTime[i-1];
+
+            // Set setHour to empty value and reset loop index
+            var setHour = "";
+            i = 0;
+
+            // Copy characters until we hit the colon
+            while (sunset.charCodeAt(i) != 58)
+              setHour += sunset[i++];
+
+            // Check if it is after sunset
+            if (parseInt(curHour) < parseInt(setHour))
+              iconText += "day-";
+            else
+              iconText += "night-alt-"
+
+          }
         }
 
-        if (curWeather.includes("Sunny") || curWeather.includes("hot"))
-          iconText += "sunny";
+        // Determine which icon to display
+        if (curWeather.includes("sunny") || curWeather.includes("hot"))
+          iconText = "wi wi-day-sunny";
         else if (curWeather.includes("clear"))
-          iconText = "wi wi-night-clear";
+          iconText = "wi wi-stars";
         else if (curWeather.includes("fair"))
           iconText = "wi wi-day-sunny-overcast";
         else if (curWeather.includes("cloud")) {
@@ -254,20 +270,22 @@
           iconText += "rain-mix";
         else if (curWeather.includes("rain"))
           iconText += "rain";
-        else if (curWeather.includes("showers"))
+        else if (curWeather.includes("showers") || curWeather.includes("drizzle"))
           iconText += "showers";
         else if (curWeather.includes("thunderstorms"))
           iconText += "storm-showers";
         else if (curWeather.includes("snow"))
           iconText += "snow";
-        else if (curWeather.includes("foggy"))
+        else if (curWeather.includes("foggy") || curWeather.includes("haze") ||
+                 curWeather.includes("dust")  || curWeather.includes("smokey"))
           iconText += "fog";
         else if (curWeather.includes("wind"))
           iconText += "windy";
 
-        console.log("Current iconText: " + iconText);
+        // console.log("iconText: " + iconText);
 
-        document.getElementById('weatherIcon').className = iconText;
+        return(iconText)
+
       }
 
       function getLocation() {
@@ -295,8 +313,8 @@
               bootbox.alert("Location not found: " + location + "!");
           } else {
             // get weather icon
-            getIcon(data.query.results.channel.lastBuildDate, data.query.results.channel.astronomy.sunset, data.query.results.channel.item.condition.text);
-            // getIcon("Tue, 15 May 2018 08:29 PM CST", "8:54", "hot");
+            document.getElementById('weatherIcon').className = getIcon(data.query.results.channel.lastBuildDate, data.query.results.channel.astronomy.sunset, (data.query.results.channel.item.condition.text).toLowerCase());
+            // getIcon("Tue, 15 May 2018 09:29 PM CST", "8:54", "rain".toLowerCase());
 
             // Set actual time weather
             document.getElementById('currentTemp').innerHTML = data.query.results.channel.item.condition.temp + "&deg;C";
@@ -307,6 +325,7 @@
 
             // Loop through forecast and change weekly forecast highs, lows and days
             for (var i = 0; i < 6; i++) {
+              document.getElementById('day' + i + 'Icon').className += getIcon("FORCAST", "-1", (data.query.results.channel.item.forecast[i+1].text).toLowerCase());
               document.getElementById('day' + i + 'High').innerHTML = data.query.results.channel.item.forecast[i+1].high + "&deg;C";
               document.getElementById('day' + i +'Low').innerHTML = data.query.results.channel.item.forecast[i+1].low + "&deg;C";
               document.getElementById('day' + i +'Date').innerHTML = data.query.results.channel.item.forecast[i+1].day;
@@ -321,49 +340,49 @@
 
     <script>
       $(document).ready(function() {
-            $.ajax({
-                    url:'mapsData.php',
-                    method:'GET',
-                   success:function(data) {
-                     try {
-                       var pData = JSON.parse(data);
-                       console.log("pData: " + pData);
+        $.ajax({
+          url:'mapsData.php',
+          method:'GET',
+          success:function(data) {
+           try {
+             var pData = JSON.parse(data);
+             console.log("pData: " + pData);
 
-                       if (pData.geocoded_waypoints[0].geocoder_status != "OK") throw "Waypoint Failed";
+             if (pData.geocoded_waypoints[0].geocoder_status != "OK") throw "Waypoint Failed";
 
-                       //Set arrival/departure Times
-                       document.getElementById('busTimes').innerHTML = "Leave: " + pData.routes[0].legs[0].departure_time.text + "<br>Arrive: " + pData.routes[0].legs[0].arrival_time.text;
+             // Determine first bus num_stop
+             if ((pData.routes[0].legs[0].steps[0].html_instructions).includes("Princeton")) {
+               document.getElementById('busNumIcon').innerHTML = "6";
+               document.getElementById('busNumIcon').style.background = "rgba(255, 0, 0, 0.75)";
+             } else if ((pData.routes[0].legs[0].steps[0].html_instructions).includes("Monticello")) {
+               document.getElementById('busNumIcon').innerHTML = "99";
+               document.getElementById('busNumIcon').style.background = "rgba(0, 128, 0, 0.75)";
+             } else {
+               console.log("Step[0]: " + pData.routes[0].legs[0].steps[0].html_instructions);
+               document.getElementById('busNumIcon').innerHTML = "-1";
+               document.getElementById('busNumIcon').style.background = "rgba(0, 0, 0, 0.75)";
+             }
 
-                      // Determine first bus num_stop
-                      if ((pData.routes[0].legs[0].steps[0].html_instructions).includes("Princeton")) {
-                        document.getElementById('busNumIcon').innerHTML = "6";
-                        document.getElementById('busNumIcon').style.background = "rgba(255, 0, 0, 0.75)";
-                      } else if ((pData.routes[0].legs[0].steps[0].html_instructions).includes("Monticello")) {
-                        document.getElementById('busNumIcon').innerHTML = "99";
-                        document.getElementById('busNumIcon').style.background = "rgba(0, 128, 0, 0.75)";
-                      } else {
-                        document.getElementById('busNumIcon').innerHTML = "-1";
-                        document.getElementById('busNumIcon').style.background = "rgba(0, 0, 0, 0.75)";
-                      }
-
-                       // Check end address for nicer printing
-                       //Home
-                       if (pData.routes[0].legs[0].end_address == "134 Harvard Rd, Guelph, ON N1G 3R1, Canada")
-                        document.getElementById('busDestination').innerHTML = "Destination: Home";
-                      //School
-                      else if (pData.routes[0].legs[0].end_address == "University Centre, Guelph, ON N1G 1Y4, Canada")
-                        document.getElementById('busDestination').innerHTML = "Destination: School";
-                      //Otherwise just use current address
-                      else
-                       document.getElementById('busDestination').innerHTML = "Destination: " + pData.routes[0].legs[0].end_address;
-                     }
-                     catch(err) {
-                       console.log("maps error: " + err);
-                     }
-                   }
-                });
+             //Set arrival/departure Times
+             document.getElementById('busTimes').innerHTML = "Leave: " + pData.routes[0].legs[0].departure_time.text + "<br>Arrive: " + pData.routes[0].legs[0].arrival_time.text;
+             // Check end address for nicer printing
+             //Home
+             if (pData.routes[0].legs[0].end_address == "134 Harvard Rd, Guelph, ON N1G 3R1, Canada")
+               document.getElementById('busDestination').innerHTML = "Start: School<br>Finish: Home";
+             //School
+             else if (pData.routes[0].legs[0].end_address == "University Centre, Guelph, ON N1G 1Y4, Canada")
+               document.getElementById('busDestination').innerHTML = "Start: Home<br>Finish: School";
+             //Otherwise just use current address
+             else
+               document.getElementById('busDestination').innerHTML = "Destination: test" + pData.routes[0].legs[0].end_address;
+           }
+           catch(err) {
+             console.log("maps error: " + err);
+           }
+         }
       });
-    </script>
+    });
+  </script>
 
   </head>
   <body>
@@ -452,16 +471,15 @@
           <!--Dashboard Card-->
           <br><br><br><br>
           <!-- display:none; -->
-          <div class="card dashboard" style="margin:0 auto; height: 480px; width:400px; background: rgba(240,240,240,0.8);">
+          <div class="card dashboard" style="margin:0 auto; height: 480px; width:495px; background: rgba(240,240,240,0.8);">
             <div class="card-content">
               <!--Current Weather Row-->
               <div class="row">
                 <!--Current tempature-->
-                <div class="col s6" id="currentTemp" style="font-size:65px;">
+                <div class="col s6 push-s1" id="currentTemp" style="font-size:65px;">
                 </div>
                 <!--Weather Icon-->
-                <div class="col s6 center-align">
-                  <!-- <i class="material-icons large">filter_drama</i> -->
+                <div class="col s6 pull-s1 center-align">
                   <br>
                   <i id="weatherIcon" style="font-size: 60px;"></i>
                 </div>
@@ -478,23 +496,27 @@
                   <div class="row">
 
                     <div class="col s1 pull-s1">
-                      <div class="box" style="background: rgba(200,200,200,.85);">
-                        <span class="top-right" id="day0High"></span>
-                        <span class="mid-right" id="day0Low"></span><br>
-                        <span class="bottom-center" id="day0Date" style = "font-size: 80%;"></span>
+                      <div class="box forecastStyle" style=" ">
+                        <i class="forecastIcons " id="day0Icon"></i>
+                        <div class="top-right" id="day0High"></div>
+                        <div class="mid-right" id="day0Low"></div><br>
+                        <div class="bottom-center" id="day0Date" style = "font-size: 80%;"></div>
                       </div>
                     </div>
 
                     <div class="col s1 pull-s1 offset-s1">
-                      <div class="box" style="background: rgba(200,200,200,.85);">
+                      <div class="box forecastStyle">
+                        <i class="forecastIcons " id="day1Icon"></i>
                         <span class="top-right" id="day1High"></span>
                         <span class="mid-right" id="day1Low"></span><br>
                         <span class="bottom-center" id="day1Date" style = "font-size: 80%;"></span>
                       </div>
                     </div>
 
+
                     <div class="col s1 pull-s1 offset-s1">
-                      <div class="box" style="background: rgba(200,200,200,.85);">
+                      <div class="box forecastStyle">
+                        <i class="forecastIcons " id="day2Icon"></i>
                         <span class="top-right" id="day2High"></span>
                         <span class="mid-right" id="day2Low"></span><br>
                         <span class="bottom-center" id="day2Date" style = "font-size: 80%;"></span>
@@ -502,7 +524,8 @@
                     </div>
 
                     <div class="col s1 pull-s1 offset-s1">
-                      <div class="box" style="background: rgba(200,200,200,.85);">
+                      <div class="box forecastStyle">
+                        <i class="forecastIcons " id="day3Icon"></i>
                         <span class="top-right" id="day3High"></span>
                         <span class="mid-right" id="day3Low"></span><br>
                         <span class="bottom-center" id="day3Date" style = "font-size: 80%;"></span>
@@ -510,7 +533,8 @@
                     </div>
 
                     <div class="col s1 pull-s1 offset-s1">
-                      <div class="box" style="background: rgba(200,200,200,.85);">
+                      <div class="box forecastStyle">
+                        <i class="forecastIcons " id="day4Icon"></i>
                         <span class="top-right" id="day4High"></span>
                         <span class="mid-right" id="day4Low"></span><br>
                         <span class="bottom-center" id="day4Date" style = "font-size: 80%;"></span>
@@ -518,7 +542,8 @@
                     </div>
 
                     <div class="col s1 pull-s1 offset-s1">
-                      <div class="box" style="background: rgba(200,200,200,.85);">
+                      <div class="box forecastStyle">
+                        <i class="forecastIcons " id="day5Icon"></i>
                         <span class="top-right" id="day5High"></span>
                         <span class="mid-right" id="day5Low"></span><br>
                         <span class="bottom-center" id="day5Date" style = "font-size: 80%;"></span>
@@ -529,14 +554,11 @@
                 </div>
 
                 <!--Bus Schedule box-->
-                <!-- <div class="box" style="height: 90px; background: url('backgrounds//earthporn24.jpg')"> -->
-                  <div class="box" style="height: 95px; background: url('otherImages//homeToSchool_410x120.jpg');">
+                <div class="box" style="height: 95px; background: url('otherImages//homeToSchool_410x120.jpg');">
                   <div class="row">
-                    <!-- <div class="col s1"> -->
-                      <a href="maps.html" target="_blank" class="circle BusNumIconStyle linkColourChange" id="busNumIcon">6</a>
-                    <!-- </div> -->
-                    <b class="col s7" style="font-size:130%; padding-left:1em;" id="busTimes">Leave: 10:28am<br>Arrive: 10:56am</b>
-                    <b class="col s4" style="font-size:130%;" id="busDestination">Destination: School<b>
+                    <a href="maps.html" target="_blank" class="circle BusNumIconStyle linkColourChange" id="busNumIcon"></a>
+                    <b class="col s6 pull-s1" style="font-size:130%; padding-left:16%;" id="busTimes"></b>
+                    <b class="col s6 pull-s1" style="font-size:130%;" id="busDestination"><b>
                   </div>
                 </div>
 
