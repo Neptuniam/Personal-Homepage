@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <link rel="shortcut icon" href="otherImages//mapsIcon.ico">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
-    <title>Displaying text directions with <code>setPanel()</code></title>
+    <title>Maps</title>
     <style>
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
@@ -79,7 +80,23 @@
   <body>
     <div id="right-panel"></div>
     <div id="map"></div>
+    <p id="userPosition" style="visibility: hidden;"></p>
     <script>
+      var x = document.getElementById("userPosition");
+
+      function getLocation() {
+        if (navigator.geolocation) {
+            return(navigator.geolocation.getCurrentPosition(showPosition));
+        } else {
+            x.innerHTML = "Geolocation is not supported by this browser.";
+        }
+      }
+
+      function showPosition(position) {
+        x.innerHTML = position.coords.latitude +  "," + position.coords.longitude;
+        console.log("Current Location: " + x.innerHTML);
+      }
+
       function initMap() {
         var directionsDisplay = new google.maps.DirectionsRenderer;
         var directionsService = new google.maps.DirectionsService;
@@ -94,11 +111,30 @@
         map.controls[google.maps.ControlPosition.TOP_CENTER].push(control);
 
         calculateAndDisplayRoute(directionsService, directionsDisplay);
+        getLocation();
       }
 
       function calculateAndDisplayRoute(directionsService, directionsDisplay) {
-        var start = "134 Harvard, Guelph, On";
-        var end = "University Centre, Guelph, On";
+        // Important addresses
+        var home   = "43.519543,-80.228988";
+        var school = "43.5301401,-80.22631060000001";
+
+        // var curLoc = x.innerHTML;
+        var curLoc = "43.519543,-80.228988";
+        var start;
+        var end;
+
+        if (parseFloat(curLoc).toFixed(4) == parseFloat(home).toFixed(4)) {
+          console.log("At home " + parseFloat(curLoc).toFixed(4) + " " + parseFloat(home).toFixed(4));
+          start = home;
+          end = school;
+        //Otherwise, we want our current locatin to home
+        } else {
+          start = curLoc;
+          end = home;
+        }
+
+
         directionsService.route({
           origin: start,
           destination: end,

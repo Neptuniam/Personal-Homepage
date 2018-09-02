@@ -5,16 +5,25 @@
   $headers = array(
       'Content-Type: application/json',
   );
+  // Important addresses
+  $home   = "43.519543,-80.228988";
+  $school = "43.5301401,-80.22631060000001";
 
-  // $origin = "\'134 Harvard Rd, Guelph, ON N1G 3R1, Canada\'";
-  // $destination = "\'Guelph, ON N1G 1Y4, Canada\'";
 
-  $origin = "43.519543,-80.228988";
-  $destination = "43.5301401,-80.22631060000001";
+  // $curLoc = $_GET['location'];
+  $curLoc = "43.519543,-80.228988";
+  // $curLoc = "43.511616,-80.209521";
 
-  // echo(document.getElementById('userPosition').innerHTML);
+  //If we're close enough to home, take us from home to school
+  if (round($curLoc, 4) == round($home, 4)) {
+    $origin = $home;
+    $destination = $school;
+  //Otherwise, we want our current locatin to home
+  } else {
+    $origin = $curLoc;
+    $destination = $home;
+  }
 
-  // $url = "https://maps.googleapis.com/maps/api/directions/json?origin=%27134%20harvard%2C%20guelph%2C%20on%27&destination=%27University%20Centre%2C%20Guelph%2C%20On%27&avoid=highways&mode=transit&key=AIzaSyAuZODWQu06M9hC-sGrhazBKCrLIIj9fzI";
   $url = "https://maps.googleapis.com/maps/api/directions/json?origin=" . $origin . "&destination=" . $destination . "&avoid=highways&mode=transit&key=AIzaSyAuZODWQu06M9hC-sGrhazBKCrLIIj9fzI";
 
   // Open connection
@@ -34,9 +43,5 @@
   curl_close($ch);
 
   // get the result and parse to JSON
-  // $result_arr = json_decode($result, true);
-  // print_r($result_arr);
-
   echo(json_encode(json_decode($result, true)));
-  // echo($result);
 ?>
