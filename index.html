@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>the 134 Homepage</title>
+    <meta charset="utf-8">
+
+    <!-- Tab icon -->
+    <link rel="shortcut icon" href="otherImages//homeIcon.ico">
+
+    <!-- Weather icons -->
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"> -->
+    <!-- <link rel="stylesheet" href="css/styles.css"> -->
+    <link rel="stylesheet" href="weatherIcons/weather-icons.css">
+    <link rel="stylesheet" href="weatherIcons/weather-icons-wind.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Arima+Madurai|Bangers|Gruppo|Nixie+One|Noto+Serif|Nova+Flat|Poiret+One|Shrikhand" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Playball" rel="stylesheet">
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script> -->
+
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+
+    <style media="screen">
+      [v-cloak] { display:none; }
+
+      .box {
+        position: relative;
+        border: 1px solid;
+        padding: 1.3em;
+        margin: 1em;
+      }
+
+      .linkColourChange {
+        color: white;
+        text-decoration: none;
+       }
+
+      .date-time{
+        -webkit-touch-callout: none; /* iOS Safari */
+          -webkit-user-select: none; /* Safari */
+           -khtml-user-select: none; /* Konqueror HTML */
+             -moz-user-select: none; /* Firefox */
+              -ms-user-select: none; /* Internet Explorer/Edge */
+                  user-select: none;
+      }
+
+      .clockSize {
+        font-size: 800%;
+        color: rgba(0,0,0,8);
+
+        text-shadow: 0 0 0.5px #fff, 0 0 0.5px #fff, 0 0 0.5px #fff
+      }
+
+      .dateSize {
+        font-size: 200%;
+        color: rgba(0,0,0,8);
+        margin-top: -1em;
+      }
+
+      .clock {
+        text-align: center;
+        font-family: 'Playball', cursive;
+      }
+
+      .favButtons {
+        width:  40px;
+        height: 40px;
+      }
+
+      .dashboard {
+        text-align: center;
+        font-family: 'Gruppo', cursive;
+      }
+
+      .forecastStyle {
+        background: rgba(200,200,200,.95);
+        /* background: transparent url('otherImages//weatherBoxBackground_1.jpg') no-repeat 0 0; */
+        width: 55px;
+
+        margin: 0 -50%;
+      }
+
+      .forecastIcons {
+        position: absolute;
+        top: 17%;
+        left: 3%;
+
+        font-size: 16px;
+        opacity: .90;
+      }
+
+      .busNumIconStyle {
+        height: 35px;
+        width: 35px;
+
+        border-radius: 50%;
+
+        font-size: 140%;
+
+        position:absolute;
+        top: 35%;
+        left: 2%;
+      }
+
+      .homeworkStyle {
+        height: 50px;
+        width: 55px;
+
+        margin: 0;
+        margin-top: 80%;
+        margin-left: -50%;
+      }
+
+      .prettyBox:not(:empty) {
+        width: 200px;
+        background-color: white;
+        opacity: 1;
+
+        border-radius: 45px;
+        border: 2px solid black;
+        padding: 10px;
+      }
+
+      .tooltip .tooltiptext{
+        visibility: hidden;
+
+
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        margin-left: -100px;
+      }
+
+      .tooltip:hover .tooltiptext {
+        visibility: visible;
+      }
+
+      .top-left {
+        position:absolute;
+        top: -1px;
+        left: 5px;
+      }
+
+      .top-center {
+        position: absolute;
+        top: -1px;
+        left: 40%;
+      }
+
+      .top-right {
+        position:absolute;
+        top: -1px;
+        right: 5px;
+      }
+
+      .mid-right {
+        position: absolute;
+        top: 15px;
+        right: 5px;
+      }
+
+      .bottom-left {
+        position:absolute;
+        bottom: 1;
+        right: -0.5;
+      }
+
+      .bottom-center {
+        position:absolute;
+        bottom: 0px;
+        left: 30%;
+      }
+
+      .bottom-right {
+        position:absolute;
+        bottom: 1;
+        right: -0.5;
+      }
+
+      blink {
+          -webkit-animation: 0.9s linear infinite condemned_blink_effect; // for android
+          animation: 0.9s linear infinite condemned_blink_effect;
+      }
+      @-webkit-keyframes condemned_blink_effect { // for android
+          0% {
+              visibility: hidden;
+          }
+          50% {
+              visibility: hidden;
+          }
+          100% {
+              visibility: visible;
+          }
+      }
+      @keyframes condemned_blink_effect {
+          0% {
+              visibility: hidden;
+          }
+          50% {
+              visibility: hidden;
+          }
+          100% {
+              visibility: visible;
+          }
+      }
+    </style>
+
+    <!-- Google maps API KEy: AIzaSyAuZODWQu06M9hC-sGrhazBKCrLIIj9fzI -->
+  </head>
+  <body>
+    <div id="app">
+      <div class="row">
+        <br><br><br>
+        <!-- <div class="col s10 l6"> -->
+        <div class="col s5 offset-s1">
+          <!--Time Div-->
+          <div class="date-time">
+            <!--Time Row-->
+            <div class="clock">
+              <div class="row">
+                <div class="col s12">
+                  <br>
+                  <!-- The Vue instance is attached to this div -->
+                  <div>
+                    <div>
+                      <!-- Reference the variable currtime in Vue Instance -->
+                      <em class="clockSize" v-cloak>{{currhour}}<blink>:</blink>{{currmin}}&nbsp;</em>
+                    </div>
+                    <div>
+                      <!-- Reference the variable currdate in Vue Instance -->
+                      <p class="dateSize" v-cloak v-text="currdate">&nbsp;</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <br><br>
+
+          <!--Browser Card-->
+          <div class="card" style="margin:0 auto; width:420px; background: rgba(240,240,240,0.5);">
+            <div class="card-content">
+              <!--Google basic search bar-->
+              <form method="get" action="http://www.google.com/search">
+                <div class="input-field">
+                  <i class="material-icons prefix">search</i>
+                  <input id="icon_prefix" name="q" placeholder="Search Google" type="text">
+                  <label for="icon_prefix"></label>
+                </div>
+              </form>
+
+              <!--Favourite tabs Row-->
+              <div class="row">
+                <div class="col s2 offset-s1 center-align">
+                  <a href="https://www.facebook.com/messages/t/1257203164296324"><img src="favouritesIcons//facebook.png" class="favButtons"></a>
+                </div>
+                <div class="col s2 center-align">
+                  <a href="https://www.reddit.com/"><img src="favouritesIcons//Reddit-The-Official-App-Icon.png" class="favButtons"></a>
+                </div>
+                <div class="col s2 center-align">
+                  <a href="https://easyweb.td.com/waw/idp/login.htm?execution=e1s1"><img src="favouritesIcons//TD-bank-icon.png" class="favButtons"></a>
+                </div>
+                <div class="col s2 center-align">
+                  <a href="https://www.youtube.com/feed/subscriptions"><img src="favouritesIcons//youtube.png" class="favButtons"></a>
+                </div>
+                <div class="col s2 center-align">
+                  <a href="https://www.netflix.com/browse"><img src="favouritesIcons//netflix.png" class="favButtons"></a>
+                </div>
+              </div>
+              <!--Favourite tabs Row2-->
+              <div class="row">
+                <div class="col s2 center-align offset-s1">
+                  <a href="https://github.com/"><img src="favouritesIcons//git.png" class="favButtons"></a>
+                </div>
+                <div class="col s2 center-align">
+                  <a href="https://drive.google.com/drive/my-drive"><img src="favouritesIcons//googleDrive.png" class="favButtons"></a>
+                </div>
+                <div class="col s2 center-align">
+                  <a href="https://www.google.ca/maps?hl=en&tab=wl"><img src="favouritesIcons//maps.png" class="favButtons"></a>
+                </div>
+                <div class="col s2 center-align">
+                  <a href="https://outlook.office.com/owa/?realm=uoguelph.ca">  <img src="favouritesIcons//gmail.png" class="favButtons"></a>
+                </div>
+                <div class="col s2 center-align">
+                  <a href="https://courselink.uoguelph.ca/d2l/home"><img src="favouritesIcons//guelph.jpeg" class="favButtons"></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col s4 offset-s1">
+          <!--Dashboard Card-->
+          <div class="card dashboard" style="margin: auto 0; width: 440px; background: rgba(240,240,240,0.8);">
+            <div class="card-content">
+              <div id="temperatureDisplay">
+                <!--Current tempature-->
+                <div class="col s6 push-s1" id="currentTemp" style="font-size: 450%;">&nbsp; </div>
+
+                <!--Weather Icon-->
+                <div class="col s6 pull-s1 center-align">
+                  <br>
+                  <i id="weatherIcon" style="font-size: 425%;"></i>
+                </div>
+
+                <!--Forecast Description row-->
+                <div class="row">
+                  <div class="col s12" id="currentTempText" style="font-family: 'Arima Madurai', cursive;">Yahoo Weather API Retired :( <br>I will be fixed soon!&nbsp; </div>
+                  <div class="col s12" id="currentTempRange">&nbsp; </div>
+                  <div class="col s12" id="currentLocation" contenteditable="true">&nbsp; </div>
+                </div>
+              </div>
+
+              <!--Weekly Weather Forecast box-->
+              <div class="box" id="forecastDisplay" style="background: url('otherImages//weatherBackground.jpg');">
+                <div class="row" style="margin: 0;">
+
+                  <div class="col s2">
+                    <div class="box forecastStyle">
+                      <i class="forecastIcons " id="day1Icon"></i>
+                      <div class="top-right" id="day1High"></div>
+                      <div class="mid-right" id="day1Low"></div><br>
+                      <div class="bottom-center" id="day1Date" style = "font-size: 80%;"></div>
+                    </div>
+                  </div>
+
+                  <div class="col s2">
+                    <div class="box forecastStyle">
+                      <i class="forecastIcons " id="day2Icon"></i>
+                      <span class="top-right" id="day2High"></span>
+                      <span class="mid-right" id="day2Low"></span><br>
+                      <span class="bottom-center" id="day2Date" style = "font-size: 80%;"></span>
+                    </div>
+                  </div>
+
+
+                  <div class="col s2">
+                    <div class="box forecastStyle">
+                      <i class="forecastIcons " id="day3Icon"></i>
+                      <span class="top-right" id="day3High"></span>
+                      <span class="mid-right" id="day3Low"></span><br>
+                      <span class="bottom-center" id="day3Date" style = "font-size: 80%;"></span>
+                    </div>
+                  </div>
+
+                  <div class="col s2">
+                    <div class="box forecastStyle">
+                      <i class="forecastIcons " id="day4Icon"></i>
+                      <span class="top-right" id="day4High"></span>
+                      <span class="mid-right" id="day4Low"></span><br>
+                      <span class="bottom-center" id="day4Date" style = "font-size: 80%;"></span>
+                    </div>
+                  </div>
+
+                  <div class="col s2">
+                    <div class="box forecastStyle">
+                      <i class="forecastIcons " id="day5Icon"></i>
+                      <span class="top-right" id="day5High"></span>
+                      <span class="mid-right" id="day5Low"></span><br>
+                      <span class="bottom-center" id="day5Date" style = "font-size: 80%;"></span>
+                    </div>
+                  </div>
+
+                  <div class="col s2">
+                    <div class="box forecastStyle">
+                      <i class="forecastIcons " id="day6Icon"></i>
+                      <span class="top-right" id="day6High"></span>
+                      <span class="mid-right" id="day6Low"></span><br>
+                      <span class="bottom-center" id="day6Date" style = "font-size: 80%;"></span>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <!--Bus Schedule box-->
+              <div class="box" id="mapsDisplay" style="background: url('otherImages//homeToSchool_410x120.jpg');">
+                <div class="row" style="margin: 0;">
+                  <!-- Different icon type to display, be default each is hidden -->
+                  <a href="maps.html" target="_blank" class="busNumIconStyle linkColourChange" id="busNumIcon" style="display: none;"></a>
+                  <a href="maps.html" target="_blank" class="busNumIconStyle linkColourChange" id="carIcon" style="display: none;"><img  src="otherImages//carLogo2_1.png"></a>
+                  <a href="maps.html" target="_blank" class="busNumIconStyle linkColourChange" id="walkIcon" style="display: none;"><img  src="otherImages//walking_2.jpg"></a>
+
+                  <!-- Departure/Arrival time text spaces -->
+                  <div class="col s7" style="font-size:130%;">
+                    <b>Leave: </b>
+                    <b id="busLeaveTime"></b>
+                    <br>
+                    <b>Arrive: </b>
+                    <b id="busArriveTime"></b>
+                  </div>
+
+                  <!-- Origin/Destination text spaces. Origin implements tooltip to use hover over text boxes to display full adress -->
+                  <div class="col s5" style="font-size:130%">
+                    <span class="tooltip">
+                      <b>Start: <b>
+                      <b id="busOrigin"></b>
+                      <span class="tooltiptext prettyBox shadow1" id="originFullText"></span>
+                    </span>
+
+                    <br>
+                    <b>End: </b>
+                    <b id="busDestination"></b>
+                  </div>
+
+                </div>
+              </div>
+
+              <!-- Homework/Calendar Box -->
+              <div class="box" style="background: url('otherImages//calendarBackground.jpg');">
+                <!-- Allows for 6 items to be displayed for today -->
+                <span class="top-left">Today:</span>
+                <div style="fontSize: 86%;">
+                  <span class="col s6" id="hwday0Item0"></span> <span class="col s6" id="hwday0Item1"></span>
+                  <span class="col s6" id="hwday0Item2"></span> <span class="col s6" id="hwday0Item3"></span>
+                  <span class="col s6" id="hwday0Item4"></span> <span class="col s6" id="hwday0Item5"></span>
+                </div>
+
+                <!-- Displays 6 boxes to show homwork count for the next 6 days -->
+                <div class="row" style="margin: 0;">
+                  <div class="col s2">
+                    <div class="box homeworkStyle tooltip">
+                      <span class="top-center" id="day1Count" style="fontSize:150%;"></span>
+                      <span class="bottom-center" id="hwDay1Date" style="fontSize:80%;"></span>
+
+                      <div class="tooltiptext prettyBox" id="day1Calendar">
+                      </div>
+                    </div>
+                  </div>
+
+                   <div class="col s2">
+                    <div class="box homeworkStyle tooltip">
+                      <span class="top-center" id="day2Count" style="fontSize:150%;"> </span>
+                      <span class="bottom-center" id="hwDay2Date" style="fontSize:80%;"></span>
+
+                      <div class="tooltiptext prettyBox" id="day2Calendar">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col s2">
+                    <div class="box homeworkStyle tooltip">
+                      <span class="top-center" id="day3Count" style="fontSize:150%;"></span>
+                      <span class="bottom-center" id="hwDay3Date" style="fontSize:80%;"></span>
+
+                      <div class="tooltiptext prettyBox" id="day3Calendar">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col s2">
+                    <div class="box homeworkStyle tooltip">
+                      <span class="top-center" id="day4Count" style="fontSize:150%;"> </span>
+                      <span class="bottom-center" id="hwDay4Date" style="fontSize:80%;"></span>
+
+                      <div class="tooltiptext prettyBox" id="day4Calendar">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col s2">
+                    <div class="box homeworkStyle tooltip">
+                      <span class="top-center" id="day5Count" style="fontSize:150%;"> </span>
+                      <span class="bottom-center" id="hwDay5Date" style="fontSize:80%;"></span>
+
+                      <div class="tooltiptext prettyBox" id="day5Calendar">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col s2">
+                    <div class="box homeworkStyle tooltip">
+                      <span class="top-center" id="day6Count" style="fontSize:150%;"> </span>
+                      <span class="bottom-center" id="hwDay6Date" style="fontSize:80%;"></span>
+
+                      <div class="tooltiptext prettyBox" id="day6Calendar">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Last page link -->
+                <div class="col s1">
+                  <a onclick="changePage(-1)"> < </a>
+                </div>
+
+                <!-- Next page link -->
+                <div class="col s1 push-s10">
+                  <a onclick="changePage(1)"> > </a>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+<!--Clock Script-->
+<script src="vue.min.js"></script>
+<script src="moment.js" charset="utf-8"></script>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script type="text/javascript">
+  new Vue({
+    /* Vue will be attached to this ID */
+    el: '#app',
+    /* variables are stored in data */
+    data: {
+        currhour: '', currmin: '', currdate: ''
+    },
+    /* Methods are defined in here */
+    methods: {
+      get_time() {
+        /* Get the current date from moment.js.  learn more about formatting at: https://momentjs.com/docs/#/displaying/format/ */
+        var split = moment().format("dddd, MMMM Do YYYY_h_mm a").split('_')
+
+        /* Set instance variables */
+    		this.currdate = split[0]
+    		this.currhour = split[1]
+    		this.currmin  = split[2]
+      },
+    },
+
+    /* This is called when the Vue instance is mounted to #app
+        similar to a constructor method */
+    mounted() {
+        /* Call get_time on via timer, every second */
+        this.get_time()
+        this.interval = setInterval(this.get_time, 1000)
+    },
+    beforeDestroy() {
+        clearInterval(this.interval)
+    }
+  });
+</script>
+<!-- JQuery download link (Need to use for following script) -->
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
+<!-- Ajax script to run 'backgroundRand.php' and retrieve a random background -->
+<script>
+  document.body.style.background = "url(\'" + localStorage.getItem("nextBackground") + "\')";
+  document.body.style.backgroundSize = "cover";
+
+  $(document).ready(function() {
+    $.ajax({
+      url:'backgroundRand.php',
+      method:'POST',
+      success:function(data){
+        try {
+          console.log("Background: " + data);
+          if (String(data) == "backgrounds/" || data == "")
+            throw "backgrounds/earthporn24.png";
+
+          // Set the new "next" background
+          localStorage.setItem("nextBackground", data);
+        } catch(err) {
+          document.body.style.background = "#f3f3f3 url(\'" + err + "\') no-repeat fixed center";
+        }
+     },
+     error: function(data) {
+       console.log("Background gen failed: " + data);
+       document.body.style.background = "#f3f3f3 url('backgrounds/earthporn17.png') no-repeat fixed center";
+     }
+   });
+  });
+</script>
+
+<!-- Get weekly weather info -->
+<script>
+  class Location {
+    constructor(lat, long, accuracy, cityName = null) {
+      // Current location
+      this.lat = lat;
+      this.long = long;
+      this.city = cityName;
+      this.locAccuracy = accuracy;
+
+      //Important Addresses
+      this.home   = {lat: 43.519543,  long: -80.228988};
+      this.school = {lat: 43.5301401, long: -80.22631060000001};
+
+      // Current distance to important adresses
+      this.distanceToHome = Math.sqrt((lat - this.home.lat)*(lat - this.home.lat) + (long - this.home.long)*(long - this.home.long));
+      this.distanceToSchool = Math.sqrt((lat - this.school.lat)*(lat - this.school.lat) + (long - this.school.long)*(long - this.school.long));
+    }
+  }
+
+  var locationRef = new Location(), customLocation = "";
+  var myMap = {
+    home: function home() {
+            locationRef = new Location(locationRef.home.lat, locationRef.home.long, 0, locationRef.city);
+            displayBusSchedule();
+          },
+    school: function school () {
+              locationRef = new Location(locationRef.school.lat, locationRef.school.long, 0, locationRef.city);
+              displayBusSchedule();
+            },
+    location: function location() {
+                getUserLocation();
+              },
+    refresh: function refreshApps(commands) {
+              if (commands[1]) {
+                switch (commands[1].toLowerCase()) {
+                  case "weather":
+                    displayWeather();
+                    break;
+                  case "maps":
+                    if (commands[2] && commands[2] == "home") {
+                      locationRef = new Location(locationRef.home.lat, locationRef.home.long, 0, locationRef.city);
+                      displayBusSchedule();
+                    } else if (commands[2] && commands[2] == "school") {
+                      locationRef = new Location(locationRef.school.lat, locationRef.school.long, 0, locationRef.city);
+                      displayBusSchedule();
+                    } else if (commands[2] && commands[2] == "location")
+                      getUserLocation();
+                    else
+                      displayBusSchedule();
+
+                    break;
+                  case "all":
+                  default:
+                    displayWeather();
+                    displayBusSchedule();
+                    break;
+                }
+              } else {
+                displayWeather();
+                displayBusSchedule();
+              }
+            }
+  }
+  var pageOffset = 0;
+
+  // getUserLocation();
+  displayHwCalendar();
+
+  var input = document.getElementById("currentLocation");
+  input.addEventListener("keyup", function(event) {
+      event.preventDefault();
+      if (event.keyCode === 13) {
+        var customText = document.getElementById("currentLocation").innerHTML;
+        customText = customText.slice(customText.indexOf("nbsp;") + 5, customText.length);
+        customText = customText.slice(0, customText.indexOf('<'));
+
+        if (customText[0] == '/') {
+          // Chop off the leading '/' and split on spaces to seperate command and all the arguements given
+          var commands = (customText.substring(1)).split(' ');
+
+          // Using the commandas the key, run the code with the associated value
+          myMap[commands[0]](commands);
+
+          // Reset the input box to the user's current location
+          document.getElementById("currentLocation").innerHTML = "<img src=\"otherImages/locationDrop.png\" style=\"width:10px;\"> " + locationRef.city;
+        } else {
+          customLocation = customText;
+          displayWeather();
+        }
+
+      }
+  });
+
+  function getUserLocation() {
+    var options = {
+      enableHighAccuracy: true,
+      timeout: 5000,
+      maximumAge: 0
+    };
+
+    function success(pos) {
+      var crd = pos.coords;
+
+      locationRef = new Location(crd.latitude, crd.longitude, crd.accuracy);
+      console.log("longLat", crd.latitude + "," + crd.longitude);
+      console.log("Accuracy: " + crd.accuracy);
+
+      if (crd.accuracy > 100)
+        document.getElementById('originFullText').innerHTML = crd.accuracy + ": ";
+
+      // displayWeather();
+      displayBusSchedule();
+    }
+
+    function error(err) {
+      console.log("Location services failed.");
+
+      // If we cannot find the users location, just hide the services that depend on it
+      document.getElementById('temperatureDisplay').style = "display: none";
+      document.getElementById('mapsDisplay').style = "display: none";
+      document.getElementById('forecastDisplay').style = "display: none;"
+    }
+
+    navigator.geolocation.getCurrentPosition(success, error, options);
+  }
+
+  function getIcon(lastBuildTime, sunset, curWeather) {
+    // console.log("Current text: " + curWeather);
+    var iconText = "wi wi-"
+
+    // IFf lastBuildTime == FORECAST, we are gettin icon for weekly forecast and therefor do not want time specific icons
+    if (lastBuildTime != "FORECAST") {
+      if (lastBuildTime.includes("AM"))
+        iconText += "day-";
+      else if (lastBuildTime.includes("PM")) {
+        // If it is in the PM, we need to check if it is after sunset
+        var i = 15;
+
+        // Loop till colon of buildTime in order to parse the build time (current Time)
+        while (lastBuildTime.charCodeAt(i) != 58) i++;
+
+        // Current build time hour is always double digit (i.e. 07:28 or 10:28). Get those digits
+        var curHour = lastBuildTime[i-2] + lastBuildTime[i-1];
+
+        // Set setHour to empty value and reset loop index
+        var setHour = "";
+        i = 0;
+
+        // Copy characters until we hit the colon
+        while (sunset.charCodeAt(i) != 58)
+          setHour += sunset[i++];
+
+        // Check if it is after sunset
+        if (parseInt(curHour) < parseInt(setHour))
+          iconText += "day-";
+        else
+          iconText += "night-alt-"
+      }
+    }
+
+    // Determine which icon to display
+    if (curWeather.includes("sunny") || curWeather.includes("hot"))
+      iconText = "wi wi-day-sunny";
+    else if (curWeather.includes("clear"))
+      iconText = "wi wi-stars";
+    else if (curWeather.includes("fair"))
+      iconText = "wi wi-day-sunny-overcast";
+    else if (curWeather.includes("cloud")) {
+      iconText += "cloudy";
+
+      if (curWeather.includes("wind") || curWeather.includes("breezy"))
+        iconText += "-windy";
+    }
+    else if (curWeather.includes("mixed"))
+      iconText += "rain-mix";
+    else if (curWeather.includes("rain"))
+      iconText += "rain";
+    else if (curWeather.includes("showers") || curWeather.includes("drizzle"))
+      iconText += "showers";
+    else if (curWeather.includes("thunderstorms"))
+      iconText += "storm-showers";
+    else if (curWeather.includes("snow"))
+      iconText += "snow";
+    else if (curWeather.includes("foggy") || curWeather.includes("haze") ||
+             curWeather.includes("dust")  || curWeather.includes("smokey"))
+      iconText += "fog";
+    else if (curWeather.includes("wind") || curWeather.includes("breezy"))
+      iconText += "windy";
+
+    // console.log("iconText: " + iconText);
+
+    return(iconText)
+
+  }
+
+  function displayWeather() {
+    var location = locationRef.lat + "," + locationRef.long;
+
+    // If the user has requested a custom location (entered something to overwrite their current location), set location to that
+    if (customLocation != "")
+      location = customLocation;
+
+    $.get("https://query.yahooapis.com/v1/public/yql?q=select * from weather.forecast where woeid in (select woeid from geo.places where text=\"(" + location + ")\") and u='c'&format=json", function (data) {})
+    .done(function(data) {
+      /* Check that a place was found (we'll just grab the first) */
+      if (data.query.results === null) {
+          console.log("Weather for " + location + "not found!");
+          document.getElementById('temperatureDisplay').style = "display: none";
+          document.getElementById('forecastDisplay').style = "display: none;"
+      } else {
+        // get weather icon
+        document.getElementById('weatherIcon').className = getIcon(data.query.results.channel.lastBuildDate, data.query.results.channel.astronomy.sunset, (data.query.results.channel.item.condition.text).toLowerCase());
+        // getIcon("Tue, 15 May 2018 09:29 PM CST", "8:54", "Rain".toLowerCase());
+
+        // Set actual time weather
+        document.getElementById('currentTemp').innerHTML = data.query.results.channel.item.condition.temp + "&deg;C";
+        document.getElementById('currentTempText').innerHTML = data.query.results.channel.item.condition.text;
+        document.getElementById('currentTempRange').innerHTML = data.query.results.channel.item.forecast[0].low + "&deg;C - " + data.query.results.channel.item.forecast[0].high + "&deg;C";// : 60%";
+
+        // Update locationRef to store city and region and display it
+        locationRef = new Location(locationRef.lat, locationRef.long, locationRef.accuracy, data.query.results.channel.location.city + ", " + data.query.results.channel.location.region);
+        document.getElementById('currentLocation').innerHTML = "<img src=\"otherImages/locationDrop.png\" style=\"width:10px;\"> " + locationRef.city;
+
+        // Loop through forecast and change weekly forecast highs, lows and days
+        for (var i = 1; i < 7; i++) {
+          document.getElementById('day' + i + 'Icon').className += getIcon("FORCAST", "-1", (data.query.results.channel.item.forecast[i].text).toLowerCase());
+          document.getElementById('day' + i + 'High').innerHTML = data.query.results.channel.item.forecast[i].high + "&deg;C";
+          document.getElementById('day' + i + 'Low').innerHTML = data.query.results.channel.item.forecast[i].low + "&deg;C";
+          document.getElementById('day' + i + 'Date').innerHTML = data.query.results.channel.item.forecast[i].day;
+        }
+      }
+    });
+  }
+
+  function genMapsRequest() {
+    var travelMode, currentDate = new Date();
+    var start = {lat: 0, lng: 0}, end = {lat: 0, lng: 0};
+
+    // If too far from home, set to drive
+    if (locationRef.distanceToHome > 10)
+      travelMode = "DRIVING";
+    // If close, but outside of bustimes, set to Walk
+    else if (currentDate.getHours() < "7" || (currentDate.getDay() == 0 && currentDate.getHours() > "17"))
+      travelMode = "WALKING";
+    // Else, we bus
+    else
+      travelMode = "TRANSIT";
+
+    // If we're close enough to home, take us from home to school
+    if (locationRef.distanceToHome < 0.0075) {
+      start.lat = locationRef.home.lat;
+      start.lng = locationRef.home.long;
+
+      end.lat = locationRef.school.lat;
+      end.lng = locationRef.school.long;
+    } else if (locationRef.distanceToSchool < 0.005) {
+      start.lat = locationRef.school.lat;
+      start.lng = locationRef.school.long;
+
+      end.lat = locationRef.home.lat;
+      end.lng = locationRef.home.long;
+    // Otherwise, we want our current location to home
+    } else {
+      start.lat = locationRef.lat;
+      start.lng = locationRef.long;
+
+      end.lat = locationRef.home.lat;
+      end.lng = locationRef.home.long;
+    }
+
+    return ({
+      origin: {
+        lat: start.lat,
+        lng: start.lng
+      },
+      destination: {
+        lat: end.lat,
+        lng: end.lng
+      },
+      travelMode: google.maps.TravelMode[travelMode],
+      transitOptions: {
+          routingPreference: "LESS_WALKING"
+      }
+    });
+  }
+
+  function parseTravelTime(duration) {
+    var travelObj = {
+      days: 0,
+      hours: 0,
+      minutes: 0,
+
+      arrivalDate: new Date(),
+      departureDate: new Date(),
+
+      durationSplit: duration
+    };
+
+    // Parse the duration string get a number, then determine time length type
+    for (var i = 0; i < (travelObj.durationSplit).length; i += 2) {
+      var timeLength = parseInt(travelObj.durationSplit[i], 10);
+      var timeType   = travelObj.durationSplit[i + 1];
+
+      // Determine which type we have, and set it
+      switch (timeType.toLowerCase()) {
+        case 'day':
+        case 'days':
+         travelObj.days = timeLength;
+         break;
+        case 'hour':
+        case 'hours':
+         travelObj.hours = timeLength;
+         break;
+        case 'min':
+        case 'mins':
+        case 'minute':
+        case 'minutes':
+         travelObj.minutes = timeLength;
+         break;
+        default:
+         console.log("Unkown time type found: " + timeType);
+      }
+    }
+
+    // Get the offset to the current date with duration time
+    (travelObj.arrivalDate).setDate((travelObj.arrivalDate).getDate() + travelObj.days);
+    (travelObj.arrivalDate).setHours((travelObj.arrivalDate).getHours() + travelObj.hours);
+    (travelObj.arrivalDate).setMinutes((travelObj.arrivalDate).getMinutes() + travelObj.minutes);
+
+    return travelObj
+  }
+
+  function displayTravelTime(travelObj) {
+    // Set arrival time with pretty formats
+    if ((travelObj.departureDate).getHours() < "10")
+      document.getElementById('busLeaveTime').innerHTML = "0";
+    document.getElementById('busLeaveTime').innerHTML += (travelObj.departureDate).getHours() + ":";
+
+    if ((travelObj.departureDate).getMinutes() < "10")
+       document.getElementById('busLeaveTime').innerHTML += "0";
+    document.getElementById('busLeaveTime').innerHTML += (travelObj.departureDate).getMinutes();
+
+    // Set arrival time with pretty formats
+    if ((travelObj.arrivalDate).getHours() < "10")
+      document.getElementById('busArriveTime').innerHTML = "0";
+    document.getElementById('busArriveTime').innerHTML += (travelObj.arrivalDate).getHours() + ":";
+
+    if ((travelObj.arrivalDate).getMinutes() < "10")
+       document.getElementById('busArriveTime').innerHTML += "0";
+    document.getElementById('busArriveTime').innerHTML += (travelObj.arrivalDate).getMinutes();
+
+    // If the drive is mutliple days long, show that
+    if (travelObj.days > 0)
+     document.getElementById('busArriveTime').innerHTML += " +" + travelObj.days;
+  }
+
+  function displayTravelDestinations(instructions) {
+    // Set The current address for hover over box
+    console.log("Starting Address: " + instructions.start_address);
+    var startAddress = (instructions.start_address).slice(0, (instructions.start_address).indexOf(","));
+
+    if (locationRef.locAccuracy > 100)
+      document.getElementById('originFullText').innerHTML = locationRef.locAccuracy + ": " + startAddress;
+    else
+      document.getElementById('originFullText').innerHTML = startAddress;
+
+    // Check end address for nicer printing
+    // Home
+    if (locationRef.distanceToHome < 0.0075) {
+      document.getElementById('busOrigin').innerHTML = " Home";
+      document.getElementById('busDestination').innerHTML = "School";
+    }
+    // School
+    else if (locationRef.distanceToSchool < 0.005) {
+      document.getElementById('busOrigin').innerHTML = " Shool";
+      document.getElementById('busDestination').innerHTML = "Home";
+    }
+    // Otherwise just use current address
+    else {
+      document.getElementById('busOrigin').innerHTML = " Loc";
+      document.getElementById('busDestination').innerHTML = "Home";
+    }
+  }
+
+  function displayBusSchedule() {
+    var directionsService = new google.maps.DirectionsService();
+    var request = genMapsRequest();
+
+    directionsService.route(request, function(result, status) {
+      if (status == 'OK') {
+        console.log(result);
+        var instructions = result.routes[0].legs[0];
+
+        // If our current travel mode is to use buses
+        if (request.travelMode == "TRANSIT" && instructions.steps.length > 1) {
+          var i = 0;
+          // Find first step that is transit
+          while ((instructions.steps[i].travel_mode).toLowerCase() != "transit") i++;
+
+          // If a transit step was found, make the transit icon visible and set the bus number/colour
+          if ((instructions.steps[i].travel_mode).toLowerCase() == "transit") {
+            document.getElementById('busNumIcon').style = "display: visible;";
+            document.getElementById('busNumIcon').innerHTML =  instructions.steps[i].transit.line.short_name;
+            document.getElementById('busNumIcon').style.backgroundColor = instructions.steps[i].transit.line.color;
+          }
+
+          // Set arrival/departure Times. Only transit supports these options
+          document.getElementById('busLeaveTime').innerHTML  = instructions.departure_time.text;
+          document.getElementById('busArriveTime').innerHTML = instructions.arrival_time.text;
+        } else if (request.travelMode == "DRIVING") {
+          displayTravelTime(parseTravelTime((instructions.duration.text).split(" ")));
+
+         // Display the appropriate icon for the current travel mode
+         document.getElementById('carIcon').style =  "display: visible;";
+       } else if (request.travelMode == "WALKING" || instructions.steps.length == 1) {
+         displayTravelTime(parseTravelTime((instructions.duration.text).split(" ")));
+
+          // Display the appropriate icon for the current travel mode
+          document.getElementById('walkIcon').style = "display: visible;";
+        } else {
+          console.log("Unknown travel mode used!");
+        }
+
+        displayTravelDestinations(instructions);
+      }
+      else
+        console.log("directions request failed due to: " + status);
+    });
+  }
+
+  function clearHwHovers() {
+    // Clear days inner html (which display what is due for each day)
+    for (var i = 0; i < 6; i++) {
+      if (document.getElementById('hwday0Item' + i))
+        document.getElementById('hwday0Item' + i).innerHTML= "";
+
+      if (document.getElementById('day' + i + 'Count'))
+        document.getElementById('day' + i + 'Count').innerHTML = "";
+
+      if (document.getElementById('day' + i + 'Calendar'))
+        document.getElementById('day' + i + 'Calendar').innerHTML = "";
+    }
+  }
+
+  function changePage(offset) {
+    pageOffset += offset;
+    clearHwHovers();
+    displayHwCalendar();
+  }
+
+  function createHwMap(hwList) {
+    var myMap = new Map();
+    var listSize = hwList.length;
+
+    for (var i = 0; i < listSize; i++) {
+      var day = new Date(hwList[i].dueDate);
+      var key = day.getMonth() + " " + day.getDate();
+
+      // Check if a list already exists for the current key
+      if (myMap.get(key)) {
+        // If so, get the list
+        var myList = myMap.get(key);
+
+        // Append the current item to the list
+        myList[myList.length] = hwList[i];
+
+        // Reset the value with the appeneded list
+        myMap.set(key, myList);
+      } else
+      // Else, make a list and with just the current item
+        myMap.set(key, new Array(hwList[i]));
+    }
+
+    return myMap;
+  }
+
+  function displayHwCalendar() {
+    var hwList = '[' +
+                // '{"type":"string", "dueDate":"' + new Date() + '", "course":"CIS 1234", "name":"Quiz 1", "weight":"1"},' +
+                // '{"type":"string", "dueDate":"' + new Date() + '", "course":"CIS 1234", "name":"Quiz 2", "weight":"1"},' +
+                // '{"type":"string", "dueDate":"' + new Date() + '", "course":"CIS 1234", "name":"Quiz 3", "weight":"1"},' +
+                // '{"type":"string", "dueDate":"' + new Date() + '", "course":"CIS 1234", "name":"Quiz 4", "weight":"1"},' +
+
+
+                  // EDRD Discusions
+                 '{"type":"string", "dueDate":"' + new Date(2018, 0, 21, 23, 59) + '", "course":"EDRD 3500", "name":"Disc 1 Op", "weight":"5"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 0, 27, 23, 59) + '", "course":"EDRD 3500", "name":"Disc 1 Cl", "weight":"5"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 1, 11, 23, 59) + '", "course":"EDRD 3500", "name":"Disc 2 Op", "weight":"5"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 1, 17, 23, 59) + '", "course":"EDRD 3500", "name":"Disc 2 Cl", "weight":"5"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 2, 18, 23, 59) + '", "course":"EDRD 3500", "name":"Disc 3 Op", "weight":"5"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 2, 24, 23, 59) + '", "course":"EDRD 3500", "name":"Disc 3 Cl", "weight":"5"},' +
+                 // EDRD Assignments
+                 '{"type":"string", "dueDate":"' + new Date(2018, 1, 10, 23, 59) + '", "course":"EDRD 3500", "name":"Lit Rev.", "weight":"25"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 3, 17, 23, 59) + '", "course":"EDRD 3500", "name":"Prog & Eval.", "weight":"35"},' +
+                 // EDRD Final
+                 '{"type":"string", "dueDate":"' + new Date(2018, 13, 22, 11, 30) + '", "course":"CIS 3150", "name":"Quiz 9", "weight":"1"},' +
+
+
+                 // CIS 4820 Assignments
+                 '{"type":"string", "dueDate":"' + new Date(2018, 0, 25, 23, 59) + '", "course":"CIS 4820", "name":"Ass 1", "weight":"10"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 1,  8, 23, 59) + '", "course":"CIS 4820", "name":"Ass 2", "weight":"10"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 2,  8, 23, 59) + '", "course":"CIS 4820", "name":"Ass 3", "weight":"15"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 2, 22, 23, 59) + '", "course":"CIS 4820", "name":"Ass 4", "weight":"15"},' +
+                 // CIS 4820 Exams
+                 '{"type":"string", "dueDate":"' + new Date(2018, 1, 11,  2, 30) + '", "course":"CIS 4820", "name":"Midterm", "weight":"25"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 3, 12,  7, 00) + '", "course":"CIS 4820", "name":"Final", "weight":"25"},' +
+
+
+                 // CIS 4650 Assignment
+                 '{"type":"string", "dueDate":"' + new Date(2018, 0,  6, 23, 59) + '", "course":"CIS 4650", "name":"A1", "weight":"10"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 2, 13, 23, 59) + '", "course":"CIS 4650", "name":"CP 1", "weight":"15"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 2, 20, 23, 59) + '", "course":"CIS 4650", "name":"CP 2", "weight":"15"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 3, 27, 23, 59) + '", "course":"CIS 4650", "name":"CP 3", "weight":"15"},' +
+                 //CIS 4650 Exams
+                 '{"type":"string", "dueDate":"' + new Date(2018, 1, 15,  1, 30) + '", "course":"CIS 4650", "name":"Midterm", "weight":"20"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 3, 17,  2, 30) + '", "course":"CIS 4650", "name":"Final", "weight":"25"},' +
+
+
+                 // CIS 3700 Assignments
+                 '{"type":"string", "dueDate":"' + new Date(2018, 1,  1, 11, 30) + '", "course":"CIS 3700", "name":"Ass 1", "weight":"12"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 2, 15, 11, 30) + '", "course":"CIS 3700", "name":"Ass 2", "weight":"12"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 2, 29, 11, 30) + '", "course":"CIS 3700", "name":"Ass 3", "weight":"12"},' +
+                 // CIS 3700 Exams
+                 '{"type":"string", "dueDate":"' + new Date(2018, 2,  5,  2, 30) + '", "course":"CIS 3700", "name":"Midterm", "weight":"24"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 3, 18,  7, 00) + '", "course":"CIS 3700", "name":"Final", "weight":"40"},' +
+
+
+                 // CIS 3190 Assignments
+                 '{"type":"string", "dueDate":"' + new Date(2018, 1,  1, 11, 30) + '", "course":"CIS 3190", "name":"Ass 1", "weight":"25"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 2,  1, 11, 30) + '", "course":"CIS 3190", "name":"Ass 2", "weight":"25"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 2, 22, 11, 30) + '", "course":"CIS 3190", "name":"Ass 3", "weight":"20"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 3,  5, 11, 30) + '", "course":"CIS 3190", "name":"Ass 4", "weight":"30"}' +
+                 ']';
+    var cur, today = new Date(), weekDays = new Array("Sun", "Mon", "Tues", "Wed", "Thur", "Fri", "Sat");
+    var myMap = createHwMap(JSON.parse(hwList));
+
+    // If function is called with a page offset request, adjust 'today'
+    if (pageOffset != 0) {
+      today = new Date(today.getTime() + (pageOffset * 7) * 24 * 60 * 60 * 1000);
+    }
+
+    // Set the list for today, today is unique because it does not present the count
+    if ((cur = myMap.get(today.getMonth() + " " + today.getDate()))) {
+      for (var i = 0; i < cur.length; i++)
+        document.getElementById('hwday0Item' + i).innerHTML = cur[i].course + " " + cur[i].name + " - " + cur[i].weight + "%<br>";
+
+      // If we have an odd amount of items today, add an empty column to line them up properly
+      if (cur.length % 2 == 1)
+        document.getElementById('hwday0Item' + cur.length).innerHTML = "<br>";
+    }
+
+    // Add the next 6 days to the display
+    for (var day = 1; day < 7; day++) {
+      // Get the next day, which increments by one
+      var nextDate = new Date(today.getTime() + day * 24 * 60 * 60 * 1000);
+
+      // Check nextDay's key: its due date in reduced format to see if it has an assigned value
+      if ((cur = myMap.get(nextDate.getMonth() + " " + nextDate.getDate()))) {
+        document.getElementById('day' + day + 'Count').innerHTML = cur.length;
+
+        for (var i = 0; i < cur.length; i++)
+          document.getElementById('day' + day + 'Calendar').innerHTML += cur[i].course + " " + cur[i].name + " - " + cur[i].weight + "%<br>";
+      }
+
+      // Display the next week
+      document.getElementById('hwDay' + day + 'Date').innerHTML = weekDays[nextDate.getDay()];
+    }
+  }
+</script>
+
+<script async defer
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAuZODWQu06M9hC-sGrhazBKCrLIIj9fzI&callback=getUserLocation">
+</script>
