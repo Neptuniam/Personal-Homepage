@@ -25,6 +25,13 @@
     <style media="screen">
       [v-cloak] { display:none; }
 
+      body {
+        background: url('backgrounds/earthporn17.jpg');
+        background-repeat: no-repeat;
+        background-size: cover;
+        height: 100vh;
+      }
+
       .box {
         position: relative;
         border: 1px solid;
@@ -47,14 +54,15 @@
       }
 
       .clockSize {
-        font-size: 800%;
+        font-size: 8rem;
+        text-align: center;
         color: rgba(0,0,0,8);
 
-        text-shadow: 0 0 0.5px #fff, 0 0 0.5px #fff, 0 0 0.5px #fff
+        text-shadow: 0 0 0.5px #808080, 0 0 0.5px #808080, 0 0 0.5px #808080
       }
 
       .dateSize {
-        font-size: 200%;
+        font-size: 2rem;
         color: rgba(0,0,0,8);
         margin-top: -1em;
       }
@@ -72,45 +80,78 @@
       .dashboard {
         text-align: center;
         font-family: 'Gruppo', cursive;
+
+        margin: auto 0;
+
+        width: 575px;
+        background: rgba(240,240,240,0.8);
       }
 
-      .forecastStyle {
-        background: rgba(200,200,200,.95);
-        /* background: transparent url('otherImages//weatherBoxBackground_1.jpg') no-repeat 0 0; */
-        width: 55px;
-
-        margin: 0 -50%;
+      #forecastDisplay {
+        background: url('otherImages/weatherBackground.jpg');
+        background-size: cover;
       }
 
       .forecastIcons {
         position: absolute;
-        top: 17%;
-        left: 3%;
+        top: 10px;
 
-        font-size: 16px;
+        font-size: 1.65rem;
         opacity: .90;
       }
 
-      .busNumIconStyle {
-        height: 35px;
-        width: 35px;
-
-        border-radius: 50%;
-
-        font-size: 140%;
-
-        position:absolute;
-        top: 35%;
-        left: 2%;
+      .forecastText {
+        font-family: 'Arima';
+        font-size: 1.1rem;
       }
 
-      .homeworkStyle {
+      .busNumIcon {
+        width: 50px;
         height: 50px;
-        width: 55px;
+        border-radius: 50%;
+        font-size: 3.3rem;
+        background-color: red;
+        line-height: 50px;
+        text-align: center;
+        display: inline-block;
 
-        margin: 0;
-        margin-top: 80%;
-        margin-left: -50%;
+      }
+
+      .routeIconStyle {
+        width: 50px;
+        height: 50px;
+      }
+
+      .routeText {
+        font-size: 1.65rem;
+      }
+
+      .homeworkToday {
+        font-size: 1.2rem;
+      }
+
+      .homeworkCount {
+        font-size: 1.5rem;
+      }
+
+      .homeworkDate {
+        font-size: 1rem;
+      }
+
+      .bold {
+        font-weight: bold;
+      }
+
+      .leftArrow {
+        position: Absolute;
+        left: 14px;
+        bottom: 30px;
+      }
+
+      .rightArrow {
+        position: Absolute;
+        right: 12px;
+        bottom: 30px;
       }
 
       .prettyBox:not(:empty) {
@@ -125,7 +166,6 @@
 
       .tooltip .tooltiptext{
         visibility: hidden;
-
 
         position: absolute;
         bottom: 100%;
@@ -179,6 +219,19 @@
         right: -0.5;
       }
 
+      .newBox {
+        border-left: 1px solid;
+      }
+
+      .newBox:nth-of-type(1) {
+        border-left: 0px solid;
+      }
+
+      @media screen and (max-width: 900px) {
+       #dashboardCard { display: none; }
+       .clockSize { font-size: 5rem;}
+     }
+
       blink {
           -webkit-animation: 0.9s linear infinite condemned_blink_effect; // for android
           animation: 0.9s linear infinite condemned_blink_effect;
@@ -212,30 +265,19 @@
   <body>
     <div id="app">
       <div class="row">
-        <br><br><br>
+        <br><br>
+        <div class="col s1"></div>
+
         <!-- <div class="col s10 l6"> -->
-        <div class="col s5 offset-s1">
-          <!--Time Div-->
-          <div class="date-time">
-            <!--Time Row-->
-            <div class="clock">
-              <div class="row">
-                <div class="col s12">
-                  <br>
-                  <!-- The Vue instance is attached to this div -->
-                  <div>
-                    <div>
-                      <!-- Reference the variable currtime in Vue Instance -->
-                      <em class="clockSize" v-cloak>{{currhour}}<blink>:</blink>{{currmin}}&nbsp;</em>
-                    </div>
-                    <div>
-                      <!-- Reference the variable currdate in Vue Instance -->
-                      <p class="dateSize" v-cloak v-text="currdate">&nbsp;</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+        <div class="col s5">
+          <!--Time Row-->
+          <div class="row clock date-time">
+            <br>
+            <!-- The Vue instance is attached to this div -->
+            <!-- Reference the variable currtime in Vue Instance -->
+            <em class="clockSize" v-cloak>{{currhour}}<blink>:</blink>{{currmin}}&nbsp;</em>
+            <!-- Reference the variable currdate in Vue Instance -->
+            <p class="dateSize" v-cloak v-text="currdate">&nbsp;</p>
           </div>
           <br><br>
 
@@ -291,208 +333,205 @@
           </div>
         </div>
 
-        <div class="col s4 offset-s1">
+        <div class="col s1"></div>
+
+        <div class="col s4" id="dashboardCard">
           <!--Dashboard Card-->
-          <div class="card dashboard" style="margin: auto 0; width: 440px; background: rgba(240,240,240,0.8);">
+          <div class="card dashboard">
             <div class="card-content">
               <div id="temperatureDisplay">
-                <!--Current tempature-->
-                <div class="col s6 push-s1" id="currentTemp" style="font-size: 450%;">&nbsp; </div>
+                <div class="row" style="margin-bottom: 0px;">
+                  <div class="col s1"></div>
 
-                <!--Weather Icon-->
-                <div class="col s6 pull-s1 center-align">
-                  <br>
-                  <i id="weatherIcon" style="font-size: 425%;"></i>
+                  <!--Current tempature-->
+                  <div class="col s5" id="currentTemp" style="font-size: 4.5rem;">&nbsp; </div>
+
+                  <!--Weather Icon-->
+                  <div class="col s5 center-align">
+                    <br>
+                    <i id="weatherIcon" style="font-size: 4.5rem;"></i>
+                  </div>
+
+                  <div class="col s1"></div>
                 </div>
 
-                <!--Forecast Description row-->
-                <div class="row">
-                  <div class="col s12" id="currentTempText" style="font-family: 'Arima Madurai', cursive;">Yahoo Weather API Retired :( <br>I will be fixed soon!&nbsp; </div>
-                  <div class="col s12" id="currentTempRange">&nbsp; </div>
-                  <div class="col s12" id="currentLocation" contenteditable="true">&nbsp; </div>
-                </div>
+                <h5 id="currentTempText" style="font-size: 2rem; margin:0px;">&nbsp; </h5>
+                <p id="currentTempRange" style="font-size: 1.4rem;">&nbsp; </p>
+                <p id="currentLocation"  style="font-size: 1.2rem;" contenteditable="true">&nbsp; </p>
               </div>
 
               <!--Weekly Weather Forecast box-->
-              <div class="box" id="forecastDisplay" style="background: url('otherImages//weatherBackground.jpg');">
-                <div class="row" style="margin: 0;">
-
-                  <div class="col s2">
-                    <div class="box forecastStyle">
-                      <i class="forecastIcons " id="day1Icon"></i>
-                      <div class="top-right" id="day1High"></div>
-                      <div class="mid-right" id="day1Low"></div><br>
-                      <div class="bottom-center" id="day1Date" style = "font-size: 80%;"></div>
+              <div class="row box" id="forecastDisplay">
+                <div class="newBox col s2">
+                  <div class="row" style="margin-bottom:4px;">
+                    <i class="col s1 pull-s4 forecastIcons " id="day1Icon"></i>
+                    <div class="col s6 forecastText">
+                      <div id="day1High"></div>
+                      <div id="day1Low"></div>
                     </div>
                   </div>
 
-                  <div class="col s2">
-                    <div class="box forecastStyle">
-                      <i class="forecastIcons " id="day2Icon"></i>
-                      <span class="top-right" id="day2High"></span>
-                      <span class="mid-right" id="day2Low"></span><br>
-                      <span class="bottom-center" id="day2Date" style = "font-size: 80%;"></span>
+                  <div id="day1Date" class="forecastText" style="font-size: 1rem;"></div>
+                </div>
+
+                <div class="newBox col s2">
+                  <div class="row" style="margin-bottom:4px;">
+                    <i class="col s1 pull-s4 forecastIcons " id="day2Icon"></i>
+                    <div class="col s6 forecastText">
+                      <div id="day2High"></div>
+                      <div id="day2Low"></div>
                     </div>
                   </div>
 
+                  <div id="day2Date" class="forecastText" style="font-size: 1rem;"></div>
+                </div>
 
-                  <div class="col s2">
-                    <div class="box forecastStyle">
-                      <i class="forecastIcons " id="day3Icon"></i>
-                      <span class="top-right" id="day3High"></span>
-                      <span class="mid-right" id="day3Low"></span><br>
-                      <span class="bottom-center" id="day3Date" style = "font-size: 80%;"></span>
+                <div class="newBox col s2">
+                  <div class="row" style="margin-bottom:4px;">
+                    <i class="col s1 pull-s4 forecastIcons " id="day3Icon"></i>
+                    <div class="col s6 forecastText">
+                      <div id="day3High"></div>
+                      <div id="day3Low"></div>
                     </div>
                   </div>
 
-                  <div class="col s2">
-                    <div class="box forecastStyle">
-                      <i class="forecastIcons " id="day4Icon"></i>
-                      <span class="top-right" id="day4High"></span>
-                      <span class="mid-right" id="day4Low"></span><br>
-                      <span class="bottom-center" id="day4Date" style = "font-size: 80%;"></span>
+                  <div id="day3Date" class="forecastText" style="font-size: 1rem;"></div>
+                </div>
+
+                <div class="newBox col s2">
+                  <div class="row" style="margin-bottom:4px;">
+                    <i class="col s1 pull-s4 forecastIcons " id="day4Icon"></i>
+                    <div class="col s6 forecastText">
+                      <div id="day4High"></div>
+                      <div id="day4Low"></div>
                     </div>
                   </div>
 
-                  <div class="col s2">
-                    <div class="box forecastStyle">
-                      <i class="forecastIcons " id="day5Icon"></i>
-                      <span class="top-right" id="day5High"></span>
-                      <span class="mid-right" id="day5Low"></span><br>
-                      <span class="bottom-center" id="day5Date" style = "font-size: 80%;"></span>
+                  <div id="day4Date" class="forecastText" style="font-size: 1rem;"></div>
+                </div>
+
+                <div class="newBox col s2">
+                  <div class="row" style="margin-bottom:4px;">
+                    <i class="col s1 pull-s4 forecastIcons " id="day5Icon"></i>
+                    <div class="col s6 forecastText">
+                      <div id="day5High"></div>
+                      <div id="day5Low"></div>
                     </div>
                   </div>
 
-                  <div class="col s2">
-                    <div class="box forecastStyle">
-                      <i class="forecastIcons " id="day6Icon"></i>
-                      <span class="top-right" id="day6High"></span>
-                      <span class="mid-right" id="day6Low"></span><br>
-                      <span class="bottom-center" id="day6Date" style = "font-size: 80%;"></span>
+                  <div id="day5Date" class="forecastText" style="font-size: 1rem;"></div>
+                </div>
+
+                <div class="newBox col s2">
+                  <div class="row" style="margin-bottom:4px;">
+                    <i class="col s1 pull-s4 forecastIcons " id="day6Icon"></i>
+                    <div class="col s6 forecastText">
+                      <div id="day6High"></div>
+                      <div id="day6Low"></div>
                     </div>
                   </div>
 
+                  <div id="day6Date" class="forecastText" style="font-size: 1rem;"></div>
                 </div>
               </div>
 
               <!--Bus Schedule box-->
-              <div class="box" id="mapsDisplay" style="background: url('otherImages//homeToSchool_410x120.jpg');">
-                <div class="row" style="margin: 0;">
-                  <!-- Different icon type to display, be default each is hidden -->
-                  <a href="maps.html" target="_blank" class="busNumIconStyle linkColourChange" id="busNumIcon" style="display: none;"></a>
-                  <a href="maps.html" target="_blank" class="busNumIconStyle linkColourChange" id="carIcon" style="display: none;"><img  src="otherImages//carLogo2_1.png"></a>
-                  <a href="maps.html" target="_blank" class="busNumIconStyle linkColourChange" id="walkIcon" style="display: none;"><img  src="otherImages//walking_2.jpg"></a>
+              <!-- <div class="row box" id="mapsDisplay" style="background: url('otherImages//homeToSchool_410x120.jpg');"> -->
+              <div class="row box" id="mapsDisplay" style="background: url('otherImages//mapsBackground.jpg'); background-size: cover;">
+                <!-- Different icon type to display, be default each is hidden -->
+                <div class="col s2" style="padding-top:15px;">
+                  <a href="maps.html" target="_blank" class="busNumIcon linkColourChange" id="busNumIcon" style="display: none;"></a>
+                  <a href="maps.html" target="_blank" class="linkColourChange" id="carIcon"  style="display: none;"><img src="otherImages//carLogo2.png" class="routeIconStyle"></a>
+                  <a href="maps.html" target="_blank" class="linkColourChange" id="walkIcon" style="display: none;"><img  src="otherImages//walking.jpg" class="routeIconStyle"></a>
+                </div>
 
-                  <!-- Departure/Arrival time text spaces -->
-                  <div class="col s7" style="font-size:130%;">
-                    <b>Leave: </b>
-                    <b id="busLeaveTime"></b>
-                    <br>
-                    <b>Arrive: </b>
-                    <b id="busArriveTime"></b>
-                  </div>
+                <!-- Departure/Arrival time text spaces -->
+                <div class="col s5">
+                  <b class="routeText">Leave: </b>
+                  <b class="routeText" id="busLeaveTime"></b>
+                  <br>
+                  <b class="routeText">Arrive: </b>
+                  <b class="routeText" id="busArriveTime"></b>
+                </div>
 
-                  <!-- Origin/Destination text spaces. Origin implements tooltip to use hover over text boxes to display full adress -->
-                  <div class="col s5" style="font-size:130%">
-                    <span class="tooltip">
-                      <b>Start: <b>
-                      <b id="busOrigin"></b>
-                      <span class="tooltiptext prettyBox shadow1" id="originFullText"></span>
-                    </span>
+                <!-- Origin/Destination text spaces. Origin implements tooltip to use hover over text boxes to display full adress -->
+                <div class="col s5" class="routeText">
+                  <span class="tooltip">
+                    <b class="routeText">Start: </b>
+                    <b class="routeText" id="busOrigin"></b>
+                    <span class="tooltiptext prettyBox shadow1" id="originFullText"></span>
+                  </span>
 
-                    <br>
-                    <b>End: </b>
-                    <b id="busDestination"></b>
-                  </div>
-
+                  <br>
+                  <b class="routeText">End: </b>
+                  <b class="routeText" id="busDestination"></b>
                 </div>
               </div>
 
               <!-- Homework/Calendar Box -->
-              <div class="box" style="background: url('otherImages//calendarBackground.jpg');">
+              <div class="row box bold" style="background: url('otherImages//calendarBackground.jpg');">
                 <!-- Allows for 6 items to be displayed for today -->
-                <span class="top-left">Today:</span>
-                <div style="fontSize: 86%;">
-                  <span class="col s6" id="hwday0Item0"></span> <span class="col s6" id="hwday0Item1"></span>
-                  <span class="col s6" id="hwday0Item2"></span> <span class="col s6" id="hwday0Item3"></span>
-                  <span class="col s6" id="hwday0Item4"></span> <span class="col s6" id="hwday0Item5"></span>
-                </div>
+                <div class="top-left" style="font-size: 1.2rem;">Today:</div>
+                <span class="col s6 homeworkToday" id="hwday0Item0"></span> <span class="col s6 homeworkToday" id="hwday0Item1"></span>
+                <span class="col s6 homeworkToday" id="hwday0Item2"></span> <span class="col s6 homeworkToday" id="hwday0Item3"></span>
+                <span class="col s6 homeworkToday" id="hwday0Item4"></span> <span class="col s6 homeworkToday" id="hwday0Item5"></span>
+
 
                 <!-- Displays 6 boxes to show homwork count for the next 6 days -->
                 <div class="row" style="margin: 0;">
-                  <div class="col s2">
-                    <div class="box homeworkStyle tooltip">
-                      <span class="top-center" id="day1Count" style="fontSize:150%;"></span>
-                      <span class="bottom-center" id="hwDay1Date" style="fontSize:80%;"></span>
+                  <div class="col s2 tooltip newBox">
+                    <span id="day1Count" class="homeworkCount"></span>
+                    <br>
+                    <span id="hwDay1Date" class="homeworkDate"></span>
 
-                      <div class="tooltiptext prettyBox" id="day1Calendar">
-                      </div>
-                    </div>
+                    <div class="tooltiptext prettyBox" id="day1Calendar"></div>
                   </div>
 
-                   <div class="col s2">
-                    <div class="box homeworkStyle tooltip">
-                      <span class="top-center" id="day2Count" style="fontSize:150%;"> </span>
-                      <span class="bottom-center" id="hwDay2Date" style="fontSize:80%;"></span>
+                  <div class="col s2 tooltip newBox">
+                    <span id="day2Count" class="homeworkCount"></span>
+                    <br>
+                    <span id="hwDay2Date" class="homeworkDate"></span>
 
-                      <div class="tooltiptext prettyBox" id="day2Calendar">
-                      </div>
-                    </div>
+                    <div class="tooltiptext prettyBox" id="day2Calendar"></div>
                   </div>
 
-                  <div class="col s2">
-                    <div class="box homeworkStyle tooltip">
-                      <span class="top-center" id="day3Count" style="fontSize:150%;"></span>
-                      <span class="bottom-center" id="hwDay3Date" style="fontSize:80%;"></span>
+                  <div class="col s2 tooltip newBox">
+                    <span id="day3Count" class="homeworkCount"></span>
+                    <br>
+                    <span id="hwDay3Date" class="homeworkDate"></span>
 
-                      <div class="tooltiptext prettyBox" id="day3Calendar">
-                      </div>
-                    </div>
+                    <div class="tooltiptext prettyBox" id="day3Calendar"></div>
                   </div>
 
-                  <div class="col s2">
-                    <div class="box homeworkStyle tooltip">
-                      <span class="top-center" id="day4Count" style="fontSize:150%;"> </span>
-                      <span class="bottom-center" id="hwDay4Date" style="fontSize:80%;"></span>
+                  <div class="col s2 tooltip newBox">
+                    <span id="day4Count" class="homeworkCount"></span>
+                    <br>
+                    <span id="hwDay4Date" class="homeworkDate"></span>
 
-                      <div class="tooltiptext prettyBox" id="day4Calendar">
-                      </div>
-                    </div>
+                    <div class="tooltiptext prettyBox" id="day4Calendar"></div>
                   </div>
 
-                  <div class="col s2">
-                    <div class="box homeworkStyle tooltip">
-                      <span class="top-center" id="day5Count" style="fontSize:150%;"> </span>
-                      <span class="bottom-center" id="hwDay5Date" style="fontSize:80%;"></span>
+                  <div class="col s2 tooltip newBox">
+                    <span id="day5Count" class="homeworkCount"></span>
+                    <br>
+                    <span id="hwDay5Date" class="homeworkDate"></span>
 
-                      <div class="tooltiptext prettyBox" id="day5Calendar">
-                      </div>
-                    </div>
+                    <div class="tooltiptext prettyBox" id="day5Calendar"></div>
                   </div>
 
-                  <div class="col s2">
-                    <div class="box homeworkStyle tooltip">
-                      <span class="top-center" id="day6Count" style="fontSize:150%;"> </span>
-                      <span class="bottom-center" id="hwDay6Date" style="fontSize:80%;"></span>
+                  <div class="col s2 tooltip newBox">
+                    <span id="day6Count" class="homeworkCount"></span>
+                    <br>
+                    <span id="hwDay6Date" class="homeworkDate"></span>
 
-                      <div class="tooltiptext prettyBox" id="day6Calendar">
-                      </div>
-                    </div>
+                    <div class="tooltiptext prettyBox" id="day6Calendar"></div>
                   </div>
+
                 </div>
 
-                <!-- Last page link -->
-                <div class="col s1">
-                  <a onclick="changePage(-1)"> < </a>
-                </div>
-
-                <!-- Next page link -->
-                <div class="col s1 push-s10">
-                  <a onclick="changePage(1)"> > </a>
-                </div>
-
+                <a onclick="changePage(-1)" class="leftArrow"><i class="material-icons">arrow_back_ios</i></a>
+                <a onclick="changePage(1)" class="rightArrow"><i class="material-icons">arrow_forward_ios</i></a>
               </div>
-
             </div>
           </div>
         </div>
@@ -549,7 +588,7 @@
     $.ajax({
       url:'backgroundRand.php',
       method:'POST',
-      success:function(data){
+      success:function(data) {
         try {
           console.log("Background: " + data);
           if (String(data) == "backgrounds/" || data == "")
@@ -680,7 +719,7 @@
       if (crd.accuracy > 100)
         document.getElementById('originFullText').innerHTML = crd.accuracy + ": ";
 
-      // displayWeather();
+      displayWeather();
       displayBusSchedule();
     }
 
@@ -696,39 +735,13 @@
     navigator.geolocation.getCurrentPosition(success, error, options);
   }
 
-  function getIcon(lastBuildTime, sunset, curWeather) {
-    // console.log("Current text: " + curWeather);
+  function getIcon(isDay, curWeather) {
     var iconText = "wi wi-"
 
-    // IFf lastBuildTime == FORECAST, we are gettin icon for weekly forecast and therefor do not want time specific icons
-    if (lastBuildTime != "FORECAST") {
-      if (lastBuildTime.includes("AM"))
-        iconText += "day-";
-      else if (lastBuildTime.includes("PM")) {
-        // If it is in the PM, we need to check if it is after sunset
-        var i = 15;
-
-        // Loop till colon of buildTime in order to parse the build time (current Time)
-        while (lastBuildTime.charCodeAt(i) != 58) i++;
-
-        // Current build time hour is always double digit (i.e. 07:28 or 10:28). Get those digits
-        var curHour = lastBuildTime[i-2] + lastBuildTime[i-1];
-
-        // Set setHour to empty value and reset loop index
-        var setHour = "";
-        i = 0;
-
-        // Copy characters until we hit the colon
-        while (sunset.charCodeAt(i) != 58)
-          setHour += sunset[i++];
-
-        // Check if it is after sunset
-        if (parseInt(curHour) < parseInt(setHour))
-          iconText += "day-";
-        else
-          iconText += "night-alt-"
-      }
-    }
+    if (isDay == 1)
+      iconText += "day-";
+    else if (isDay == 0)
+      iconText += "night-alt-";
 
     // Determine which icon to display
     if (curWeather.includes("sunny") || curWeather.includes("hot"))
@@ -751,7 +764,7 @@
       iconText += "showers";
     else if (curWeather.includes("thunderstorms"))
       iconText += "storm-showers";
-    else if (curWeather.includes("snow"))
+    else if (curWeather.includes("snow") || curWeather.includes("blizzard"))
       iconText += "snow";
     else if (curWeather.includes("foggy") || curWeather.includes("haze") ||
              curWeather.includes("dust")  || curWeather.includes("smokey"))
@@ -772,35 +785,48 @@
     if (customLocation != "")
       location = customLocation;
 
-    $.get("https://query.yahooapis.com/v1/public/yql?q=select * from weather.forecast where woeid in (select woeid from geo.places where text=\"(" + location + ")\") and u='c'&format=json", function (data) {})
-    .done(function(data) {
-      /* Check that a place was found (we'll just grab the first) */
-      if (data.query.results === null) {
-          console.log("Weather for " + location + "not found!");
-          document.getElementById('temperatureDisplay').style = "display: none";
-          document.getElementById('forecastDisplay').style = "display: none;"
-      } else {
-        // get weather icon
-        document.getElementById('weatherIcon').className = getIcon(data.query.results.channel.lastBuildDate, data.query.results.channel.astronomy.sunset, (data.query.results.channel.item.condition.text).toLowerCase());
-        // getIcon("Tue, 15 May 2018 09:29 PM CST", "8:54", "Rain".toLowerCase());
+      $(document).ready(function() {
+      $.ajax({
+        // url: 'http://api.apixu.com/v1/forecast.json?key=2a5f91f5f5b34808bea182102193001&q=Guelph,On',
+        url: 'http://api.apixu.com/v1/forecast.json',
+        method: 'GET',
+        data: {
+          "key": "2a5f91f5f5b34808bea182102193001",
+          "q": location,
+          "days": 7
+        },
+        success: function(response) {
+          console.log("Success");
+          console.log(response);
+          var weekDays = new Array("Sun", "Mon", "Tues", "Wed", "Thur", "Fri", "Sat");
 
-        // Set actual time weather
-        document.getElementById('currentTemp').innerHTML = data.query.results.channel.item.condition.temp + "&deg;C";
-        document.getElementById('currentTempText').innerHTML = data.query.results.channel.item.condition.text;
-        document.getElementById('currentTempRange').innerHTML = data.query.results.channel.item.forecast[0].low + "&deg;C - " + data.query.results.channel.item.forecast[0].high + "&deg;C";// : 60%";
+          // get weather icon
+          document.getElementById('weatherIcon').className = getIcon(response.current.is_day, (response.current.condition.text).toLowerCase());
+          // getIcon("Tue, 15 May 2018 09:29 PM CST", "8:54", "Rain".toLowerCase());
 
-        // Update locationRef to store city and region and display it
-        locationRef = new Location(locationRef.lat, locationRef.long, locationRef.accuracy, data.query.results.channel.location.city + ", " + data.query.results.channel.location.region);
-        document.getElementById('currentLocation').innerHTML = "<img src=\"otherImages/locationDrop.png\" style=\"width:10px;\"> " + locationRef.city;
+          // Set actual time weather
+          document.getElementById('currentTemp').innerHTML = Math.round(response.current.feelslike_c) + "&deg;C";
+          document.getElementById('currentTempText').innerHTML = response.current.condition.text;
+          document.getElementById('currentTempRange').innerHTML = Math.round(response.forecast.forecastday[0].day.mintemp_c) + "&deg;C - " + Math.round(response.forecast.forecastday[0].day.maxtemp_c) + "&deg;C";// : 60%";
 
-        // Loop through forecast and change weekly forecast highs, lows and days
-        for (var i = 1; i < 7; i++) {
-          document.getElementById('day' + i + 'Icon').className += getIcon("FORCAST", "-1", (data.query.results.channel.item.forecast[i].text).toLowerCase());
-          document.getElementById('day' + i + 'High').innerHTML = data.query.results.channel.item.forecast[i].high + "&deg;C";
-          document.getElementById('day' + i + 'Low').innerHTML = data.query.results.channel.item.forecast[i].low + "&deg;C";
-          document.getElementById('day' + i + 'Date').innerHTML = data.query.results.channel.item.forecast[i].day;
+          // // Update locationRef to store city and region and display it
+          locationRef = new Location(locationRef.lat, locationRef.long, locationRef.accuracy, response.location.name + ", " + response.location.region);
+          document.getElementById('currentLocation').innerHTML = "<img src=\"otherImages/locationDrop.png\" style=\"width:10px;\"> " + locationRef.city;
+
+          var date;
+          // // Loop through forecast and change weekly forecast highs, lows and days
+          for (var i = 1; i < 7; i++) {
+            document.getElementById('day' + i + 'Icon').className += getIcon("FORCAST", (response.forecast.forecastday[i].day.condition.text).toLowerCase());
+            document.getElementById('day' + i + 'High').innerHTML = Math.round(response.forecast.forecastday[i].day.maxtemp_c) + "&deg;";
+            document.getElementById('day' + i + 'Low').innerHTML  = Math.round(response.forecast.forecastday[i].day.mintemp_c) + "&deg;";
+            document.getElementById('day' + i + 'Date').innerHTML = weekDays[new Date(response.forecast.forecastday[i].date).getDay()];
+          }
+        },
+        error: function(response) {
+          console.log("Failed");
+          console.log(response);
         }
-      }
+      });
     });
   }
 
@@ -962,6 +988,9 @@
       if (status == 'OK') {
         console.log(result);
         var instructions = result.routes[0].legs[0];
+        document.getElementById('busNumIcon').style = "display: none;";
+        document.getElementById('carIcon').style =  "display: none;";
+        document.getElementById('walkIcon').style = "display: none;";
 
         // If our current travel mode is to use buses
         if (request.travelMode == "TRANSIT" && instructions.steps.length > 1) {
@@ -1048,22 +1077,22 @@
 
   function displayHwCalendar() {
     var hwList = '[' +
-                // '{"type":"string", "dueDate":"' + new Date() + '", "course":"CIS 1234", "name":"Quiz 1", "weight":"1"},' +
-                // '{"type":"string", "dueDate":"' + new Date() + '", "course":"CIS 1234", "name":"Quiz 2", "weight":"1"},' +
+                '{"type":"string", "dueDate":"' + new Date() + '", "course":"CIS 1234", "name":"Quiz 1", "weight":"1"},' +
+                '{"type":"string", "dueDate":"' + new Date() + '", "course":"CIS 1234", "name":"Quiz 2", "weight":"1"},' +
                 // '{"type":"string", "dueDate":"' + new Date() + '", "course":"CIS 1234", "name":"Quiz 3", "weight":"1"},' +
                 // '{"type":"string", "dueDate":"' + new Date() + '", "course":"CIS 1234", "name":"Quiz 4", "weight":"1"},' +
 
 
                   // EDRD Discusions
-                 '{"type":"string", "dueDate":"' + new Date(2018, 0, 21, 23, 59) + '", "course":"EDRD 3500", "name":"Disc 1 Op", "weight":"5"},' +
-                 '{"type":"string", "dueDate":"' + new Date(2018, 0, 27, 23, 59) + '", "course":"EDRD 3500", "name":"Disc 1 Cl", "weight":"5"},' +
-                 '{"type":"string", "dueDate":"' + new Date(2018, 1, 11, 23, 59) + '", "course":"EDRD 3500", "name":"Disc 2 Op", "weight":"5"},' +
-                 '{"type":"string", "dueDate":"' + new Date(2018, 1, 17, 23, 59) + '", "course":"EDRD 3500", "name":"Disc 2 Cl", "weight":"5"},' +
-                 '{"type":"string", "dueDate":"' + new Date(2018, 2, 18, 23, 59) + '", "course":"EDRD 3500", "name":"Disc 3 Op", "weight":"5"},' +
-                 '{"type":"string", "dueDate":"' + new Date(2018, 2, 24, 23, 59) + '", "course":"EDRD 3500", "name":"Disc 3 Cl", "weight":"5"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 0, 21, 23, 59) + '", "course":"EDRD 3500", "name":"Disc 1 O", "weight":"5"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 0, 27, 23, 59) + '", "course":"EDRD 3500", "name":"Disc 1 C", "weight":"5"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 1, 11, 23, 59) + '", "course":"EDRD 3500", "name":"Disc 2 O", "weight":"5"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 1, 17, 23, 59) + '", "course":"EDRD 3500", "name":"Disc 2 C", "weight":"5"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 2, 18, 23, 59) + '", "course":"EDRD 3500", "name":"Disc 3 O", "weight":"5"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 2, 24, 23, 59) + '", "course":"EDRD 3500", "name":"Disc 3 C", "weight":"5"},' +
                  // EDRD Assignments
                  '{"type":"string", "dueDate":"' + new Date(2018, 1, 10, 23, 59) + '", "course":"EDRD 3500", "name":"Lit Rev.", "weight":"25"},' +
-                 '{"type":"string", "dueDate":"' + new Date(2018, 3, 17, 23, 59) + '", "course":"EDRD 3500", "name":"Prog & Eval.", "weight":"35"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 3, 17, 23, 59) + '", "course":"EDRD 3500", "name":"Eval.", "weight":"35"},' +
                  // EDRD Final
                  '{"type":"string", "dueDate":"' + new Date(2018, 13, 22, 11, 30) + '", "course":"CIS 3150", "name":"Quiz 9", "weight":"1"},' +
 
@@ -1074,22 +1103,22 @@
                  '{"type":"string", "dueDate":"' + new Date(2018, 2,  8, 23, 59) + '", "course":"CIS 4820", "name":"Ass 3", "weight":"15"},' +
                  '{"type":"string", "dueDate":"' + new Date(2018, 2, 22, 23, 59) + '", "course":"CIS 4820", "name":"Ass 4", "weight":"15"},' +
                  // CIS 4820 Exams
-                 '{"type":"string", "dueDate":"' + new Date(2018, 1, 11,  2, 30) + '", "course":"CIS 4820", "name":"Midterm", "weight":"25"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 1, 11,  2, 30) + '", "course":"CIS 4820", "name":"Mid", "weight":"25"},' +
                  '{"type":"string", "dueDate":"' + new Date(2018, 3, 12,  7, 00) + '", "course":"CIS 4820", "name":"Final", "weight":"25"},' +
 
 
                  // CIS 4650 Assignment
-                 '{"type":"string", "dueDate":"' + new Date(2018, 0,  6, 23, 59) + '", "course":"CIS 4650", "name":"A1", "weight":"10"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 0, 31, 23, 59) + '", "course":"CIS 4650", "name":"A1", "weight":"10"},' +
                  '{"type":"string", "dueDate":"' + new Date(2018, 2, 13, 23, 59) + '", "course":"CIS 4650", "name":"CP 1", "weight":"15"},' +
                  '{"type":"string", "dueDate":"' + new Date(2018, 2, 20, 23, 59) + '", "course":"CIS 4650", "name":"CP 2", "weight":"15"},' +
                  '{"type":"string", "dueDate":"' + new Date(2018, 3, 27, 23, 59) + '", "course":"CIS 4650", "name":"CP 3", "weight":"15"},' +
                  //CIS 4650 Exams
-                 '{"type":"string", "dueDate":"' + new Date(2018, 1, 15,  1, 30) + '", "course":"CIS 4650", "name":"Midterm", "weight":"20"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 1, 15,  1, 30) + '", "course":"CIS 4650", "name":"Mid", "weight":"20"},' +
                  '{"type":"string", "dueDate":"' + new Date(2018, 3, 17,  2, 30) + '", "course":"CIS 4650", "name":"Final", "weight":"25"},' +
 
 
                  // CIS 3700 Assignments
-                 '{"type":"string", "dueDate":"' + new Date(2018, 1,  1, 11, 30) + '", "course":"CIS 3700", "name":"Ass 1", "weight":"12"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 1, 14, 11, 30) + '", "course":"CIS 3700", "name":"Ass 1", "weight":"12"},' +
                  '{"type":"string", "dueDate":"' + new Date(2018, 2, 15, 11, 30) + '", "course":"CIS 3700", "name":"Ass 2", "weight":"12"},' +
                  '{"type":"string", "dueDate":"' + new Date(2018, 2, 29, 11, 30) + '", "course":"CIS 3700", "name":"Ass 3", "weight":"12"},' +
                  // CIS 3700 Exams
@@ -1105,7 +1134,7 @@
                  ']';
     var cur, today = new Date(), weekDays = new Array("Sun", "Mon", "Tues", "Wed", "Thur", "Fri", "Sat");
     var myMap = createHwMap(JSON.parse(hwList));
-
+    console.log("HIT")
     // If function is called with a page offset request, adjust 'today'
     if (pageOffset != 0) {
       today = new Date(today.getTime() + (pageOffset * 7) * 24 * 60 * 60 * 1000);
