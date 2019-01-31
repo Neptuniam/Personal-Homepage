@@ -592,17 +592,19 @@
         try {
           console.log("Background: " + data);
           if (String(data) == "backgrounds/" || data == "")
-            throw "backgrounds/earthporn24.png";
+            throw "backgrounds/earthPorn24.png";
 
           // Set the new "next" background
           localStorage.setItem("nextBackground", data);
         } catch(err) {
-          document.body.style.background = "#f3f3f3 url(\'" + err + "\') no-repeat fixed center";
+          document.body.style.background = "url(\'" + err + "\')";
+          document.body.style.backgroundSize = "cover";
         }
      },
      error: function(data) {
        console.log("Background gen failed: " + data);
-       document.body.style.background = "#f3f3f3 url('backgrounds/earthporn17.jpg') no-repeat fixed center";
+       document.body.style.background = "url('backgrounds/earthPorn17.jpg')";
+       document.body.style.backgroundSize = "cover";
      }
    });
   });
@@ -787,7 +789,6 @@
 
       $(document).ready(function() {
       $.ajax({
-        // url: 'http://api.apixu.com/v1/forecast.json?key=2a5f91f5f5b34808bea182102193001&q=Guelph,On',
         url: 'https://api.apixu.com/v1/forecast.json',
         method: 'GET',
         data: {
@@ -1077,8 +1078,8 @@
 
   function displayHwCalendar() {
     var hwList = '[' +
-                '{"type":"string", "dueDate":"' + new Date() + '", "course":"CIS 1234", "name":"Quiz 1", "weight":"1"},' +
-                '{"type":"string", "dueDate":"' + new Date() + '", "course":"CIS 1234", "name":"Quiz 2", "weight":"1"},' +
+                // '{"type":"string", "dueDate":"' + new Date() + '", "course":"CIS 1234", "name":"Quiz 1", "weight":"1"},' +
+                // '{"type":"string", "dueDate":"' + new Date() + '", "course":"CIS 1234", "name":"Quiz 2", "weight":"1"},' +
                 // '{"type":"string", "dueDate":"' + new Date() + '", "course":"CIS 1234", "name":"Quiz 3", "weight":"1"},' +
                 // '{"type":"string", "dueDate":"' + new Date() + '", "course":"CIS 1234", "name":"Quiz 4", "weight":"1"},' +
 
