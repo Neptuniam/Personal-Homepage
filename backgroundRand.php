@@ -10,10 +10,6 @@
     $imdata = base64_encode($im);
 
     echo $path;
-    // echo json_encode(array(
-    //   'url'=> 'data:image/' . pathinfo($path, PATHINFO_EXTENSION) . ';base64,',
-    //   'img'=> $imdata
-    // ));
   }
 
   getBackground();

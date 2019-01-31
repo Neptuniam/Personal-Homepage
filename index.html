@@ -602,7 +602,7 @@
      },
      error: function(data) {
        console.log("Background gen failed: " + data);
-       document.body.style.background = "#f3f3f3 url('backgrounds/earthporn17.png') no-repeat fixed center";
+       document.body.style.background = "#f3f3f3 url('backgrounds/earthporn17.jpg') no-repeat fixed center";
      }
    });
   });
@@ -788,7 +788,7 @@
       $(document).ready(function() {
       $.ajax({
         // url: 'http://api.apixu.com/v1/forecast.json?key=2a5f91f5f5b34808bea182102193001&q=Guelph,On',
-        url: 'http://api.apixu.com/v1/forecast.json',
+        url: 'https://api.apixu.com/v1/forecast.json',
         method: 'GET',
         data: {
           "key": "2a5f91f5f5b34808bea182102193001",
