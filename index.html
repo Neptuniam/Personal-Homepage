@@ -17,7 +17,7 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Arima+Madurai|Bangers|Gruppo|Nixie+One|Noto+Serif|Nova+Flat|Poiret+One|Shrikhand" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Playball" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Playball|Roboto|Lusitana|Metrophobic|Andika" rel="stylesheet">
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script> -->
 
     <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
@@ -54,7 +54,7 @@
       }
 
       .clockSize {
-        font-size: 8rem;
+        font-size: 10rem;
         text-align: center;
         color: rgba(0,0,0,8);
 
@@ -62,7 +62,7 @@
       }
 
       .dateSize {
-        font-size: 2rem;
+        font-size: 3rem;
         color: rgba(0,0,0,8);
         margin-top: -1em;
       }
@@ -73,18 +73,26 @@
       }
 
       .favButtons {
-        width:  40px;
-        height: 40px;
+        width:  50px;
+        height: 50px;
+      }
+
+      .favouritesDashboard {
+        margin:0 auto;
+
+        width:500px;
+        background: rgba(240,240,240,0.5);
       }
 
       .dashboard {
         text-align: center;
-        font-family: 'Gruppo', cursive;
+        font-family: 'Roboto';
+        /* 'Gruppo', cursive; */
 
-        margin: auto 0;
+        margin: auto;
 
         width: 575px;
-        background: rgba(240,240,240,0.8);
+        background: rgba(240,240,240,0.5);
       }
 
       #forecastDisplay {
@@ -94,27 +102,25 @@
 
       .forecastIcons {
         position: absolute;
-        top: 10px;
+        top: 20px;
 
-        font-size: 1.65rem;
+        font-size: 1.75rem;
         opacity: .90;
-      }
-
-      .forecastText {
-        font-family: 'Arima';
-        font-size: 1.1rem;
       }
 
       .busNumIcon {
         width: 50px;
         height: 50px;
         border-radius: 50%;
-        font-size: 3.3rem;
+        font-size: 3rem;
         background-color: red;
         line-height: 50px;
         text-align: center;
         display: inline-block;
+      }
 
+      .forecastText {
+        font-size: 1.4rem;
       }
 
       .routeIconStyle {
@@ -123,7 +129,7 @@
       }
 
       .routeText {
-        font-size: 1.65rem;
+        font-size: 1.5rem;
       }
 
       .homeworkToday {
@@ -135,7 +141,7 @@
       }
 
       .homeworkDate {
-        font-size: 1rem;
+        font-size: 1.2rem;
       }
 
       .bold {
@@ -227,7 +233,7 @@
         border-left: 0px solid;
       }
 
-      @media screen and (max-width: 900px) {
+      @media screen and (max-width: 1000px) {
        #dashboardCard { display: none; }
        .clockSize { font-size: 5rem;}
      }
@@ -265,11 +271,11 @@
   <body>
     <div id="app">
       <div class="row">
-        <br><br>
-        <div class="col s1"></div>
+        <!-- <br> -->
+        <!-- <div class="col s1"></div> -->
 
         <!-- <div class="col s10 l6"> -->
-        <div class="col s5">
+        <div class="col s6" style="padding-top: 1.5%;">
           <!--Time Row-->
           <div class="row clock date-time">
             <br>
@@ -282,7 +288,7 @@
           <br><br>
 
           <!--Browser Card-->
-          <div class="card" style="margin:0 auto; width:420px; background: rgba(240,240,240,0.5);">
+          <div class="card favouritesDashboard">
             <div class="card-content">
               <!--Google basic search bar-->
               <form method="get" action="http://www.google.com/search">
@@ -333,9 +339,9 @@
           </div>
         </div>
 
-        <div class="col s1"></div>
+        <!-- <div class="col s1"></div> -->
 
-        <div class="col s4" id="dashboardCard">
+        <div class="col s6" id="dashboardCard" style="padding-top: 1.5%;">
           <!--Dashboard Card-->
           <div class="card dashboard">
             <div class="card-content">
@@ -357,7 +363,12 @@
 
                 <h5 id="currentTempText" style="font-size: 2rem; margin:0px;">&nbsp; </h5>
                 <p id="currentTempRange" style="font-size: 1.4rem;">&nbsp; </p>
-                <p id="currentLocation"  style="font-size: 1.2rem;" contenteditable="true">&nbsp; </p>
+                <p>
+                  <img src='otherImages/locationDrop.png' style='width:20px;'>
+                  <span id="currentLocation"  style="font-size: 1.2rem;" contenteditable="true">&nbsp; </span>
+                </p>
+
+
               </div>
 
               <!--Weekly Weather Forecast box-->
@@ -365,73 +376,73 @@
                 <div class="newBox col s2">
                   <div class="row" style="margin-bottom:4px;">
                     <i class="col s1 pull-s4 forecastIcons " id="day1Icon"></i>
-                    <div class="col s6 forecastText">
-                      <div id="day1High"></div>
-                      <div id="day1Low"></div>
+                    <div class="col s6 pull-s2 forecastText">
+                      <div id="day1High">&nbsp;</div>
+                      <div id="day1Low">&nbsp;</div>
                     </div>
                   </div>
 
-                  <div id="day1Date" class="forecastText" style="font-size: 1rem;"></div>
+                  <div id="day1Date" class="forecastText">&nbsp;</div>
                 </div>
 
                 <div class="newBox col s2">
                   <div class="row" style="margin-bottom:4px;">
                     <i class="col s1 pull-s4 forecastIcons " id="day2Icon"></i>
-                    <div class="col s6 forecastText">
+                    <div class="col s6 pull-s2 forecastText">
                       <div id="day2High"></div>
                       <div id="day2Low"></div>
                     </div>
                   </div>
 
-                  <div id="day2Date" class="forecastText" style="font-size: 1rem;"></div>
+                  <div id="day2Date" class="forecastText"></div>
                 </div>
 
                 <div class="newBox col s2">
                   <div class="row" style="margin-bottom:4px;">
                     <i class="col s1 pull-s4 forecastIcons " id="day3Icon"></i>
-                    <div class="col s6 forecastText">
+                    <div class="col s6 pull-s2 forecastText">
                       <div id="day3High"></div>
                       <div id="day3Low"></div>
                     </div>
                   </div>
 
-                  <div id="day3Date" class="forecastText" style="font-size: 1rem;"></div>
+                  <div id="day3Date" class="forecastText"></div>
                 </div>
 
                 <div class="newBox col s2">
                   <div class="row" style="margin-bottom:4px;">
                     <i class="col s1 pull-s4 forecastIcons " id="day4Icon"></i>
-                    <div class="col s6 forecastText">
+                    <div class="col s6 pull-s2 forecastText">
                       <div id="day4High"></div>
                       <div id="day4Low"></div>
                     </div>
                   </div>
 
-                  <div id="day4Date" class="forecastText" style="font-size: 1rem;"></div>
+                  <div id="day4Date" class="forecastText"></div>
                 </div>
 
                 <div class="newBox col s2">
                   <div class="row" style="margin-bottom:4px;">
                     <i class="col s1 pull-s4 forecastIcons " id="day5Icon"></i>
-                    <div class="col s6 forecastText">
+                    <div class="col s6 pull-s2 forecastText">
                       <div id="day5High"></div>
                       <div id="day5Low"></div>
                     </div>
                   </div>
 
-                  <div id="day5Date" class="forecastText" style="font-size: 1rem;"></div>
+                  <div id="day5Date" class="forecastText"></div>
                 </div>
 
                 <div class="newBox col s2">
                   <div class="row" style="margin-bottom:4px;">
                     <i class="col s1 pull-s4 forecastIcons " id="day6Icon"></i>
-                    <div class="col s6 forecastText">
+                    <div class="col s6 pull-s2 forecastText">
                       <div id="day6High"></div>
                       <div id="day6Low"></div>
                     </div>
                   </div>
 
-                  <div id="day6Date" class="forecastText" style="font-size: 1rem;"></div>
+                  <div id="day6Date" class="forecastText"></div>
                 </div>
               </div>
 
@@ -439,7 +450,7 @@
               <!-- <div class="row box" id="mapsDisplay" style="background: url('otherImages//homeToSchool_410x120.jpg');"> -->
               <div class="row box" id="mapsDisplay" style="background: url('otherImages//mapsBackground.jpg'); background-size: cover;">
                 <!-- Different icon type to display, be default each is hidden -->
-                <div class="col s2" style="padding-top:15px;">
+                <div class="col s2" style="padding-top:10px;">
                   <a href="maps.html" target="_blank" class="busNumIcon linkColourChange" id="busNumIcon" style="display: none;"></a>
                   <a href="maps.html" target="_blank" class="linkColourChange" id="carIcon"  style="display: none;"><img src="otherImages//carLogo2.png" class="routeIconStyle"></a>
                   <a href="maps.html" target="_blank" class="linkColourChange" id="walkIcon" style="display: none;"><img  src="otherImages//walking.jpg" class="routeIconStyle"></a>
@@ -447,29 +458,23 @@
 
                 <!-- Departure/Arrival time text spaces -->
                 <div class="col s5">
-                  <b class="routeText">Leave: </b>
-                  <b class="routeText" id="busLeaveTime"></b>
-                  <br>
-                  <b class="routeText">Arrive: </b>
-                  <b class="routeText" id="busArriveTime"></b>
+                  <p class="routeText" id="busLeaveTime">&nbsp;</p>
+                  <p class="routeText" id="busArriveTime">&nbsp;</p>
                 </div>
 
                 <!-- Origin/Destination text spaces. Origin implements tooltip to use hover over text boxes to display full adress -->
                 <div class="col s5" class="routeText">
                   <span class="tooltip">
-                    <b class="routeText">Start: </b>
-                    <b class="routeText" id="busOrigin"></b>
+                    <p class="routeText" id="busOrigin">&nbsp;</p>
                     <span class="tooltiptext prettyBox shadow1" id="originFullText"></span>
                   </span>
 
-                  <br>
-                  <b class="routeText">End: </b>
-                  <b class="routeText" id="busDestination"></b>
+                  <p class="routeText" id="busDestination">&nbsp;</p>
                 </div>
               </div>
 
               <!-- Homework/Calendar Box -->
-              <div class="row box bold" style="background: url('otherImages//calendarBackground.jpg');">
+              <div class="row box" style="background: url('otherImages//calendarBackground.jpg');">
                 <!-- Allows for 6 items to be displayed for today -->
                 <div class="top-left" style="font-size: 1.2rem;">Today:</div>
                 <span class="col s6 homeworkToday" id="hwday0Item0"></span> <span class="col s6 homeworkToday" id="hwday0Item1"></span>
@@ -535,6 +540,8 @@
             </div>
           </div>
         </div>
+
+        <!-- <div class="col s1"></div> -->
       </div>
     </div>
   </body>
@@ -676,7 +683,6 @@
   }
   var pageOffset = 0;
 
-  // getUserLocation();
   displayHwCalendar();
 
   var input = document.getElementById("currentLocation");
@@ -684,7 +690,6 @@
       event.preventDefault();
       if (event.keyCode === 13) {
         var customText = document.getElementById("currentLocation").innerHTML;
-        customText = customText.slice(customText.indexOf("nbsp;") + 5, customText.length);
         customText = customText.slice(0, customText.indexOf('<'));
 
         if (customText[0] == '/') {
@@ -695,7 +700,7 @@
           myMap[commands[0]](commands);
 
           // Reset the input box to the user's current location
-          document.getElementById("currentLocation").innerHTML = "<img src=\"otherImages/locationDrop.png\" style=\"width:10px;\"> " + locationRef.city;
+          document.getElementById("currentLocation").innerHTML = locationRef.city;
         } else {
           customLocation = customText;
           displayWeather();
@@ -720,6 +725,10 @@
 
       if (crd.accuracy > 100)
         document.getElementById('originFullText').innerHTML = crd.accuracy + ": ";
+
+      // If the accuracy is really poor, just set us to be home
+      if (crd.accuracy > 500)
+        locationRef = new Location(locationRef.home.lat, locationRef.home.long, 0, locationRef.city);
 
       displayWeather();
       displayBusSchedule();
@@ -812,11 +821,17 @@
 
           // // Update locationRef to store city and region and display it
           locationRef = new Location(locationRef.lat, locationRef.long, locationRef.accuracy, response.location.name + ", " + response.location.region);
-          document.getElementById('currentLocation').innerHTML = "<img src=\"otherImages/locationDrop.png\" style=\"width:10px;\"> " + locationRef.city;
+          document.getElementById('currentLocation').innerHTML = locationRef.city;
 
           var date;
           // // Loop through forecast and change weekly forecast highs, lows and days
           for (var i = 1; i < 7; i++) {
+            if (response.forecast.forecastday[i].day.maxtemp_c >= 0)
+              document.getElementById('day' + i + 'High').style = "padding-left: 7px";
+
+            if (response.forecast.forecastday[i].day.mintemp_c >= 0)
+              document.getElementById('day' + i + 'Low').style = "padding-left: 7px";
+
             document.getElementById('day' + i + 'Icon').className += getIcon("FORCAST", (response.forecast.forecastday[i].day.condition.text).toLowerCase());
             document.getElementById('day' + i + 'High').innerHTML = Math.round(response.forecast.forecastday[i].day.maxtemp_c) + "&deg;";
             document.getElementById('day' + i + 'Low').innerHTML  = Math.round(response.forecast.forecastday[i].day.mintemp_c) + "&deg;";
@@ -930,27 +945,32 @@
   }
 
   function displayTravelTime(travelObj) {
+    var leaveTime = "", arriveTime = "";
+
     // Set arrival time with pretty formats
     if ((travelObj.departureDate).getHours() < "10")
-      document.getElementById('busLeaveTime').innerHTML = "0";
-    document.getElementById('busLeaveTime').innerHTML += (travelObj.departureDate).getHours() + ":";
+      leaveTime = "0";
+    leaveTime += (travelObj.departureDate).getHours() + ":";
 
     if ((travelObj.departureDate).getMinutes() < "10")
-       document.getElementById('busLeaveTime').innerHTML += "0";
-    document.getElementById('busLeaveTime').innerHTML += (travelObj.departureDate).getMinutes();
+       leaveTime += "0";
+    leaveTime += (travelObj.departureDate).getMinutes();
 
     // Set arrival time with pretty formats
     if ((travelObj.arrivalDate).getHours() < "10")
-      document.getElementById('busArriveTime').innerHTML = "0";
-    document.getElementById('busArriveTime').innerHTML += (travelObj.arrivalDate).getHours() + ":";
+      arriveTime = "0";
+    arriveTime += (travelObj.arrivalDate).getHours() + ":";
 
     if ((travelObj.arrivalDate).getMinutes() < "10")
-       document.getElementById('busArriveTime').innerHTML += "0";
-    document.getElementById('busArriveTime').innerHTML += (travelObj.arrivalDate).getMinutes();
+       arriveTime += "0";
+    arriveTime += (travelObj.arrivalDate).getMinutes();
 
     // If the drive is mutliple days long, show that
     if (travelObj.days > 0)
-     document.getElementById('busArriveTime').innerHTML += " +" + travelObj.days;
+     arriveTime += " +" + travelObj.days;
+
+     document.getElementById('busLeaveTime').innerHTML = "Leave: " + leaveTime;
+     document.getElementById('busArriveTime').innerHTML = "Arrive: " + arriveTime;
   }
 
   function displayTravelDestinations(instructions) {
@@ -966,18 +986,18 @@
     // Check end address for nicer printing
     // Home
     if (locationRef.distanceToHome < 0.0075) {
-      document.getElementById('busOrigin').innerHTML = " Home";
-      document.getElementById('busDestination').innerHTML = "School";
+      document.getElementById('busOrigin').innerHTML = "Start: Home";
+      document.getElementById('busDestination').innerHTML = "End: School";
     }
     // School
     else if (locationRef.distanceToSchool < 0.005) {
-      document.getElementById('busOrigin').innerHTML = " Shool";
-      document.getElementById('busDestination').innerHTML = "Home";
+      document.getElementById('busOrigin').innerHTML = "Arrive: Shool";
+      document.getElementById('busDestination').innerHTML = "End: Home";
     }
     // Otherwise just use current address
     else {
-      document.getElementById('busOrigin').innerHTML = " Loc";
-      document.getElementById('busDestination').innerHTML = "Home";
+      document.getElementById('busOrigin').innerHTML = "Arrive: Loc";
+      document.getElementById('busDestination').innerHTML = "End: Home";
     }
   }
 
@@ -1007,8 +1027,8 @@
           }
 
           // Set arrival/departure Times. Only transit supports these options
-          document.getElementById('busLeaveTime').innerHTML  = instructions.departure_time.text;
-          document.getElementById('busArriveTime').innerHTML = instructions.arrival_time.text;
+          document.getElementById('busLeaveTime').innerHTML  = "Leave: " + instructions.departure_time.text;
+          document.getElementById('busArriveTime').innerHTML = "Arrive: " +  instructions.arrival_time.text;
         } else if (request.travelMode == "DRIVING") {
           displayTravelTime(parseTravelTime((instructions.duration.text).split(" ")));
 
