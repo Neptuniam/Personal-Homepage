@@ -1,32 +1,26 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>the 134 Homepage</title>
+    <title>The 134 Homepage</title>
     <meta charset="utf-8">
 
     <!-- Tab icon -->
     <link rel="shortcut icon" href="otherImages//homeIcon.ico">
 
     <!-- Weather icons -->
-    <!-- <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"> -->
-    <!-- <link rel="stylesheet" href="css/styles.css"> -->
     <link rel="stylesheet" href="weatherIcons/weather-icons.css">
     <link rel="stylesheet" href="weatherIcons/weather-icons-wind.css">
 
+    <!-- Materialize -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Arima+Madurai|Bangers|Gruppo|Nixie+One|Noto+Serif|Nova+Flat|Poiret+One|Shrikhand" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Playball|Roboto|Lusitana|Metrophobic|Andika" rel="stylesheet">
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script> -->
 
-    <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Playball|Roboto|Gruppo" rel="stylesheet">
 
     <style media="screen">
-      [v-cloak] { display:none; }
-
-      body {
-        background: url('backgrounds/earthporn17.jpg');
+        body {
+        background: url('backgrounds/banff-national-park-sunlights.jpg');
         background-repeat: no-repeat;
         background-size: cover;
         height: 100vh;
@@ -37,6 +31,14 @@
         border: 1px solid;
         padding: 1.3em;
         margin: 1em;
+      }
+
+      .seperator {
+        border-left: 1px solid;
+      }
+
+      .seperator:nth-of-type(1) {
+        border-left: 0px solid;
       }
 
       .linkColourChange {
@@ -119,33 +121,17 @@
         display: inline-block;
       }
 
-      .forecastText {
-        font-size: 1.4rem;
-      }
-
       .routeIconStyle {
         width: 50px;
         height: 50px;
       }
 
-      .routeText {
+      .widgetBody {
         font-size: 1.5rem;
       }
 
-      .homeworkToday {
+      .widgetDate {
         font-size: 1.2rem;
-      }
-
-      .homeworkCount {
-        font-size: 1.5rem;
-      }
-
-      .homeworkDate {
-        font-size: 1.2rem;
-      }
-
-      .bold {
-        font-weight: bold;
       }
 
       .leftArrow {
@@ -189,50 +175,6 @@
         left: 5px;
       }
 
-      .top-center {
-        position: absolute;
-        top: -1px;
-        left: 40%;
-      }
-
-      .top-right {
-        position:absolute;
-        top: -1px;
-        right: 5px;
-      }
-
-      .mid-right {
-        position: absolute;
-        top: 15px;
-        right: 5px;
-      }
-
-      .bottom-left {
-        position:absolute;
-        bottom: 1;
-        right: -0.5;
-      }
-
-      .bottom-center {
-        position:absolute;
-        bottom: 0px;
-        left: 30%;
-      }
-
-      .bottom-right {
-        position:absolute;
-        bottom: 1;
-        right: -0.5;
-      }
-
-      .newBox {
-        border-left: 1px solid;
-      }
-
-      .newBox:nth-of-type(1) {
-        border-left: 0px solid;
-      }
-
       @media screen and (max-width: 1000px) {
        #dashboardCard { display: none; }
        .clockSize { font-size: 5rem;}
@@ -271,19 +213,15 @@
   <body>
     <div id="app">
       <div class="row">
-        <!-- <br> -->
-        <!-- <div class="col s1"></div> -->
-
-        <!-- <div class="col s10 l6"> -->
-        <div class="col s6" style="padding-top: 1.5%;">
+        <div class="col s6">
           <!--Time Row-->
           <div class="row clock date-time">
             <br>
             <!-- The Vue instance is attached to this div -->
             <!-- Reference the variable currtime in Vue Instance -->
-            <em class="clockSize" v-cloak>{{currhour}}<blink>:</blink>{{currmin}}&nbsp;</em>
+            <em class="clockSize">{{currhour}}<blink>:</blink>{{currmin}}&nbsp;</em>
             <!-- Reference the variable currdate in Vue Instance -->
-            <p class="dateSize" v-cloak v-text="currdate">&nbsp;</p>
+            <p class="dateSize" v-text="currdate">&nbsp;</p>
           </div>
           <br><br>
 
@@ -339,8 +277,6 @@
           </div>
         </div>
 
-        <!-- <div class="col s1"></div> -->
-
         <div class="col s6" id="dashboardCard" style="padding-top: 1.5%;">
           <!--Dashboard Card-->
           <div class="card dashboard">
@@ -373,76 +309,76 @@
 
               <!--Weekly Weather Forecast box-->
               <div class="row box" id="forecastDisplay">
-                <div class="newBox col s2">
+                <div class="seperator col s2">
                   <div class="row" style="margin-bottom:4px;">
                     <i class="col s1 pull-s4 forecastIcons " id="day1Icon"></i>
-                    <div class="col s6 pull-s2 forecastText">
+                    <div class="col s6 pull-s2 widgetBody">
                       <div id="day1High">&nbsp;</div>
                       <div id="day1Low">&nbsp;</div>
                     </div>
                   </div>
 
-                  <div id="day1Date" class="forecastText">&nbsp;</div>
+                  <div id="day1Date" class="widgetDate">&nbsp;</div>
                 </div>
 
-                <div class="newBox col s2">
+                <div class="seperator col s2">
                   <div class="row" style="margin-bottom:4px;">
                     <i class="col s1 pull-s4 forecastIcons " id="day2Icon"></i>
-                    <div class="col s6 pull-s2 forecastText">
+                    <div class="col s6 pull-s2 widgetBody">
                       <div id="day2High"></div>
                       <div id="day2Low"></div>
                     </div>
                   </div>
 
-                  <div id="day2Date" class="forecastText"></div>
+                  <div id="day2Date" class="widgetDate"></div>
                 </div>
 
-                <div class="newBox col s2">
+                <div class="seperator col s2">
                   <div class="row" style="margin-bottom:4px;">
                     <i class="col s1 pull-s4 forecastIcons " id="day3Icon"></i>
-                    <div class="col s6 pull-s2 forecastText">
+                    <div class="col s6 pull-s2 widgetBody">
                       <div id="day3High"></div>
                       <div id="day3Low"></div>
                     </div>
                   </div>
 
-                  <div id="day3Date" class="forecastText"></div>
+                  <div id="day3Date" class="widgetDate"></div>
                 </div>
 
-                <div class="newBox col s2">
+                <div class="seperator col s2">
                   <div class="row" style="margin-bottom:4px;">
                     <i class="col s1 pull-s4 forecastIcons " id="day4Icon"></i>
-                    <div class="col s6 pull-s2 forecastText">
+                    <div class="col s6 pull-s2 widgetBody">
                       <div id="day4High"></div>
                       <div id="day4Low"></div>
                     </div>
                   </div>
 
-                  <div id="day4Date" class="forecastText"></div>
+                  <div id="day4Date" class="widgetDate"></div>
                 </div>
 
-                <div class="newBox col s2">
+                <div class="seperator col s2">
                   <div class="row" style="margin-bottom:4px;">
                     <i class="col s1 pull-s4 forecastIcons " id="day5Icon"></i>
-                    <div class="col s6 pull-s2 forecastText">
+                    <div class="col s6 pull-s2 widgetBody">
                       <div id="day5High"></div>
                       <div id="day5Low"></div>
                     </div>
                   </div>
 
-                  <div id="day5Date" class="forecastText"></div>
+                  <div id="day5Date" class="widgetDate"></div>
                 </div>
 
-                <div class="newBox col s2">
+                <div class="seperator col s2">
                   <div class="row" style="margin-bottom:4px;">
                     <i class="col s1 pull-s4 forecastIcons " id="day6Icon"></i>
-                    <div class="col s6 pull-s2 forecastText">
+                    <div class="col s6 pull-s2 widgetBody">
                       <div id="day6High"></div>
                       <div id="day6Low"></div>
                     </div>
                   </div>
 
-                  <div id="day6Date" class="forecastText"></div>
+                  <div id="day6Date" class="widgetDate"></div>
                 </div>
               </div>
 
@@ -458,76 +394,76 @@
 
                 <!-- Departure/Arrival time text spaces -->
                 <div class="col s5">
-                  <p class="routeText" id="busLeaveTime">&nbsp;</p>
-                  <p class="routeText" id="busArriveTime">&nbsp;</p>
+                  <p class="widgetBody" id="busLeaveTime">&nbsp;</p>
+                  <p class="widgetBody" id="busArriveTime">&nbsp;</p>
                 </div>
 
                 <!-- Origin/Destination text spaces. Origin implements tooltip to use hover over text boxes to display full adress -->
-                <div class="col s5" class="routeText">
+                <div class="col s5">
                   <span class="tooltip">
-                    <p class="routeText" id="busOrigin">&nbsp;</p>
+                    <p class="widgetBody" id="busOrigin">&nbsp;</p>
                     <span class="tooltiptext prettyBox shadow1" id="originFullText"></span>
                   </span>
 
-                  <p class="routeText" id="busDestination">&nbsp;</p>
+                  <p class="widgetBody" id="busDestination">&nbsp;</p>
                 </div>
               </div>
 
               <!-- Homework/Calendar Box -->
               <div class="row box" style="background: url('otherImages//calendarBackground.jpg');">
                 <!-- Allows for 6 items to be displayed for today -->
-                <div class="top-left" style="font-size: 1.2rem;">Today:</div>
-                <span class="col s6 homeworkToday" id="hwday0Item0"></span> <span class="col s6 homeworkToday" id="hwday0Item1"></span>
-                <span class="col s6 homeworkToday" id="hwday0Item2"></span> <span class="col s6 homeworkToday" id="hwday0Item3"></span>
-                <span class="col s6 homeworkToday" id="hwday0Item4"></span> <span class="col s6 homeworkToday" id="hwday0Item5"></span>
+                <div class="top-left widgetDate">Today:</div>
+                <span class="col s6 widgetDate" id="hwday0Item0"></span> <span class="col s6 widgetDate" id="hwday0Item1"></span>
+                <span class="col s6 widgetDate" id="hwday0Item2"></span> <span class="col s6 widgetDate" id="hwday0Item3"></span>
+                <span class="col s6 widgetDate" id="hwday0Item4"></span> <span class="col s6 widgetDate" id="hwday0Item5"></span>
 
 
                 <!-- Displays 6 boxes to show homwork count for the next 6 days -->
                 <div class="row" style="margin: 0;">
-                  <div class="col s2 tooltip newBox">
-                    <span id="day1Count" class="homeworkCount"></span>
+                  <div class="col s2 tooltip seperator">
+                    <span id="day1Count" class="widgetBody"></span>
                     <br>
-                    <span id="hwDay1Date" class="homeworkDate"></span>
+                    <span id="hwDay1Date" class="widgetDate"></span>
 
                     <div class="tooltiptext prettyBox" id="day1Calendar"></div>
                   </div>
 
-                  <div class="col s2 tooltip newBox">
-                    <span id="day2Count" class="homeworkCount"></span>
+                  <div class="col s2 tooltip seperator">
+                    <span id="day2Count" class="widgetBody"></span>
                     <br>
-                    <span id="hwDay2Date" class="homeworkDate"></span>
+                    <span id="hwDay2Date" class="widgetDate"></span>
 
                     <div class="tooltiptext prettyBox" id="day2Calendar"></div>
                   </div>
 
-                  <div class="col s2 tooltip newBox">
-                    <span id="day3Count" class="homeworkCount"></span>
+                  <div class="col s2 tooltip seperator">
+                    <span id="day3Count" class="widgetBody"></span>
                     <br>
-                    <span id="hwDay3Date" class="homeworkDate"></span>
+                    <span id="hwDay3Date" class="widgetDate"></span>
 
                     <div class="tooltiptext prettyBox" id="day3Calendar"></div>
                   </div>
 
-                  <div class="col s2 tooltip newBox">
-                    <span id="day4Count" class="homeworkCount"></span>
+                  <div class="col s2 tooltip seperator">
+                    <span id="day4Count" class="widgetBody"></span>
                     <br>
-                    <span id="hwDay4Date" class="homeworkDate"></span>
+                    <span id="hwDay4Date" class="widgetDate"></span>
 
                     <div class="tooltiptext prettyBox" id="day4Calendar"></div>
                   </div>
 
-                  <div class="col s2 tooltip newBox">
-                    <span id="day5Count" class="homeworkCount"></span>
+                  <div class="col s2 tooltip seperator">
+                    <span id="day5Count" class="widgetBody"></span>
                     <br>
-                    <span id="hwDay5Date" class="homeworkDate"></span>
+                    <span id="hwDay5Date" class="widgetDate"></span>
 
                     <div class="tooltiptext prettyBox" id="day5Calendar"></div>
                   </div>
 
-                  <div class="col s2 tooltip newBox">
-                    <span id="day6Count" class="homeworkCount"></span>
+                  <div class="col s2 tooltip seperator">
+                    <span id="day6Count" class="widgetBody"></span>
                     <br>
-                    <span id="hwDay6Date" class="homeworkDate"></span>
+                    <span id="hwDay6Date" class="widgetDate"></span>
 
                     <div class="tooltiptext prettyBox" id="day6Calendar"></div>
                   </div>
@@ -610,7 +546,7 @@
      },
      error: function(data) {
        console.log("Background gen failed: " + data);
-       document.body.style.background = "url('backgrounds/earthPorn17.jpg')";
+       document.body.style.background = "url('backgrounds/banff-national-park-sunlights.jpg')";
        document.body.style.backgroundSize = "cover";
      }
    });
@@ -681,6 +617,27 @@
               }
             }
   }
+  var weatherIconMap = {
+    sunny: "sunny",
+    clear: "stars",
+    cloudy: "cloudy",
+    overcast: "sunny-overcast",
+    mixed: "rain-mix",
+    showers: "showers",
+    drizzle: "showers",
+    thunder: "storm-showers",
+    thundery: "storm-showers",
+    snow: "snow",
+    blizzard: "snow",
+    fog: "fog",
+    mist: "fog",
+    dust: "fog",
+    smokey: "fog",
+    wind: "windy",
+    breezy: "windy",
+    sleet: "sleet",
+    pellets: "sleet"
+  }
   var pageOffset = 0;
 
   displayHwCalendar();
@@ -747,46 +704,20 @@
   }
 
   function getIcon(isDay, curWeather) {
-    var iconText = "wi wi-"
+    var iconText = "wi wi-";
+    var splitWeatherDesc = curWeather.split(" "), tempIconText = null, i = 0;
 
     if (isDay == 1)
       iconText += "day-";
     else if (isDay == 0)
       iconText += "night-alt-";
 
-    // Determine which icon to display
-    if (curWeather.includes("sunny") || curWeather.includes("hot"))
-      iconText = "wi wi-day-sunny";
-    else if (curWeather.includes("clear"))
-      iconText = "wi wi-stars";
-    else if (curWeather.includes("fair"))
-      iconText = "wi wi-day-sunny-overcast";
-    else if (curWeather.includes("cloud")) {
-      iconText += "cloudy";
-
-      if (curWeather.includes("wind") || curWeather.includes("breezy"))
-        iconText += "-windy";
+    while (tempIconText == null && i < splitWeatherDesc.length) {
+      if ((tempIconText = weatherIconMap[splitWeatherDesc[i++]]) != null)
+        iconText += tempIconText;
     }
-    else if (curWeather.includes("mixed"))
-      iconText += "rain-mix";
-    else if (curWeather.includes("rain"))
-      iconText += "rain";
-    else if (curWeather.includes("showers") || curWeather.includes("drizzle"))
-      iconText += "showers";
-    else if (curWeather.includes("thunderstorms"))
-      iconText += "storm-showers";
-    else if (curWeather.includes("snow") || curWeather.includes("blizzard"))
-      iconText += "snow";
-    else if (curWeather.includes("foggy") || curWeather.includes("haze") ||
-             curWeather.includes("dust")  || curWeather.includes("smokey"))
-      iconText += "fog";
-    else if (curWeather.includes("wind") || curWeather.includes("breezy"))
-      iconText += "windy";
 
-    // console.log("iconText: " + iconText);
-
-    return(iconText)
-
+    return (iconText)
   }
 
   function displayWeather() {
@@ -808,11 +739,10 @@
         success: function(response) {
           console.log("Success");
           console.log(response);
-          var weekDays = new Array("Sun", "Mon", "Tues", "Wed", "Thur", "Fri", "Sat");
+          var weekDays = new Array("Mon", "Tues", "Wed", "Thur", "Fri", "Sat", "Sun");
 
           // get weather icon
           document.getElementById('weatherIcon').className = getIcon(response.current.is_day, (response.current.condition.text).toLowerCase());
-          // getIcon("Tue, 15 May 2018 09:29 PM CST", "8:54", "Rain".toLowerCase());
 
           // Set actual time weather
           document.getElementById('currentTemp').innerHTML = Math.round(response.current.feelslike_c) + "&deg;C";
@@ -1155,7 +1085,7 @@
                  ']';
     var cur, today = new Date(), weekDays = new Array("Sun", "Mon", "Tues", "Wed", "Thur", "Fri", "Sat");
     var myMap = createHwMap(JSON.parse(hwList));
-    console.log("HIT")
+
     // If function is called with a page offset request, adjust 'today'
     if (pageOffset != 0) {
       today = new Date(today.getTime() + (pageOffset * 7) * 24 * 60 * 60 * 1000);
