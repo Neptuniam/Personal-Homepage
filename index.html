@@ -19,6 +19,8 @@
     <link href="https://fonts.googleapis.com/css?family=Playball|Roboto|Gruppo" rel="stylesheet">
 
     <style media="screen">
+      [v-cloak] { display:none; }
+
         body {
         background: url('backgrounds/banff-national-park-sunlights.jpg');
         background-repeat: no-repeat;
@@ -219,9 +221,9 @@
             <br>
             <!-- The Vue instance is attached to this div -->
             <!-- Reference the variable currtime in Vue Instance -->
-            <em class="clockSize">{{currhour}}<blink>:</blink>{{currmin}}&nbsp;</em>
+            <em class="clockSize" v-cloak>{{currhour}}<blink>:</blink>{{currmin}}&nbsp;</em>
             <!-- Reference the variable currdate in Vue Instance -->
-            <p class="dateSize" v-text="currdate">&nbsp;</p>
+            <p class="dateSize" v-cloak v-text="currdate">&nbsp;</p>
           </div>
           <br><br>
 
@@ -574,7 +576,7 @@
   }
 
   var locationRef = new Location(), customLocation = "";
-  var myMap = {
+  var commandMap = {
     home: function home() {
             locationRef = new Location(locationRef.home.lat, locationRef.home.long, 0, locationRef.city);
             displayBusSchedule();
@@ -620,6 +622,7 @@
   var weatherIconMap = {
     sunny: "sunny",
     clear: "stars",
+    rain: "rain",
     cloudy: "cloudy",
     overcast: "sunny-overcast",
     mixed: "rain-mix",
@@ -654,7 +657,7 @@
           var commands = (customText.substring(1)).split(' ');
 
           // Using the commandas the key, run the code with the associated value
-          myMap[commands[0]](commands);
+          commandMap[commands[0]](commands);
 
           // Reset the input box to the user's current location
           document.getElementById("currentLocation").innerHTML = locationRef.city;
@@ -707,7 +710,7 @@
     var iconText = "wi wi-";
     var splitWeatherDesc = curWeather.split(" "), tempIconText = null, i = 0;
 
-    if (isDay == 1)
+    if (isDay == 1 || curWeather.includes("overcast") )
       iconText += "day-";
     else if (isDay == 0)
       iconText += "night-alt-";
@@ -717,6 +720,7 @@
         iconText += tempIconText;
     }
 
+    console.log(curWeather + " -> " + iconText);
     return (iconText)
   }
 
@@ -762,6 +766,7 @@
             if (response.forecast.forecastday[i].day.mintemp_c >= 0)
               document.getElementById('day' + i + 'Low').style = "padding-left: 7px";
 
+            console.log("\n" + weekDays[new Date(response.forecast.forecastday[i].date).getDay()]);
             document.getElementById('day' + i + 'Icon').className += getIcon("FORCAST", (response.forecast.forecastday[i].day.condition.text).toLowerCase());
             document.getElementById('day' + i + 'High').innerHTML = Math.round(response.forecast.forecastday[i].day.maxtemp_c) + "&deg;";
             document.getElementById('day' + i + 'Low').innerHTML  = Math.round(response.forecast.forecastday[i].day.mintemp_c) + "&deg;";
@@ -980,17 +985,17 @@
     });
   }
 
+  function clearElement(element) {
+    if (document.getElementById(element))
+      document.getElementById(element).innerHTML= "";
+  }
+
   function clearHwHovers() {
     // Clear days inner html (which display what is due for each day)
     for (var i = 0; i < 6; i++) {
-      if (document.getElementById('hwday0Item' + i))
-        document.getElementById('hwday0Item' + i).innerHTML= "";
-
-      if (document.getElementById('day' + i + 'Count'))
-        document.getElementById('day' + i + 'Count').innerHTML = "";
-
-      if (document.getElementById('day' + i + 'Calendar'))
-        document.getElementById('day' + i + 'Calendar').innerHTML = "";
+      clearElement('hwday0Item' + i);
+      clearElement('day' + i + 'Count');
+      clearElement('day' + i + 'Calendar');
     }
   }
 
@@ -1001,7 +1006,7 @@
   }
 
   function createHwMap(hwList) {
-    var myMap = new Map();
+    var commandMap = new Map();
     var listSize = hwList.length;
 
     for (var i = 0; i < listSize; i++) {
@@ -1009,21 +1014,21 @@
       var key = day.getMonth() + " " + day.getDate();
 
       // Check if a list already exists for the current key
-      if (myMap.get(key)) {
+      if (commandMap.get(key)) {
         // If so, get the list
-        var myList = myMap.get(key);
+        var myList = commandMap.get(key);
 
         // Append the current item to the list
         myList[myList.length] = hwList[i];
 
         // Reset the value with the appeneded list
-        myMap.set(key, myList);
+        commandMap.set(key, myList);
       } else
       // Else, make a list and with just the current item
-        myMap.set(key, new Array(hwList[i]));
+        commandMap.set(key, new Array(hwList[i]));
     }
 
-    return myMap;
+    return commandMap;
   }
 
   function displayHwCalendar() {
@@ -1084,7 +1089,7 @@
                  '{"type":"string", "dueDate":"' + new Date(2018, 3,  5, 11, 30) + '", "course":"CIS 3190", "name":"Ass 4", "weight":"30"}' +
                  ']';
     var cur, today = new Date(), weekDays = new Array("Sun", "Mon", "Tues", "Wed", "Thur", "Fri", "Sat");
-    var myMap = createHwMap(JSON.parse(hwList));
+    var commandMap = createHwMap(JSON.parse(hwList));
 
     // If function is called with a page offset request, adjust 'today'
     if (pageOffset != 0) {
@@ -1092,7 +1097,7 @@
     }
 
     // Set the list for today, today is unique because it does not present the count
-    if ((cur = myMap.get(today.getMonth() + " " + today.getDate()))) {
+    if ((cur = commandMap.get(today.getMonth() + " " + today.getDate()))) {
       for (var i = 0; i < cur.length; i++)
         document.getElementById('hwday0Item' + i).innerHTML = cur[i].course + " " + cur[i].name + " - " + cur[i].weight + "%<br>";
 
@@ -1107,7 +1112,7 @@
       var nextDate = new Date(today.getTime() + day * 24 * 60 * 60 * 1000);
 
       // Check nextDay's key: its due date in reduced format to see if it has an assigned value
-      if ((cur = myMap.get(nextDate.getMonth() + " " + nextDate.getDate()))) {
+      if ((cur = commandMap.get(nextDate.getMonth() + " " + nextDate.getDate()))) {
         document.getElementById('day' + day + 'Count').innerHTML = cur.length;
 
         for (var i = 0; i < cur.length; i++)
