@@ -58,15 +58,16 @@
       }
 
       .clockSize {
-        font-size: 10rem;
+        font-size: 11rem;
         text-align: center;
         color: rgba(0,0,0,8);
 
-        text-shadow: 0 0 0.5px #808080, 0 0 0.5px #808080, 0 0 0.5px #808080
+        text-shadow: 0 0 0.5px #808080, 0 0 0.5px #808080, 0 0 0.5px #808080;
+        margin-top: -1em;
       }
 
       .dateSize {
-        font-size: 3rem;
+        font-size: 3.5rem;
         color: rgba(0,0,0,8);
         margin-top: -1em;
       }
@@ -84,7 +85,7 @@
       .favouritesDashboard {
         margin:0 auto;
 
-        width:500px;
+        width:575px;
         background: rgba(240,240,240,0.5);
       }
 
@@ -149,9 +150,12 @@
       }
 
       .prettyBox:not(:empty) {
-        width: 200px;
+        /* width: 400px; */
         background-color: white;
         opacity: 1;
+
+        font-family: 'Roboto';
+        font-size: 1.5rem;
 
         border-radius: 45px;
         border: 2px solid black;
@@ -159,16 +163,17 @@
       }
 
       .tooltip .tooltiptext{
-        visibility: hidden;
+        display: none;
 
         position: absolute;
         bottom: 100%;
-        left: 50%;
-        margin-left: -100px;
+        /* left: 50%; */
+        /* margin-left: -200px; */
       }
 
       .tooltip:hover .tooltiptext {
-        visibility: visible;
+        display: block;
+        /* visibility: visible; */
       }
 
       .top-left {
@@ -218,7 +223,6 @@
         <div class="col s6">
           <!--Time Row-->
           <div class="row clock date-time">
-            <br>
             <!-- The Vue instance is attached to this div -->
             <!-- Reference the variable currtime in Vue Instance -->
             <em class="clockSize" v-cloak>{{currhour}}<blink>:</blink>{{currmin}}&nbsp;</em>
@@ -234,15 +238,16 @@
               <form method="get" action="http://www.google.com/search">
                 <div class="input-field">
                   <i class="material-icons prefix">search</i>
-                  <input id="icon_prefix" name="q" placeholder="Search Google" type="text">
+                  <input id="icon_prefix" name="q" placeholder="Search Google" type="text" style="font-size: 1.5rem;">
                   <label for="icon_prefix"></label>
                 </div>
               </form>
 
               <!--Favourite tabs Row-->
               <div class="row">
-                <div class="col s2 offset-s1 center-align">
-                  <a href="https://www.facebook.com/messages/t/1257203164296324"><img src="favouritesIcons//facebook.png" class="favButtons"></a>
+                <div class="col s1"></div>
+                <div class="col s2 center-align">
+                  <a href="https://www.facebook.com/messages/t/1257203164296324"><img src="favouritesIcons//facebookIcon.svg" class="favButtons"></a>
                 </div>
                 <div class="col s2 center-align">
                   <a href="https://www.reddit.com/"><img src="favouritesIcons//Reddit-The-Official-App-Icon.png" class="favButtons"></a>
@@ -256,11 +261,13 @@
                 <div class="col s2 center-align">
                   <a href="https://www.netflix.com/browse"><img src="favouritesIcons//netflix.png" class="favButtons"></a>
                 </div>
+                <div class="col s1"></div>
               </div>
               <!--Favourite tabs Row2-->
               <div class="row">
-                <div class="col s2 center-align offset-s1">
-                  <a href="https://github.com/"><img src="favouritesIcons//git.png" class="favButtons"></a>
+                <div class="col s1"></div>
+                <div class="col s2 center-align">
+                  <a href="https://github.com/"><img src="favouritesIcons//gitIcon.png" class="favButtons"></a>
                 </div>
                 <div class="col s2 center-align">
                   <a href="https://drive.google.com/drive/my-drive"><img src="favouritesIcons//googleDrive.png" class="favButtons"></a>
@@ -272,8 +279,9 @@
                   <a href="https://outlook.office.com/owa/?realm=uoguelph.ca">  <img src="favouritesIcons//gmail.png" class="favButtons"></a>
                 </div>
                 <div class="col s2 center-align">
-                  <a href="https://courselink.uoguelph.ca/d2l/home"><img src="favouritesIcons//guelph.jpeg" class="favButtons"></a>
+                  <a href="https://courselink.uoguelph.ca/d2l/home"><img src="favouritesIcons//guelph-icon.png" class="favButtons"></a>
                 </div>
+                <div class="col s1"></div>
               </div>
             </div>
           </div>
@@ -390,7 +398,7 @@
                 <!-- Different icon type to display, be default each is hidden -->
                 <div class="col s2" style="padding-top:10px;">
                   <a href="maps.html" target="_blank" class="busNumIcon linkColourChange" id="busNumIcon" style="display: none;"></a>
-                  <a href="maps.html" target="_blank" class="linkColourChange" id="carIcon"  style="display: none;"><img src="otherImages//carLogo2.png" class="routeIconStyle"></a>
+                  <a href="maps.html" target="_blank" class="linkColourChange" id="carIcon"  style="display: none;"><img src="otherImages//carLogo.png" class="routeIconStyle"></a>
                   <a href="maps.html" target="_blank" class="linkColourChange" id="walkIcon" style="display: none;"><img  src="otherImages//walking.jpg" class="routeIconStyle"></a>
                 </div>
 
@@ -412,7 +420,7 @@
               </div>
 
               <!-- Homework/Calendar Box -->
-              <div class="row box" style="background: url('otherImages//calendarBackground.jpg');">
+              <div class="row box" style="background: url('otherImages//calendarBackground3.jpg');">
                 <!-- Allows for 6 items to be displayed for today -->
                 <div class="top-left widgetDate">Today:</div>
                 <span class="col s6 widgetDate" id="hwday0Item0"></span> <span class="col s6 widgetDate" id="hwday0Item1"></span>
@@ -687,7 +695,7 @@
         document.getElementById('originFullText').innerHTML = crd.accuracy + ": ";
 
       // If the accuracy is really poor, just set us to be home
-      if (crd.accuracy > 500)
+      if (crd.accuracy > 1000)
         locationRef = new Location(locationRef.home.lat, locationRef.home.long, 0, locationRef.city);
 
       displayWeather();
@@ -1050,7 +1058,7 @@
                  '{"type":"string", "dueDate":"' + new Date(2018, 1, 10, 23, 59) + '", "course":"EDRD 3500", "name":"Lit Rev.", "weight":"25"},' +
                  '{"type":"string", "dueDate":"' + new Date(2018, 3, 17, 23, 59) + '", "course":"EDRD 3500", "name":"Eval.", "weight":"35"},' +
                  // EDRD Final
-                 '{"type":"string", "dueDate":"' + new Date(2018, 13, 22, 11, 30) + '", "course":"CIS 3150", "name":"Quiz 9", "weight":"1"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 3, 22, 11, 30) + '", "course":"EDRD 3500", "name":"Final", "weight":"25"},' +
 
 
                  // CIS 4820 Assignments
